@@ -1,7 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 import { Search, SlidersHorizontal, Download, Plus, Pin, RefreshCw, ChevronDown } from "lucide-react";
-import { MEMBERS } from "@/lib/mock-data";
+import { MEMBERS, type Member } from "@/lib/mock-data";
 import { Avatar } from "./_app.dashboard";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/_app/membres/")({
   head: () => ({ meta: [{ title: "Membres — FIAD-Monde" }] }),
@@ -9,6 +11,34 @@ export const Route = createFileRoute("/_app/membres/")({
 });
 
 function MembersPage() {
+  const [realMembers, setRealMembers] = useState<Member[]>([]);
+
+  useEffect(() => {
+    supabase
+      .from("profiles")
+      .select("id, first_name, last_name, email, country, created_at")
+      .order("created_at", { ascending: false })
+      .then(({ data }) => {
+        if (!data) return;
+        setRealMembers(
+          data.map((p) => ({
+            id: p.id,
+            name: [p.first_name, p.last_name].filter(Boolean).join(" ") || p.email || "Membre",
+            email: p.email ?? "",
+            category: "Ambassadeur",
+            status: "Actif",
+            city: "—",
+            country: p.country ?? "—",
+            joined: new Date(p.created_at).toLocaleDateString("fr-FR"),
+            ytdSpending: "—",
+            owner: "—",
+          })) as Member[],
+        );
+      });
+  }, []);
+
+  const rows = [...realMembers, ...MEMBERS];
+
   return (
     <div className="max-w-[1400px] mx-auto">
       {/* Header */}
@@ -28,7 +58,7 @@ function MembersPage() {
               </button>
             </div>
             <div className="text-xs text-muted-foreground mt-1">
-              {MEMBERS.length} membres · Tri par nom · Filtré: Tous les membres · Mis à jour il y a quelques secondes
+              {rows.length} membres · {realMembers.length} inscrits · Tri par nom · Mis à jour à l'instant
             </div>
           </div>
         </div>
@@ -68,10 +98,10 @@ function MembersPage() {
               </tr>
             </thead>
             <tbody>
-              {MEMBERS.map((m, i) => (
+              {rows.map((m, i) => (
                 <tr
                   key={m.id}
-                  className={"border-t border-border hover:bg-primary-soft/40 transition " + (i === 2 ? "bg-primary-soft/60" : "")}
+                  className={"border-t border-border hover:bg-primary-soft/40 transition " + (i < realMembers.length ? "bg-primary-soft/30" : "")}
                 >
                   <td className="px-4 py-3"><input type="checkbox" className="accent-[var(--primary)]" /></td>
                   <td className="px-4 py-3">
