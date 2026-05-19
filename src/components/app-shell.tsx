@@ -1,6 +1,7 @@
-import { Link, Outlet, useRouterState } from "@tanstack/react-router";
+import { Link, Outlet, useNavigate, useRouterState } from "@tanstack/react-router";
 import { Bell, HelpCircle, Search, Settings, Star, Plus } from "lucide-react";
 import { FiadLogo } from "./fiad-logo";
+import { useAuth } from "@/hooks/use-auth";
 
 const NAV = [
   { to: "/dashboard", label: "Accueil" },
@@ -14,6 +15,19 @@ const NAV = [
 
 export function AppShell() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const { user, signOut } = useAuth();
+  const navigate = useNavigate();
+
+  const meta = (user?.user_metadata ?? {}) as { first_name?: string; last_name?: string };
+  const initials =
+    `${(meta.first_name?.[0] ?? "").toUpperCase()}${(meta.last_name?.[0] ?? "").toUpperCase()}` ||
+    user?.email?.[0]?.toUpperCase() ||
+    "FM";
+
+  async function handleLogout() {
+    await signOut();
+    navigate({ to: "/login" });
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -35,9 +49,13 @@ export function AppShell() {
             <IconBtn><HelpCircle className="h-4 w-4" /></IconBtn>
             <IconBtn><Settings className="h-4 w-4" /></IconBtn>
             <IconBtn><Bell className="h-4 w-4" /></IconBtn>
-            <div className="ml-2 h-9 w-9 rounded-full bg-gradient-to-br from-[oklch(0.7_0.15_280)] to-primary flex items-center justify-center text-primary-foreground text-sm font-semibold">
-              LA
-            </div>
+            <button
+              onClick={handleLogout}
+              title="Se déconnecter"
+              className="ml-2 h-9 w-9 rounded-full bg-gradient-to-br from-[oklch(0.7_0.15_280)] to-primary flex items-center justify-center text-primary-foreground text-sm font-semibold hover:opacity-90"
+            >
+              {initials}
+            </button>
           </div>
         </div>
         {/* App tabs */}
