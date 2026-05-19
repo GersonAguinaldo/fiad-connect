@@ -22,22 +22,41 @@ type Profile = {
   first_name: string | null;
   last_name: string | null;
   email: string | null;
+  city: string | null;
   country: string | null;
+  category: string;
+  status: string;
   created_at: string;
 };
+
+type Upcoming = { id: string; title: string; event_date: string; tag: string };
 
 function MemberDashboard() {
   const { user } = useAuth();
   const [profile, setProfile] = useState<Profile | null>(null);
+  const [formationsCount, setFormationsCount] = useState(0);
+  const [eventsCount, setEventsCount] = useState(0);
+  const [upcoming, setUpcoming] = useState<Upcoming[]>([]);
+  const [cotisation, setCotisation] = useState<"À jour" | "À régler" | "—">("—");
 
   useEffect(() => {
     if (!user?.id) return;
-    supabase
-      .from("profiles")
-      .select("first_name, last_name, email, country, created_at")
-      .eq("id", user.id)
-      .maybeSingle()
-      .then(({ data }) => setProfile(data));
+    const yearStart = new Date(new Date().getFullYear(), 0, 1).toISOString();
+    const now = new Date().toISOString();
+    (async () => {
+      const [{ data: prof }, { count: fCount }, { count: eCount }, { data: evs }, { data: tx }] = await Promise.all([
+        supabase.from("profiles").select("first_name,last_name,email,city,country,category,status,created_at").eq("id", user.id).maybeSingle(),
+        supabase.from("formation_enrollments").select("*", { count: "exact", head: true }).eq("user_id", user.id),
+        supabase.from("event_registrations").select("*", { count: "exact", head: true }).eq("user_id", user.id).gte("created_at", yearStart),
+        supabase.from("events").select("id,title,event_date,type").gte("event_date", now).order("event_date", { ascending: true }).limit(5),
+        supabase.from("transactions").select("id").eq("user_id", user.id).eq("status", "Réussi").ilike("reason", "%cotisation%").gte("occurred_at", yearStart).limit(1),
+      ]);
+      setProfile(prof as Profile | null);
+      setFormationsCount(fCount ?? 0);
+      setEventsCount(eCount ?? 0);
+      setUpcoming(((evs as { id: string; title: string; event_date: string; type: string | null }[]) ?? []).map((e) => ({ id: e.id, title: e.title, event_date: e.event_date, tag: e.type ?? "Événement" })));
+      setCotisation((tx ?? []).length > 0 ? "À jour" : "À régler");
+    })();
   }, [user?.id]);
 
   const firstName = profile?.first_name || user?.user_metadata?.first_name || "Ambassadeur";
@@ -73,10 +92,10 @@ function MemberDashboard() {
 
       {/* KPI cards */}
       <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <KpiCard icon={Wallet} label="Cotisation" value="À jour" color="oklch(0.7 0.15 155)" />
-        <KpiCard icon={GraduationCap} label="Formations suivies" value="3" color="oklch(0.6 0.22 258)" />
-        <KpiCard icon={CalendarDays} label="Prochains événements" value="2" color="oklch(0.75 0.15 25)" />
-        <KpiCard icon={Award} label="Badges obtenus" value="5" color="oklch(0.6 0.22 295)" />
+        <KpiCard icon={Wallet} label="Cotisation" value={cotisation} color="oklch(0.7 0.15 155)" />
+        <KpiCard icon={GraduationCap} label="Formations suivies" value={String(formationsCount)} color="oklch(0.6 0.22 258)" />
+        <KpiCard icon={CalendarDays} label="Événements (an)" value={String(eventsCount)} color="oklch(0.75 0.15 25)" />
+        <KpiCard icon={Award} label="Statut" value={profile?.status ?? "—"} color="oklch(0.6 0.22 295)" />
       </section>
 
       {/* Main grid */}
@@ -87,21 +106,34 @@ function MemberDashboard() {
             <h2 className="font-display font-bold text-lg">À venir cette semaine</h2>
             <Link to="/evenements" className="text-sm text-primary font-medium hover:underline">Tout voir</Link>
           </div>
-          <ul className="mt-5 divide-y divide-border">
-            <EventRow date="Mer. 21 mai" time="18h00" title="Cours hebdo — Liberté financière" tag="Formation" />
-            <EventRow date="Sam. 24 mai" time="10h00" title="Assemblée locale Dakar" tag="Événement" />
-            <EventRow date="Lun. 26 mai" time="20h00" title="Atelier Mindset des Ambassadeurs" tag="Atelier" />
-          </ul>
+          {upcoming.length === 0 ? (
+            <p className="mt-6 text-sm text-muted-foreground">Aucun événement à venir.</p>
+          ) : (
+            <ul className="mt-5 divide-y divide-border">
+              {upcoming.map((e) => {
+                const d = new Date(e.event_date);
+                return (
+                  <EventRow
+                    key={e.id}
+                    date={d.toLocaleDateString("fr-FR", { weekday: "short", day: "numeric", month: "short" })}
+                    time={d.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })}
+                    title={e.title}
+                    tag={e.tag}
+                  />
+                );
+              })}
+            </ul>
+          )}
         </div>
 
         {/* My status */}
         <div className="bg-card rounded-2xl border border-border p-6 shadow-[var(--shadow-card)]">
           <h2 className="font-display font-bold text-lg">Mon statut</h2>
           <div className="mt-5 space-y-3">
-            <StatusRow ok label="Profil complété" />
-            <StatusRow ok label="Cotisation 2025 payée" />
-            <StatusRow label="Charte des Ambassadeurs signée" />
-            <StatusRow label="Présenter un filleul" />
+            <StatusRow ok={!!(profile?.first_name && profile?.last_name && profile?.country)} label="Profil complété" />
+            <StatusRow ok={cotisation === "À jour"} label={`Cotisation ${new Date().getFullYear()} payée`} />
+            <StatusRow ok={formationsCount > 0} label="Inscrit à une formation" />
+            <StatusRow ok={eventsCount > 0} label="Participation à un événement" />
           </div>
           <Link
             to="/messages"
