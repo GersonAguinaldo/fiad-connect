@@ -9,38 +9,193 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as RegisterRouteImport } from './routes/register'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AppRapportsRouteImport } from './routes/_app.rapports'
+import { Route as AppMessagesRouteImport } from './routes/_app.messages'
+import { Route as AppFormationsRouteImport } from './routes/_app.formations'
+import { Route as AppFinancesRouteImport } from './routes/_app.finances'
+import { Route as AppEvenementsRouteImport } from './routes/_app.evenements'
+import { Route as AppDashboardRouteImport } from './routes/_app.dashboard'
+import { Route as AppMembresIndexRouteImport } from './routes/_app.membres.index'
+import { Route as AppMembresMemberIdRouteImport } from './routes/_app.membres.$memberId'
 
+const RegisterRoute = RegisterRouteImport.update({
+  id: '/register',
+  path: '/register',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppRoute = AppRouteImport.update({
+  id: '/_app',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppRapportsRoute = AppRapportsRouteImport.update({
+  id: '/rapports',
+  path: '/rapports',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppMessagesRoute = AppMessagesRouteImport.update({
+  id: '/messages',
+  path: '/messages',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppFormationsRoute = AppFormationsRouteImport.update({
+  id: '/formations',
+  path: '/formations',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppFinancesRoute = AppFinancesRouteImport.update({
+  id: '/finances',
+  path: '/finances',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppEvenementsRoute = AppEvenementsRouteImport.update({
+  id: '/evenements',
+  path: '/evenements',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppDashboardRoute = AppDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppMembresIndexRoute = AppMembresIndexRouteImport.update({
+  id: '/membres/',
+  path: '/membres/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppMembresMemberIdRoute = AppMembresMemberIdRouteImport.update({
+  id: '/membres/$memberId',
+  path: '/membres/$memberId',
+  getParentRoute: () => AppRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/login': typeof LoginRoute
+  '/register': typeof RegisterRoute
+  '/dashboard': typeof AppDashboardRoute
+  '/evenements': typeof AppEvenementsRoute
+  '/finances': typeof AppFinancesRoute
+  '/formations': typeof AppFormationsRoute
+  '/messages': typeof AppMessagesRoute
+  '/rapports': typeof AppRapportsRoute
+  '/membres/$memberId': typeof AppMembresMemberIdRoute
+  '/membres/': typeof AppMembresIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/login': typeof LoginRoute
+  '/register': typeof RegisterRoute
+  '/dashboard': typeof AppDashboardRoute
+  '/evenements': typeof AppEvenementsRoute
+  '/finances': typeof AppFinancesRoute
+  '/formations': typeof AppFormationsRoute
+  '/messages': typeof AppMessagesRoute
+  '/rapports': typeof AppRapportsRoute
+  '/membres/$memberId': typeof AppMembresMemberIdRoute
+  '/membres': typeof AppMembresIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_app': typeof AppRouteWithChildren
+  '/login': typeof LoginRoute
+  '/register': typeof RegisterRoute
+  '/_app/dashboard': typeof AppDashboardRoute
+  '/_app/evenements': typeof AppEvenementsRoute
+  '/_app/finances': typeof AppFinancesRoute
+  '/_app/formations': typeof AppFormationsRoute
+  '/_app/messages': typeof AppMessagesRoute
+  '/_app/rapports': typeof AppRapportsRoute
+  '/_app/membres/$memberId': typeof AppMembresMemberIdRoute
+  '/_app/membres/': typeof AppMembresIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/login'
+    | '/register'
+    | '/dashboard'
+    | '/evenements'
+    | '/finances'
+    | '/formations'
+    | '/messages'
+    | '/rapports'
+    | '/membres/$memberId'
+    | '/membres/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/login'
+    | '/register'
+    | '/dashboard'
+    | '/evenements'
+    | '/finances'
+    | '/formations'
+    | '/messages'
+    | '/rapports'
+    | '/membres/$memberId'
+    | '/membres'
+  id:
+    | '__root__'
+    | '/'
+    | '/_app'
+    | '/login'
+    | '/register'
+    | '/_app/dashboard'
+    | '/_app/evenements'
+    | '/_app/finances'
+    | '/_app/formations'
+    | '/_app/messages'
+    | '/_app/rapports'
+    | '/_app/membres/$memberId'
+    | '/_app/membres/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AppRoute: typeof AppRouteWithChildren
+  LoginRoute: typeof LoginRoute
+  RegisterRoute: typeof RegisterRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/register': {
+      id: '/register'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof RegisterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_app': {
+      id: '/_app'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AppRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,22 +203,95 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_app/rapports': {
+      id: '/_app/rapports'
+      path: '/rapports'
+      fullPath: '/rapports'
+      preLoaderRoute: typeof AppRapportsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/messages': {
+      id: '/_app/messages'
+      path: '/messages'
+      fullPath: '/messages'
+      preLoaderRoute: typeof AppMessagesRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/formations': {
+      id: '/_app/formations'
+      path: '/formations'
+      fullPath: '/formations'
+      preLoaderRoute: typeof AppFormationsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/finances': {
+      id: '/_app/finances'
+      path: '/finances'
+      fullPath: '/finances'
+      preLoaderRoute: typeof AppFinancesRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/evenements': {
+      id: '/_app/evenements'
+      path: '/evenements'
+      fullPath: '/evenements'
+      preLoaderRoute: typeof AppEvenementsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/dashboard': {
+      id: '/_app/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AppDashboardRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/membres/': {
+      id: '/_app/membres/'
+      path: '/membres'
+      fullPath: '/membres/'
+      preLoaderRoute: typeof AppMembresIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/membres/$memberId': {
+      id: '/_app/membres/$memberId'
+      path: '/membres/$memberId'
+      fullPath: '/membres/$memberId'
+      preLoaderRoute: typeof AppMembresMemberIdRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
+interface AppRouteChildren {
+  AppDashboardRoute: typeof AppDashboardRoute
+  AppEvenementsRoute: typeof AppEvenementsRoute
+  AppFinancesRoute: typeof AppFinancesRoute
+  AppFormationsRoute: typeof AppFormationsRoute
+  AppMessagesRoute: typeof AppMessagesRoute
+  AppRapportsRoute: typeof AppRapportsRoute
+  AppMembresMemberIdRoute: typeof AppMembresMemberIdRoute
+  AppMembresIndexRoute: typeof AppMembresIndexRoute
+}
+
+const AppRouteChildren: AppRouteChildren = {
+  AppDashboardRoute: AppDashboardRoute,
+  AppEvenementsRoute: AppEvenementsRoute,
+  AppFinancesRoute: AppFinancesRoute,
+  AppFormationsRoute: AppFormationsRoute,
+  AppMessagesRoute: AppMessagesRoute,
+  AppRapportsRoute: AppRapportsRoute,
+  AppMembresMemberIdRoute: AppMembresMemberIdRoute,
+  AppMembresIndexRoute: AppMembresIndexRoute,
+}
+
+const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AppRoute: AppRouteWithChildren,
+  LoginRoute: LoginRoute,
+  RegisterRoute: RegisterRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
