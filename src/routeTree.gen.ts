@@ -13,6 +13,7 @@ import { Route as RegisterRouteImport } from './routes/register'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AppFormationsRouteImport } from './routes/_app.formations'
 import { Route as AppDashboardRouteImport } from './routes/_app.dashboard'
 import { Route as AppMembresIndexRouteImport } from './routes/_app.membres.index'
 import { Route as AppMembresMemberIdRouteImport } from './routes/_app.membres.$memberId'
@@ -36,6 +37,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppFormationsRoute = AppFormationsRouteImport.update({
+  id: '/formations',
+  path: '/formations',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppDashboardRoute = AppDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -57,6 +63,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/dashboard': typeof AppDashboardRoute
+  '/formations': typeof AppFormationsRoute
   '/membres/$memberId': typeof AppMembresMemberIdRoute
   '/membres/': typeof AppMembresIndexRoute
 }
@@ -65,6 +72,7 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/dashboard': typeof AppDashboardRoute
+  '/formations': typeof AppFormationsRoute
   '/membres/$memberId': typeof AppMembresMemberIdRoute
   '/membres': typeof AppMembresIndexRoute
 }
@@ -75,6 +83,7 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/_app/dashboard': typeof AppDashboardRoute
+  '/_app/formations': typeof AppFormationsRoute
   '/_app/membres/$memberId': typeof AppMembresMemberIdRoute
   '/_app/membres/': typeof AppMembresIndexRoute
 }
@@ -85,6 +94,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/register'
     | '/dashboard'
+    | '/formations'
     | '/membres/$memberId'
     | '/membres/'
   fileRoutesByTo: FileRoutesByTo
@@ -93,6 +103,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/register'
     | '/dashboard'
+    | '/formations'
     | '/membres/$memberId'
     | '/membres'
   id:
@@ -102,6 +113,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/register'
     | '/_app/dashboard'
+    | '/_app/formations'
     | '/_app/membres/$memberId'
     | '/_app/membres/'
   fileRoutesById: FileRoutesById
@@ -143,6 +155,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_app/formations': {
+      id: '/_app/formations'
+      path: '/formations'
+      fullPath: '/formations'
+      preLoaderRoute: typeof AppFormationsRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/dashboard': {
       id: '/_app/dashboard'
       path: '/dashboard'
@@ -169,12 +188,14 @@ declare module '@tanstack/react-router' {
 
 interface AppRouteChildren {
   AppDashboardRoute: typeof AppDashboardRoute
+  AppFormationsRoute: typeof AppFormationsRoute
   AppMembresMemberIdRoute: typeof AppMembresMemberIdRoute
   AppMembresIndexRoute: typeof AppMembresIndexRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
   AppDashboardRoute: AppDashboardRoute,
+  AppFormationsRoute: AppFormationsRoute,
   AppMembresMemberIdRoute: AppMembresMemberIdRoute,
   AppMembresIndexRoute: AppMembresIndexRoute,
 }
