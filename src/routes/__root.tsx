@@ -74,14 +74,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "FIAD-Monde — Plateforme de gestion de l'association" },
+      { title: "FIAD-Connect — Plateforme de gestion de l'association" },
       { name: "description", content: "Application de gestion des membres, formations, événements et finances de l'association FIAD-Monde." },
       { name: "author", content: "FIAD-Monde" },
-      { property: "og:title", content: "FIAD-Monde — Plateforme de gestion" },
-      { property: "og:description", content: "Centralisez les membres, formations, événements et engagements de l'association FIAD-Monde." },
+      { property: "og:title", content: "FIAD-Connect — Plateforme de gestion de l'association" },
+      { property: "og:description", content: "Application de gestion des membres, formations, événements et finances de l'association FIAD-Monde." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "FIAD-Connect — Plateforme de gestion de l'association" },
+      { name: "twitter:description", content: "Application de gestion des membres, formations, événements et finances de l'association FIAD-Monde." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/bc4912c7-3294-43dc-a295-c347568e50db/id-preview-56a282be--d81bd7f9-12b9-49a7-bcbd-6cbf016d1b3e.lovable.app-1779233842446.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/bc4912c7-3294-43dc-a295-c347568e50db/id-preview-56a282be--d81bd7f9-12b9-49a7-bcbd-6cbf016d1b3e.lovable.app-1779233842446.png" },
     ],
     links: [
       {
