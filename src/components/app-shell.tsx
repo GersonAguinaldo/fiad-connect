@@ -1,10 +1,10 @@
 import { Link, Outlet, useNavigate, useRouterState } from "@tanstack/react-router";
-import { Bell, HelpCircle, Search, Settings, Star, Plus } from "lucide-react";
+import { Bell, HelpCircle, Search, Settings, Star, Plus, ShieldCheck, UserRound } from "lucide-react";
 import { FiadLogo } from "./fiad-logo";
 import { useAuth } from "@/hooks/use-auth";
 
-const NAV = [
-  { to: "/dashboard", label: "Accueil" },
+const ADMIN_NAV = [
+  { to: "/dashboard", label: "Vue d'ensemble" },
   { to: "/membres", label: "Membres" },
   { to: "/formations", label: "Formations" },
   { to: "/evenements", label: "Événements" },
@@ -13,10 +13,19 @@ const NAV = [
   { to: "/rapports", label: "Rapports" },
 ] as const;
 
+const MEMBER_NAV = [
+  { to: "/mon-espace", label: "Mon espace" },
+  { to: "/formations", label: "Formations" },
+  { to: "/evenements", label: "Événements" },
+  { to: "/messages", label: "Messages" },
+] as const;
+
 export function AppShell() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
-  const { user, signOut } = useAuth();
+  const { user, role, signOut } = useAuth();
   const navigate = useNavigate();
+  const isAdmin = role === "admin";
+  const NAV = isAdmin ? ADMIN_NAV : MEMBER_NAV;
 
   const meta = (user?.user_metadata ?? {}) as { first_name?: string; last_name?: string };
   const initials =
@@ -61,14 +70,12 @@ export function AppShell() {
         {/* App tabs */}
         <div className="px-6 flex items-center gap-1 border-t border-border/60">
           <div className="flex items-center gap-2 pr-6 py-3 mr-2 border-r border-border">
-            <div className="h-8 w-8 rounded-md bg-primary-soft flex items-center justify-center">
-              <div className="h-4 w-4 grid grid-cols-2 gap-0.5">
-                {Array.from({ length: 4 }).map((_, i) => (
-                  <div key={i} className="bg-primary rounded-[1px]" />
-                ))}
-              </div>
+            <div className={"h-8 w-8 rounded-md flex items-center justify-center " + (isAdmin ? "bg-primary text-primary-foreground" : "bg-primary-soft text-primary")}>
+              {isAdmin ? <ShieldCheck className="h-4 w-4" /> : <UserRound className="h-4 w-4" />}
             </div>
-            <span className="font-display font-bold text-foreground">Console FIAD</span>
+            <span className="font-display font-bold text-foreground">
+              {isAdmin ? "Console Admin" : "Espace Membre"}
+            </span>
           </div>
           <nav className="flex items-center gap-1 flex-1 overflow-x-auto">
             {NAV.map((item) => {

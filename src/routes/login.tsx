@@ -23,13 +23,24 @@ function LoginPage() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setSubmitting(true);
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    setSubmitting(false);
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) {
+      setSubmitting(false);
       toast.error(error.message);
       return;
     }
-    navigate({ to: "/dashboard" });
+    // Determine destination based on role
+    const uid = data.user?.id;
+    let dest: "/dashboard" | "/mon-espace" = "/mon-espace";
+    if (uid) {
+      const { data: roles } = await supabase
+        .from("user_roles")
+        .select("role")
+        .eq("user_id", uid);
+      if (roles?.some((r) => r.role === "admin")) dest = "/dashboard";
+    }
+    setSubmitting(false);
+    navigate({ to: dest });
   }
 
   return (
