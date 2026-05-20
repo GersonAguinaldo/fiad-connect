@@ -15,6 +15,7 @@ const ADMIN_NAV = [
 
 const MEMBER_NAV = [
   { to: "/mon-espace", label: "Mon espace" },
+  { to: "/mon-profil", label: "Mon profil" },
   { to: "/formations", label: "Formations" },
   { to: "/evenements", label: "Événements" },
   { to: "/messages", label: "Messages" },
