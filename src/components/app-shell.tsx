@@ -8,6 +8,7 @@ const ADMIN_NAV = [
   { to: "/membres", label: "Membres" },
   { to: "/formations", label: "Formations" },
   { to: "/evenements", label: "Événements" },
+  { to: "/calendrier", label: "Calendrier" },
   { to: "/finances", label: "Finances" },
   { to: "/messages", label: "Messages" },
   { to: "/rapports", label: "Rapports" },
@@ -18,6 +19,7 @@ const MEMBER_NAV = [
   { to: "/mon-profil", label: "Mon profil" },
   { to: "/formations", label: "Formations" },
   { to: "/evenements", label: "Événements" },
+  { to: "/calendrier", label: "Calendrier" },
   { to: "/messages", label: "Messages" },
 ] as const;
 
