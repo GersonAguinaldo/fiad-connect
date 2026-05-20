@@ -19,18 +19,24 @@ export type Database = {
           created_at: string
           event_id: string
           id: string
+          payment_status: string
+          transaction_id: string | null
           user_id: string
         }
         Insert: {
           created_at?: string
           event_id: string
           id?: string
+          payment_status?: string
+          transaction_id?: string | null
           user_id: string
         }
         Update: {
           created_at?: string
           event_id?: string
           id?: string
+          payment_status?: string
+          transaction_id?: string | null
           user_id?: string
         }
         Relationships: [
@@ -45,28 +51,40 @@ export type Database = {
       }
       events: {
         Row: {
+          capacity: number | null
           created_at: string
+          currency: string
+          description: string | null
           event_date: string
           id: string
           location: string | null
+          price: number
           title: string
           type: string | null
           updated_at: string
         }
         Insert: {
+          capacity?: number | null
           created_at?: string
+          currency?: string
+          description?: string | null
           event_date: string
           id?: string
           location?: string | null
+          price?: number
           title: string
           type?: string | null
           updated_at?: string
         }
         Update: {
+          capacity?: number | null
           created_at?: string
+          currency?: string
+          description?: string | null
           event_date?: string
           id?: string
           location?: string | null
+          price?: number
           title?: string
           type?: string | null
           updated_at?: string
@@ -75,21 +93,27 @@ export type Database = {
       }
       formation_enrollments: {
         Row: {
+          completed_at: string | null
           created_at: string
           formation_id: string
           id: string
+          progress: number
           user_id: string
         }
         Insert: {
+          completed_at?: string | null
           created_at?: string
           formation_id: string
           id?: string
+          progress?: number
           user_id: string
         }
         Update: {
+          completed_at?: string | null
           created_at?: string
           formation_id?: string
           id?: string
+          progress?: number
           user_id?: string
         }
         Relationships: [
@@ -105,29 +129,41 @@ export type Database = {
       formations: {
         Row: {
           created_at: string
+          description: string | null
           id: string
           instructor: string | null
+          resource_url: string | null
           schedule: string | null
+          starts_on: string | null
           status: string
           title: string
+          type: string
           updated_at: string
         }
         Insert: {
           created_at?: string
+          description?: string | null
           id?: string
           instructor?: string | null
+          resource_url?: string | null
           schedule?: string | null
+          starts_on?: string | null
           status?: string
           title: string
+          type?: string
           updated_at?: string
         }
         Update: {
           created_at?: string
+          description?: string | null
           id?: string
           instructor?: string | null
+          resource_url?: string | null
           schedule?: string | null
+          starts_on?: string | null
           status?: string
           title?: string
+          type?: string
           updated_at?: string
         }
         Relationships: []
