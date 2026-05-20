@@ -14,6 +14,7 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppRapportsRouteImport } from './routes/_app.rapports'
+import { Route as AppMonProfilRouteImport } from './routes/_app.mon-profil'
 import { Route as AppMonEspaceRouteImport } from './routes/_app.mon-espace'
 import { Route as AppMessagesRouteImport } from './routes/_app.messages'
 import { Route as AppFormationsRouteImport } from './routes/_app.formations'
@@ -45,6 +46,11 @@ const IndexRoute = IndexRouteImport.update({
 const AppRapportsRoute = AppRapportsRouteImport.update({
   id: '/rapports',
   path: '/rapports',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppMonProfilRoute = AppMonProfilRouteImport.update({
+  id: '/mon-profil',
+  path: '/mon-profil',
   getParentRoute: () => AppRoute,
 } as any)
 const AppMonEspaceRoute = AppMonEspaceRouteImport.update({
@@ -98,6 +104,7 @@ export interface FileRoutesByFullPath {
   '/formations': typeof AppFormationsRoute
   '/messages': typeof AppMessagesRoute
   '/mon-espace': typeof AppMonEspaceRoute
+  '/mon-profil': typeof AppMonProfilRoute
   '/rapports': typeof AppRapportsRoute
   '/membres/$memberId': typeof AppMembresMemberIdRoute
   '/membres/': typeof AppMembresIndexRoute
@@ -112,6 +119,7 @@ export interface FileRoutesByTo {
   '/formations': typeof AppFormationsRoute
   '/messages': typeof AppMessagesRoute
   '/mon-espace': typeof AppMonEspaceRoute
+  '/mon-profil': typeof AppMonProfilRoute
   '/rapports': typeof AppRapportsRoute
   '/membres/$memberId': typeof AppMembresMemberIdRoute
   '/membres': typeof AppMembresIndexRoute
@@ -128,6 +136,7 @@ export interface FileRoutesById {
   '/_app/formations': typeof AppFormationsRoute
   '/_app/messages': typeof AppMessagesRoute
   '/_app/mon-espace': typeof AppMonEspaceRoute
+  '/_app/mon-profil': typeof AppMonProfilRoute
   '/_app/rapports': typeof AppRapportsRoute
   '/_app/membres/$memberId': typeof AppMembresMemberIdRoute
   '/_app/membres/': typeof AppMembresIndexRoute
@@ -144,6 +153,7 @@ export interface FileRouteTypes {
     | '/formations'
     | '/messages'
     | '/mon-espace'
+    | '/mon-profil'
     | '/rapports'
     | '/membres/$memberId'
     | '/membres/'
@@ -158,6 +168,7 @@ export interface FileRouteTypes {
     | '/formations'
     | '/messages'
     | '/mon-espace'
+    | '/mon-profil'
     | '/rapports'
     | '/membres/$memberId'
     | '/membres'
@@ -173,6 +184,7 @@ export interface FileRouteTypes {
     | '/_app/formations'
     | '/_app/messages'
     | '/_app/mon-espace'
+    | '/_app/mon-profil'
     | '/_app/rapports'
     | '/_app/membres/$memberId'
     | '/_app/membres/'
@@ -220,6 +232,13 @@ declare module '@tanstack/react-router' {
       path: '/rapports'
       fullPath: '/rapports'
       preLoaderRoute: typeof AppRapportsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/mon-profil': {
+      id: '/_app/mon-profil'
+      path: '/mon-profil'
+      fullPath: '/mon-profil'
+      preLoaderRoute: typeof AppMonProfilRouteImport
       parentRoute: typeof AppRoute
     }
     '/_app/mon-espace': {
@@ -288,6 +307,7 @@ interface AppRouteChildren {
   AppFormationsRoute: typeof AppFormationsRoute
   AppMessagesRoute: typeof AppMessagesRoute
   AppMonEspaceRoute: typeof AppMonEspaceRoute
+  AppMonProfilRoute: typeof AppMonProfilRoute
   AppRapportsRoute: typeof AppRapportsRoute
   AppMembresMemberIdRoute: typeof AppMembresMemberIdRoute
   AppMembresIndexRoute: typeof AppMembresIndexRoute
@@ -300,6 +320,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppFormationsRoute: AppFormationsRoute,
   AppMessagesRoute: AppMessagesRoute,
   AppMonEspaceRoute: AppMonEspaceRoute,
+  AppMonProfilRoute: AppMonProfilRoute,
   AppRapportsRoute: AppRapportsRoute,
   AppMembresMemberIdRoute: AppMembresMemberIdRoute,
   AppMembresIndexRoute: AppMembresIndexRoute,
@@ -316,3 +337,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
