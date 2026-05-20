@@ -134,7 +134,10 @@ export type Database = {
       }
       profiles: {
         Row: {
+          address: string | null
           avatar_url: string | null
+          birth_date: string | null
+          birth_place: string | null
           category: string
           city: string | null
           country: string | null
@@ -143,12 +146,17 @@ export type Database = {
           first_name: string | null
           id: string
           last_name: string | null
+          membership_type: string
           phone: string | null
+          sex: string | null
           status: string
           updated_at: string
         }
         Insert: {
+          address?: string | null
           avatar_url?: string | null
+          birth_date?: string | null
+          birth_place?: string | null
           category?: string
           city?: string | null
           country?: string | null
@@ -157,12 +165,17 @@ export type Database = {
           first_name?: string | null
           id: string
           last_name?: string | null
+          membership_type?: string
           phone?: string | null
+          sex?: string | null
           status?: string
           updated_at?: string
         }
         Update: {
+          address?: string | null
           avatar_url?: string | null
+          birth_date?: string | null
+          birth_place?: string | null
           category?: string
           city?: string | null
           country?: string | null
@@ -171,7 +184,9 @@ export type Database = {
           first_name?: string | null
           id?: string
           last_name?: string | null
+          membership_type?: string
           phone?: string | null
+          sex?: string | null
           status?: string
           updated_at?: string
         }
