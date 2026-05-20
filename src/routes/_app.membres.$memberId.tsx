@@ -24,7 +24,7 @@ type Profile = {
 };
 
 function MemberDetail() {
-  const { memberId } = Route.useParams();
+  const { memberId } = (Route.useParams as () => { memberId: string })();
   const [m, setM] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
 
