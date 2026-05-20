@@ -20,8 +20,8 @@ export function Card({ children, className = "" }: { children: React.ReactNode; 
   return <div className={"bg-card rounded-2xl border border-border p-6 shadow-[var(--shadow-card)] " + className}>{children}</div>;
 }
 
-export function PrimaryBtn({ children }: { children: React.ReactNode }) {
-  return <button className="h-10 px-4 rounded-full bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary/90 shadow-[var(--shadow-card)]">{children}</button>;
+export function PrimaryBtn({ children, ...rest }: React.ButtonHTMLAttributes<HTMLButtonElement>) {
+  return <button {...rest} className={"h-10 px-4 rounded-full bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary/90 shadow-[var(--shadow-card)] disabled:opacity-60 " + (rest.className ?? "")}>{children}</button>;
 }
 
 export { Link };
