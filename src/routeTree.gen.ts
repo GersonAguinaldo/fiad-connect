@@ -49,11 +49,6 @@ const AppRapportsRoute = AppRapportsRouteImport.update({
   path: '/rapports',
   getParentRoute: () => AppRoute,
 } as any)
-const AppCalendrierRoute = AppCalendrierRouteImport.update({
-  id: '/calendrier',
-  path: '/calendrier',
-  getParentRoute: () => AppRoute,
-} as any)
 const AppMonProfilRoute = AppMonProfilRouteImport.update({
   id: '/mon-profil',
   path: '/mon-profil',
@@ -89,6 +84,11 @@ const AppDashboardRoute = AppDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AppRoute,
 } as any)
+const AppCalendrierRoute = AppCalendrierRouteImport.update({
+  id: '/calendrier',
+  path: '/calendrier',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppMembresIndexRoute = AppMembresIndexRouteImport.update({
   id: '/membres/',
   path: '/membres/',
@@ -104,8 +104,8 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
-  '/dashboard': typeof AppDashboardRoute
   '/calendrier': typeof AppCalendrierRoute
+  '/dashboard': typeof AppDashboardRoute
   '/evenements': typeof AppEvenementsRoute
   '/finances': typeof AppFinancesRoute
   '/formations': typeof AppFormationsRoute
@@ -120,8 +120,8 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
-  '/dashboard': typeof AppDashboardRoute
   '/calendrier': typeof AppCalendrierRoute
+  '/dashboard': typeof AppDashboardRoute
   '/evenements': typeof AppEvenementsRoute
   '/finances': typeof AppFinancesRoute
   '/formations': typeof AppFormationsRoute
@@ -138,8 +138,8 @@ export interface FileRoutesById {
   '/_app': typeof AppRouteWithChildren
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
-  '/_app/dashboard': typeof AppDashboardRoute
   '/_app/calendrier': typeof AppCalendrierRoute
+  '/_app/dashboard': typeof AppDashboardRoute
   '/_app/evenements': typeof AppEvenementsRoute
   '/_app/finances': typeof AppFinancesRoute
   '/_app/formations': typeof AppFormationsRoute
@@ -156,8 +156,8 @@ export interface FileRouteTypes {
     | '/'
     | '/login'
     | '/register'
-    | '/dashboard'
     | '/calendrier'
+    | '/dashboard'
     | '/evenements'
     | '/finances'
     | '/formations'
@@ -172,8 +172,8 @@ export interface FileRouteTypes {
     | '/'
     | '/login'
     | '/register'
-    | '/dashboard'
     | '/calendrier'
+    | '/dashboard'
     | '/evenements'
     | '/finances'
     | '/formations'
@@ -189,8 +189,8 @@ export interface FileRouteTypes {
     | '/_app'
     | '/login'
     | '/register'
-    | '/_app/dashboard'
     | '/_app/calendrier'
+    | '/_app/dashboard'
     | '/_app/evenements'
     | '/_app/finances'
     | '/_app/formations'
@@ -320,8 +320,8 @@ declare module '@tanstack/react-router' {
 }
 
 interface AppRouteChildren {
-  AppDashboardRoute: typeof AppDashboardRoute
   AppCalendrierRoute: typeof AppCalendrierRoute
+  AppDashboardRoute: typeof AppDashboardRoute
   AppEvenementsRoute: typeof AppEvenementsRoute
   AppFinancesRoute: typeof AppFinancesRoute
   AppFormationsRoute: typeof AppFormationsRoute
@@ -334,8 +334,8 @@ interface AppRouteChildren {
 }
 
 const AppRouteChildren: AppRouteChildren = {
-  AppDashboardRoute: AppDashboardRoute,
   AppCalendrierRoute: AppCalendrierRoute,
+  AppDashboardRoute: AppDashboardRoute,
   AppEvenementsRoute: AppEvenementsRoute,
   AppFinancesRoute: AppFinancesRoute,
   AppFormationsRoute: AppFormationsRoute,
@@ -358,13 +358,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
