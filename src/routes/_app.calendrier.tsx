@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
-import { CalendarDays, ChevronLeft, ChevronRight, MapPin, GraduationCap } from "lucide-react";
+import { CalendarDays, ChevronLeft, ChevronRight, MapPin, GraduationCap, Clock, Tag, Filter } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, PageHeader } from "@/components/page-stub";
 
@@ -30,6 +30,8 @@ function CalendarPage() {
   const [cursor, setCursor] = useState(() => startOfMonth(new Date()));
   const [selected, setSelected] = useState<Date>(new Date());
   const [items, setItems] = useState<Item[]>([]);
+  const [kindFilter, setKindFilter] = useState<"all" | "event" | "formation">("all");
+  const [typeFilter, setTypeFilter] = useState<string>("");
 
   useEffect(() => {
     (async () => {
@@ -65,14 +67,26 @@ function CalendarPage() {
     return arr;
   }, [cursor]);
 
+  const filteredItems = useMemo(() => items.filter((it) => {
+    if (kindFilter !== "all" && it.kind !== kindFilter) return false;
+    if (typeFilter && (it.type ?? "") !== typeFilter) return false;
+    return true;
+  }), [items, kindFilter, typeFilter]);
+
+  const typeOptions = useMemo(() => {
+    const s = new Set<string>();
+    items.forEach((i) => { if (i.type) s.add(i.type); });
+    return Array.from(s).sort();
+  }, [items]);
+
   const byDay = useMemo(() => {
     const map = new Map<string, Item[]>();
-    items.forEach((it) => {
+    filteredItems.forEach((it) => {
       const d = new Date(it.date); const k = d.toDateString();
       const arr = map.get(k) ?? []; arr.push(it); map.set(k, arr);
     });
     return map;
-  }, [items]);
+  }, [filteredItems]);
 
   const dayItems = byDay.get(selected.toDateString()) ?? [];
 
@@ -84,6 +98,20 @@ function CalendarPage() {
         title="Calendrier"
         subtitle="Vue mensuelle interactive — événements et formations."
       />
+      <div className="flex flex-wrap items-center gap-2 mb-5">
+        <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-muted-foreground"><Filter className="h-3.5 w-3.5" /> Filtres</span>
+        {([["all","Tous"],["event","Événements"],["formation","Formations"]] as const).map(([v,l]) => (
+          <button key={v} onClick={() => setKindFilter(v)}
+            className={"h-8 px-3 rounded-full text-xs font-semibold border transition " + (kindFilter === v ? "bg-primary text-primary-foreground border-primary" : "border-border hover:border-primary text-foreground")}>{l}</button>
+        ))}
+        {typeOptions.length > 0 && (
+          <select value={typeFilter} onChange={(e) => setTypeFilter(e.target.value)} className="h-8 px-3 rounded-full bg-card border border-border text-xs">
+            <option value="">Tous types</option>
+            {typeOptions.map((t) => <option key={t}>{t}</option>)}
+          </select>
+        )}
+        <span className="ml-auto text-xs text-muted-foreground">{filteredItems.length} activité{filteredItems.length > 1 ? "s" : ""}</span>
+      </div>
       <div className="grid lg:grid-cols-3 gap-6">
         <Card className="lg:col-span-2">
           <div className="flex items-center justify-between mb-4">
@@ -138,7 +166,13 @@ function CalendarPage() {
                   {it.kind === "event" && (it.price ?? 0) > 0 && <span className="bg-amber-100 text-amber-900 px-2 py-0.5 rounded-full">{it.price} {it.currency}</span>}
                 </div>
                 <div className="font-display font-bold mt-1">{it.title}</div>
-                {it.kind === "event" && <div className="text-xs text-muted-foreground mt-1">{new Date(it.date).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })}{it.location ? ` • ${it.location}` : ""}</div>}
+                <div className="text-xs text-muted-foreground mt-1 flex flex-wrap items-center gap-x-3 gap-y-1">
+                  {it.kind === "event" && (
+                    <span className="inline-flex items-center gap-1"><Clock className="h-3 w-3" /> {new Date(it.date).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })}</span>
+                  )}
+                  {it.location && <span className="inline-flex items-center gap-1"><MapPin className="h-3 w-3" /> {it.location}</span>}
+                  {it.type && <span className="inline-flex items-center gap-1"><Tag className="h-3 w-3" /> {it.type}</span>}
+                </div>
               </Link>
             ))}
           </div>
