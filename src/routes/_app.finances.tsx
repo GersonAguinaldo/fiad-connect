@@ -21,6 +21,10 @@ function FinancesPage() {
   const [q, setQ] = useState("");
   const [statusF, setStatusF] = useState<string>("Tous");
   const [methodF, setMethodF] = useState<string>("Tous");
+  const [fromDate, setFromDate] = useState<string>("");
+  const [toDate, setToDate] = useState<string>("");
+  const [minAmt, setMinAmt] = useState<string>("");
+  const [maxAmt, setMaxAmt] = useState<string>("");
   const [detail, setDetail] = useState<Tx | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -43,8 +47,12 @@ function FinancesPage() {
   const filtered = useMemo(() => txs.filter((t) =>
     (statusF === "Tous" || t.status === statusF) &&
     (methodF === "Tous" || t.method === methodF) &&
+    (!fromDate || new Date(t.occurred_at) >= new Date(fromDate)) &&
+    (!toDate || new Date(t.occurred_at) <= new Date(toDate + "T23:59:59")) &&
+    (!minAmt || Number(t.amount) >= Number(minAmt)) &&
+    (!maxAmt || Number(t.amount) <= Number(maxAmt)) &&
     (q === "" || [t.member_name, t.reason, t.id].some((v) => (v ?? "").toLowerCase().includes(q.toLowerCase())))
-  ), [txs, q, statusF, methodF]);
+  ), [txs, q, statusF, methodF, fromDate, toDate, minAmt, maxAmt]);
 
   const totals = useMemo(() => {
     const reussi = filtered.filter((t) => t.status === "Réussi").reduce((s, t) => s + Number(t.amount), 0);
@@ -87,6 +95,10 @@ function FinancesPage() {
             <option>Tous</option>
             {methods.map((m) => <option key={m}>{m}</option>)}
           </select>
+          <input type="date" className={inputCls + " w-auto"} value={fromDate} onChange={(e) => setFromDate(e.target.value)} title="Du" />
+          <input type="date" className={inputCls + " w-auto"} value={toDate} onChange={(e) => setToDate(e.target.value)} title="Au" />
+          <input type="number" className={inputCls + " w-24"} value={minAmt} onChange={(e) => setMinAmt(e.target.value)} placeholder="Min" />
+          <input type="number" className={inputCls + " w-24"} value={maxAmt} onChange={(e) => setMaxAmt(e.target.value)} placeholder="Max" />
         </div>
         {loading ? (
           <p className="text-sm text-muted-foreground py-6">Chargement…</p>
