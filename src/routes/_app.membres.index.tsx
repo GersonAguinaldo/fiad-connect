@@ -36,6 +36,9 @@ function MembersPage() {
   const [q, setQ] = useState("");
   const [fCat, setFCat] = useState<string>("");
   const [fStatus, setFStatus] = useState<string>("");
+  const [fType, setFType] = useState<string>("");
+  const [fCity, setFCity] = useState<string>("");
+  const [fCountry, setFCountry] = useState<string>("");
 
   function load() {
     supabase
@@ -49,6 +52,9 @@ function MembersPage() {
   const filtered = rows.filter((r) => {
     if (fCat && r.category !== fCat) return false;
     if (fStatus && r.status !== fStatus) return false;
+    if (fType && r.membership_type !== fType) return false;
+    if (fCity && !(r.city ?? "").toLowerCase().includes(fCity.toLowerCase())) return false;
+    if (fCountry && !(r.country ?? "").toLowerCase().includes(fCountry.toLowerCase())) return false;
     if (!q) return true;
     const hay = [r.first_name, r.last_name, r.email, r.city, r.country, r.phone].filter(Boolean).join(" ").toLowerCase();
     return hay.includes(q.toLowerCase());
@@ -108,6 +114,12 @@ function MembersPage() {
             <option value="">Tous statuts</option>
             {STATUSES.map((s) => <option key={s}>{s}</option>)}
           </select>
+          <select value={fType} onChange={(e) => setFType(e.target.value)} className="h-9 px-3 rounded-lg bg-card border border-border text-sm">
+            <option value="">Tous types</option>
+            {TYPES.map((t) => <option key={t}>{t}</option>)}
+          </select>
+          <input value={fCity} onChange={(e) => setFCity(e.target.value)} placeholder="Ville" className="h-9 px-3 rounded-lg bg-card border border-border text-sm w-28" />
+          <input value={fCountry} onChange={(e) => setFCountry(e.target.value)} placeholder="Pays" className="h-9 px-3 rounded-lg bg-card border border-border text-sm w-28" />
         </div>
         <div className="flex items-center gap-1.5">
           <ToolBtn onClick={load}><RefreshCw className="h-4 w-4" /></ToolBtn>

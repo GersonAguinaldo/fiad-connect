@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useCallback, useEffect, useState } from "react";
-import { GraduationCap, Users2, Clock, Inbox, Pencil, Trash2, ExternalLink, Award } from "lucide-react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { GraduationCap, Users2, Clock, Inbox, Pencil, Trash2, ExternalLink, Award, Search, X } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
@@ -38,6 +38,10 @@ function FormationsPage() {
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState<Formation | null>(null);
   const [open, setOpen] = useState(false);
+  const [q, setQ] = useState("");
+  const [fType, setFType] = useState("");
+  const [fStatus, setFStatus] = useState("");
+  const [fInstructor, setFInstructor] = useState("");
 
   const refresh = useCallback(async () => {
     setLoading(true);
@@ -59,6 +63,18 @@ function FormationsPage() {
   }, [user?.id]);
 
   useEffect(() => { refresh(); }, [refresh]);
+
+  const instructors = useMemo(() => Array.from(new Set(items.map((i) => i.instructor).filter(Boolean))) as string[], [items]);
+  const visible = useMemo(() => items.filter((f) => {
+    if (fType && f.type !== fType) return false;
+    if (fStatus && f.status !== fStatus) return false;
+    if (fInstructor && f.instructor !== fInstructor) return false;
+    if (q) {
+      const hay = [f.title, f.description, f.instructor, f.schedule].filter(Boolean).join(" ").toLowerCase();
+      if (!hay.includes(q.toLowerCase())) return false;
+    }
+    return true;
+  }), [items, q, fType, fStatus, fInstructor]);
 
   const startCreate = () => { setEditing({ id: "", title: "", instructor: "", schedule: "", status: "Inscriptions ouvertes", description: "", type: "Hebdomadaire", starts_on: null, resource_url: "" }); setOpen(true); };
   const startEdit = (f: Formation) => { setEditing({ ...f }); setOpen(true); };
@@ -139,8 +155,33 @@ function FormationsPage() {
           </div>
         </Card>
       ) : (
+        <>
+        <Card className="mb-4">
+          <div className="flex flex-wrap gap-2 items-center">
+            <div className="relative flex-1 min-w-[200px]">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Rechercher…" className={inputCls + " pl-9"} />
+            </div>
+            <select className={inputCls + " w-auto"} value={fType} onChange={(e) => setFType(e.target.value)}>
+              <option value="">Tous types</option>
+              {TYPES.map((t) => <option key={t}>{t}</option>)}
+            </select>
+            <select className={inputCls + " w-auto"} value={fStatus} onChange={(e) => setFStatus(e.target.value)}>
+              <option value="">Tous statuts</option>
+              {STATUSES.map((s) => <option key={s}>{s}</option>)}
+            </select>
+            <select className={inputCls + " w-auto"} value={fInstructor} onChange={(e) => setFInstructor(e.target.value)}>
+              <option value="">Tous formateurs</option>
+              {instructors.map((i) => <option key={i}>{i}</option>)}
+            </select>
+            {(q || fType || fStatus || fInstructor) && (
+              <button onClick={() => { setQ(""); setFType(""); setFStatus(""); setFInstructor(""); }} className="text-xs text-muted-foreground hover:text-foreground inline-flex items-center gap-1"><X className="h-3 w-3" /> Réinitialiser</button>
+            )}
+            <span className="text-xs text-muted-foreground ml-auto">{visible.length} formation{visible.length > 1 ? "s" : ""}</span>
+          </div>
+        </Card>
         <div className="grid md:grid-cols-2 gap-4">
-          {items.map((f) => {
+          {visible.map((f) => {
             const enr = myEnr.get(f.id);
             return (
               <Card key={f.id} className="flex flex-col">
@@ -197,6 +238,7 @@ function FormationsPage() {
             );
           })}
         </div>
+        </>
       )}
 
       <AdminModal open={open} onClose={() => setOpen(false)} title={editing?.id ? "Modifier la formation" : "Nouvelle formation"}>
