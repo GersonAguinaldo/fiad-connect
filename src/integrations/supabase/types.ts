@@ -49,6 +49,50 @@ export type Database = {
           },
         ]
       }
+      event_resources: {
+        Row: {
+          category: string
+          created_at: string
+          event_id: string
+          id: string
+          kind: string
+          mime_type: string | null
+          storage_path: string | null
+          title: string
+          url: string | null
+        }
+        Insert: {
+          category?: string
+          created_at?: string
+          event_id: string
+          id?: string
+          kind?: string
+          mime_type?: string | null
+          storage_path?: string | null
+          title: string
+          url?: string | null
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          event_id?: string
+          id?: string
+          kind?: string
+          mime_type?: string | null
+          storage_path?: string | null
+          title?: string
+          url?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "event_resources_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       events: {
         Row: {
           capacity: number | null
@@ -60,6 +104,10 @@ export type Database = {
           location: string | null
           price: number
           status: string
+          target_categories: string[]
+          target_cities: string[]
+          target_countries: string[]
+          target_membership_types: string[]
           title: string
           type: string | null
           updated_at: string
@@ -74,6 +122,10 @@ export type Database = {
           location?: string | null
           price?: number
           status?: string
+          target_categories?: string[]
+          target_cities?: string[]
+          target_countries?: string[]
+          target_membership_types?: string[]
           title: string
           type?: string | null
           updated_at?: string
@@ -88,6 +140,10 @@ export type Database = {
           location?: string | null
           price?: number
           status?: string
+          target_categories?: string[]
+          target_cities?: string[]
+          target_countries?: string[]
+          target_membership_types?: string[]
           title?: string
           type?: string | null
           updated_at?: string
