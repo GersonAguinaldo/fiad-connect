@@ -5,7 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Card, PageHeader } from "@/components/page-stub";
 
 export const Route = createFileRoute("/_app/rapports")({
-  head: () => ({ meta: [{ title: "Rapports — FIAD-Monde" }] }),
+  head: () => ({ meta: [{ title: "Rapports — La PaDI" }] }),
   component: ReportsPage,
 });
 

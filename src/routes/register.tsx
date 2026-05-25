@@ -8,8 +8,8 @@ import { supabase } from "@/integrations/supabase/client";
 export const Route = createFileRoute("/register")({
   head: () => ({
     meta: [
-      { title: "Adhérer à FIAD-Monde" },
-      { name: "description", content: "Inscription en ligne à l'association FIAD-Monde — création de compte, paiement de la cotisation et accès aux services." },
+      { title: "Adhérer à La PaDI" },
+      { name: "description", content: "Inscription en ligne à l'association La PaDI — création de compte, paiement de la cotisation et accès aux services." },
     ],
   }),
   component: RegisterPage,

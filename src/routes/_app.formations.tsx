@@ -8,7 +8,7 @@ import { Card, PageHeader, PrimaryBtn } from "@/components/page-stub";
 import { AdminModal, Field, inputCls } from "@/components/admin-modal";
 
 export const Route = createFileRoute("/_app/formations")({
-  head: () => ({ meta: [{ title: "Formations — FIAD-Monde" }] }),
+  head: () => ({ meta: [{ title: "Formations — La PaDI" }] }),
   component: FormationsPage,
 });
 

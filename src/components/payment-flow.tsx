@@ -77,7 +77,7 @@ export function PaymentFlow({
     setProgress(0);
 
     // Create pending transaction
-    const reference = `FIAD-${Date.now().toString(36).toUpperCase()}`;
+    const reference = `LAPADI-${Date.now().toString(36).toUpperCase()}`;
     setRef(reference);
     const { data: tx, error: txErr } = await supabase.from("transactions").insert({
       user_id: userId, reason, amount, currency, method: methodLabel, status: "En attente",

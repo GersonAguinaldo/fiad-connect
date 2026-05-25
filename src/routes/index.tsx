@@ -28,7 +28,7 @@ function LandingPage() {
         <div className="lg:col-span-7">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-card border border-border text-xs font-semibold text-primary">
             <Sparkles className="h-3.5 w-3.5" />
-            Plateforme officielle FIAD-Monde
+            Plateforme officielle La PaDI
           </div>
           <h1 className="mt-6 text-5xl lg:text-6xl font-display font-extrabold tracking-tight text-foreground leading-[1.05]">
             La maison numérique des
@@ -36,7 +36,7 @@ function LandingPage() {
           </h1>
           <p className="mt-6 text-lg text-muted-foreground max-w-xl">
             Centralisez les adhésions, suivez les formations, animez les événements et gérez les
-            cotisations de l'association — au sein d'une console pensée pour les leaders FIAD-Monde.
+            cotisations de l'association — au sein d'une console pensée pour les leaders La PaDI.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <Link

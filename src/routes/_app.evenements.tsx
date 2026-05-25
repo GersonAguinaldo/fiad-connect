@@ -13,7 +13,7 @@ import { AdminModal, Field, inputCls } from "@/components/admin-modal";
 import { PaymentFlow } from "@/components/payment-flow";
 
 export const Route = createFileRoute("/_app/evenements")({
-  head: () => ({ meta: [{ title: "Événements — FIAD-Monde" }] }),
+  head: () => ({ meta: [{ title: "Événements — La PaDI" }] }),
   component: EventsPage,
 });
 

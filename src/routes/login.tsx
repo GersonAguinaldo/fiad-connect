@@ -7,8 +7,8 @@ import { supabase } from "@/integrations/supabase/client";
 export const Route = createFileRoute("/login")({
   head: () => ({
     meta: [
-      { title: "Connexion — FIAD-Monde" },
-      { name: "description", content: "Connectez-vous à votre espace membre FIAD-Monde." },
+      { title: "Connexion — La PaDI" },
+      { name: "description", content: "Connectez-vous à votre espace membre La PaDI." },
     ],
   }),
   component: LoginPage,

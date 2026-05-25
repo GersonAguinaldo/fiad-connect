@@ -8,7 +8,7 @@ import { AdminModal, Field, inputCls } from "@/components/admin-modal";
 import { useAuth } from "@/hooks/use-auth";
 
 export const Route = createFileRoute("/_app/finances")({
-  head: () => ({ meta: [{ title: "Finances — FIAD-Monde" }] }),
+  head: () => ({ meta: [{ title: "Finances — La PaDI" }] }),
   component: FinancesPage,
 });
 

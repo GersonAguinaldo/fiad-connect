@@ -7,7 +7,7 @@ import { Avatar } from "@/components/avatar";
 import { useAuth } from "@/hooks/use-auth";
 
 export const Route = createFileRoute("/_app/membres/")({
-  head: () => ({ meta: [{ title: "Membres — FIAD-Monde" }] }),
+  head: () => ({ meta: [{ title: "Membres — La PaDI" }] }),
   component: MembersPage,
 });
 
