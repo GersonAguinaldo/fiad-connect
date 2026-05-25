@@ -100,12 +100,21 @@ function MembersPage() {
         </div>
       </div>
 
-      <div className="mt-5 flex items-center justify-between gap-3 flex-wrap">
-        <div className="flex items-center gap-2 flex-1 flex-wrap">
-          <div className="relative flex-1 max-w-md">
+      <div className="mt-5 space-y-3">
+        <div className="flex items-center gap-3">
+          <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Rechercher…" className="w-full h-9 pl-10 pr-4 rounded-lg bg-card border border-border focus:border-ring focus:outline-none text-sm" />
+            <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Rechercher un membre…" className="w-full h-9 pl-10 pr-4 rounded-lg bg-card border border-border focus:border-ring focus:outline-none text-sm" />
           </div>
+          <div className="flex items-center gap-1.5 shrink-0">
+            <ToolBtn onClick={load}><RefreshCw className="h-4 w-4" /></ToolBtn>
+            <ToolBtn onClick={exportCsv}><Download className="h-4 w-4" /></ToolBtn>
+            {isAdmin && (
+              <Link to="/register" className="h-9 px-3 rounded-lg bg-primary text-primary-foreground text-sm font-semibold inline-flex items-center gap-1.5"><Plus className="h-4 w-4" /> Nouveau</Link>
+            )}
+          </div>
+        </div>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2">
           <select value={fCat} onChange={(e) => setFCat(e.target.value)} className="h-9 px-3 rounded-lg bg-card border border-border text-sm">
             <option value="">Toutes catégories</option>
             {CATEGORIES.map((c) => <option key={c}>{c}</option>)}
@@ -118,15 +127,8 @@ function MembersPage() {
             <option value="">Tous types</option>
             {TYPES.map((t) => <option key={t}>{t}</option>)}
           </select>
-          <input value={fCity} onChange={(e) => setFCity(e.target.value)} placeholder="Ville" className="h-9 px-3 rounded-lg bg-card border border-border text-sm w-28" />
-          <input value={fCountry} onChange={(e) => setFCountry(e.target.value)} placeholder="Pays" className="h-9 px-3 rounded-lg bg-card border border-border text-sm w-28" />
-        </div>
-        <div className="flex items-center gap-1.5">
-          <ToolBtn onClick={load}><RefreshCw className="h-4 w-4" /></ToolBtn>
-          <ToolBtn onClick={exportCsv}><Download className="h-4 w-4" /></ToolBtn>
-          {isAdmin && (
-            <Link to="/register" className="h-9 px-3 rounded-lg bg-primary text-primary-foreground text-sm font-semibold inline-flex items-center gap-1.5"><Plus className="h-4 w-4" /> Nouveau</Link>
-          )}
+          <input value={fCity} onChange={(e) => setFCity(e.target.value)} placeholder="Ville" className="h-9 px-3 rounded-lg bg-card border border-border text-sm" />
+          <input value={fCountry} onChange={(e) => setFCountry(e.target.value)} placeholder="Pays" className="h-9 px-3 rounded-lg bg-card border border-border text-sm" />
         </div>
       </div>
 
