@@ -271,31 +271,35 @@ function EventsPage() {
       />
 
       <Card className="mb-4">
-        <div className="flex flex-wrap gap-2 items-center">
-          <div className="relative flex-1 min-w-[200px]">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Rechercher…" className={inputCls + " pl-9"} />
+        <div className="space-y-3">
+          <div className="flex items-center gap-3">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Rechercher un événement…" className={inputCls + " pl-9"} />
+            </div>
+            {(q || fType || fStatus || fPay || fCity || fCountry) && (
+              <button onClick={() => { setQ(""); setFType(""); setFStatus(""); setFPay(""); setFCity(""); setFCountry(""); }} className="text-xs text-muted-foreground hover:text-foreground inline-flex items-center gap-1 shrink-0"><X className="h-3 w-3" /> Réinitialiser</button>
+            )}
+            <span className="text-xs text-muted-foreground shrink-0">{visible.length} événement{visible.length > 1 ? "s" : ""}</span>
           </div>
-          <select className={inputCls + " w-auto"} value={fType} onChange={(e) => setFType(e.target.value)}>
-            <option value="">Tous types</option>
-            {TYPES.map((t) => <option key={t}>{t}</option>)}
-          </select>
-          <select className={inputCls + " w-auto"} value={fStatus} onChange={(e) => setFStatus(e.target.value)}>
-            <option value="">Tous statuts</option>
-            <option>Actif</option>
-            <option>Annulé</option>
-          </select>
-          <select className={inputCls + " w-auto"} value={fPay} onChange={(e) => setFPay(e.target.value)}>
-            <option value="">Tarif</option>
-            <option value="free">Gratuit</option>
-            <option value="paid">Payant</option>
-          </select>
-          <input className={inputCls + " w-32"} placeholder="Ville" value={fCity} onChange={(e) => setFCity(e.target.value)} />
-          <input className={inputCls + " w-32"} placeholder="Pays" value={fCountry} onChange={(e) => setFCountry(e.target.value)} />
-          {(q || fType || fStatus || fPay || fCity || fCountry) && (
-            <button onClick={() => { setQ(""); setFType(""); setFStatus(""); setFPay(""); setFCity(""); setFCountry(""); }} className="text-xs text-muted-foreground hover:text-foreground inline-flex items-center gap-1"><X className="h-3 w-3" /> Réinitialiser</button>
-          )}
-          <span className="text-xs text-muted-foreground ml-auto">{visible.length} événement{visible.length > 1 ? "s" : ""}</span>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2">
+            <select className={inputCls} value={fType} onChange={(e) => setFType(e.target.value)}>
+              <option value="">Tous types</option>
+              {TYPES.map((t) => <option key={t}>{t}</option>)}
+            </select>
+            <select className={inputCls} value={fStatus} onChange={(e) => setFStatus(e.target.value)}>
+              <option value="">Tous statuts</option>
+              <option>Actif</option>
+              <option>Annulé</option>
+            </select>
+            <select className={inputCls} value={fPay} onChange={(e) => setFPay(e.target.value)}>
+              <option value="">Tous tarifs</option>
+              <option value="free">Gratuit</option>
+              <option value="paid">Payant</option>
+            </select>
+            <input className={inputCls} placeholder="Ville" value={fCity} onChange={(e) => setFCity(e.target.value)} />
+            <input className={inputCls} placeholder="Pays" value={fCountry} onChange={(e) => setFCountry(e.target.value)} />
+          </div>
         </div>
       </Card>
 

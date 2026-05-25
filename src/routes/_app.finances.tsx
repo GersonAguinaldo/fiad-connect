@@ -83,22 +83,27 @@ function FinancesPage() {
       </div>
 
       <Card>
-        <div className="flex flex-wrap items-center gap-2 mb-4">
-          <div className="relative flex-1 min-w-[200px]">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Rechercher membre, motif, ID…" className={inputCls + " pl-9"} />
+        <div className="space-y-3 mb-4">
+          <div className="flex items-center gap-3">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Rechercher membre, motif, ID…" className={inputCls + " pl-9"} />
+            </div>
+            <span className="text-xs text-muted-foreground shrink-0">{filtered.length} résultat{filtered.length > 1 ? "s" : ""}</span>
           </div>
-          <select className={inputCls + " w-auto"} value={statusF} onChange={(e) => setStatusF(e.target.value)}>
-            {["Tous","Réussi","En attente","Échoué","Remboursé"].map((s) => <option key={s}>{s}</option>)}
-          </select>
-          <select className={inputCls + " w-auto"} value={methodF} onChange={(e) => setMethodF(e.target.value)}>
-            <option>Tous</option>
-            {methods.map((m) => <option key={m}>{m}</option>)}
-          </select>
-          <input type="date" className={inputCls + " w-auto"} value={fromDate} onChange={(e) => setFromDate(e.target.value)} title="Du" />
-          <input type="date" className={inputCls + " w-auto"} value={toDate} onChange={(e) => setToDate(e.target.value)} title="Au" />
-          <input type="number" className={inputCls + " w-24"} value={minAmt} onChange={(e) => setMinAmt(e.target.value)} placeholder="Min" />
-          <input type="number" className={inputCls + " w-24"} value={maxAmt} onChange={(e) => setMaxAmt(e.target.value)} placeholder="Max" />
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
+            <select className={inputCls} value={statusF} onChange={(e) => setStatusF(e.target.value)}>
+              {["Tous","Réussi","En attente","Échoué","Remboursé"].map((s) => <option key={s}>{s}</option>)}
+            </select>
+            <select className={inputCls} value={methodF} onChange={(e) => setMethodF(e.target.value)}>
+              <option>Tous</option>
+              {methods.map((m) => <option key={m}>{m}</option>)}
+            </select>
+            <input type="date" className={inputCls} value={fromDate} onChange={(e) => setFromDate(e.target.value)} title="Du" />
+            <input type="date" className={inputCls} value={toDate} onChange={(e) => setToDate(e.target.value)} title="Au" />
+            <input type="number" className={inputCls} value={minAmt} onChange={(e) => setMinAmt(e.target.value)} placeholder="Montant min" />
+            <input type="number" className={inputCls} value={maxAmt} onChange={(e) => setMaxAmt(e.target.value)} placeholder="Montant max" />
+          </div>
         </div>
         {loading ? (
           <p className="text-sm text-muted-foreground py-6">Chargement…</p>
