@@ -5,7 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Card, PageHeader } from "@/components/page-stub";
 
 export const Route = createFileRoute("/_app/calendrier")({
-  head: () => ({ meta: [{ title: "Calendrier — FIAD-Monde" }] }),
+  head: () => ({ meta: [{ title: "Calendrier — La PaDI" }] }),
   component: CalendarPage,
 });
 

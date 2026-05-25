@@ -9,7 +9,7 @@ import { Field, inputCls } from "@/components/admin-modal";
 import { Avatar } from "@/components/avatar";
 
 export const Route = createFileRoute("/_app/mon-profil")({
-  head: () => ({ meta: [{ title: "Mon profil — FIAD-Monde" }] }),
+  head: () => ({ meta: [{ title: "Mon profil — La PaDI" }] }),
   component: MyProfile,
 });
 

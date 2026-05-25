@@ -14,7 +14,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/_app/mon-espace")({
-  head: () => ({ meta: [{ title: "Mon espace — FIAD-Monde" }] }),
+  head: () => ({ meta: [{ title: "Mon espace — La PaDI" }] }),
   component: MemberDashboard,
 });
 
