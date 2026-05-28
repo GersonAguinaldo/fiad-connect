@@ -20,6 +20,7 @@ const MEMBER_NAV = [
   { to: "/formations", label: "Formations" },
   { to: "/evenements", label: "Événements" },
   { to: "/calendrier", label: "Calendrier" },
+  { to: "/mes-finances", label: "Mes finances" },
   { to: "/messages", label: "Messages" },
 ] as const;
 
