@@ -49,7 +49,7 @@ type Resource = {
 
 type Profile = { category: string; membership_type: string; city: string | null; country: string | null };
 
-const TYPES = ["Sommet", "Clinique", "Webinaire", "Sortie", "Assemblée", "Atelier"];
+const TYPES = ["Sommet", "PART (Projet académie de la Réussite totale)", "Webinaire", "Sortie", "Assemblée", "Atelier"];
 const CATEGORIES = ["Ambassadeur du Développement", "Sympathisant", "Ordinaire"];
 const MEMBERSHIP_TYPES = ["Classique", "Liberté Financière"];
 const RES_CATEGORIES = [
