@@ -17,6 +17,7 @@ import { Route as AppRapportsRouteImport } from './routes/_app.rapports'
 import { Route as AppMonProfilRouteImport } from './routes/_app.mon-profil'
 import { Route as AppMonEspaceRouteImport } from './routes/_app.mon-espace'
 import { Route as AppMessagesRouteImport } from './routes/_app.messages'
+import { Route as AppMesFinancesRouteImport } from './routes/_app.mes-finances'
 import { Route as AppFormationsRouteImport } from './routes/_app.formations'
 import { Route as AppFinancesRouteImport } from './routes/_app.finances'
 import { Route as AppEvenementsRouteImport } from './routes/_app.evenements'
@@ -64,6 +65,11 @@ const AppMessagesRoute = AppMessagesRouteImport.update({
   path: '/messages',
   getParentRoute: () => AppRoute,
 } as any)
+const AppMesFinancesRoute = AppMesFinancesRouteImport.update({
+  id: '/mes-finances',
+  path: '/mes-finances',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppFormationsRoute = AppFormationsRouteImport.update({
   id: '/formations',
   path: '/formations',
@@ -109,6 +115,7 @@ export interface FileRoutesByFullPath {
   '/evenements': typeof AppEvenementsRoute
   '/finances': typeof AppFinancesRoute
   '/formations': typeof AppFormationsRoute
+  '/mes-finances': typeof AppMesFinancesRoute
   '/messages': typeof AppMessagesRoute
   '/mon-espace': typeof AppMonEspaceRoute
   '/mon-profil': typeof AppMonProfilRoute
@@ -125,6 +132,7 @@ export interface FileRoutesByTo {
   '/evenements': typeof AppEvenementsRoute
   '/finances': typeof AppFinancesRoute
   '/formations': typeof AppFormationsRoute
+  '/mes-finances': typeof AppMesFinancesRoute
   '/messages': typeof AppMessagesRoute
   '/mon-espace': typeof AppMonEspaceRoute
   '/mon-profil': typeof AppMonProfilRoute
@@ -143,6 +151,7 @@ export interface FileRoutesById {
   '/_app/evenements': typeof AppEvenementsRoute
   '/_app/finances': typeof AppFinancesRoute
   '/_app/formations': typeof AppFormationsRoute
+  '/_app/mes-finances': typeof AppMesFinancesRoute
   '/_app/messages': typeof AppMessagesRoute
   '/_app/mon-espace': typeof AppMonEspaceRoute
   '/_app/mon-profil': typeof AppMonProfilRoute
@@ -161,6 +170,7 @@ export interface FileRouteTypes {
     | '/evenements'
     | '/finances'
     | '/formations'
+    | '/mes-finances'
     | '/messages'
     | '/mon-espace'
     | '/mon-profil'
@@ -177,6 +187,7 @@ export interface FileRouteTypes {
     | '/evenements'
     | '/finances'
     | '/formations'
+    | '/mes-finances'
     | '/messages'
     | '/mon-espace'
     | '/mon-profil'
@@ -194,6 +205,7 @@ export interface FileRouteTypes {
     | '/_app/evenements'
     | '/_app/finances'
     | '/_app/formations'
+    | '/_app/mes-finances'
     | '/_app/messages'
     | '/_app/mon-espace'
     | '/_app/mon-profil'
@@ -267,6 +279,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppMessagesRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/mes-finances': {
+      id: '/_app/mes-finances'
+      path: '/mes-finances'
+      fullPath: '/mes-finances'
+      preLoaderRoute: typeof AppMesFinancesRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/formations': {
       id: '/_app/formations'
       path: '/formations'
@@ -325,6 +344,7 @@ interface AppRouteChildren {
   AppEvenementsRoute: typeof AppEvenementsRoute
   AppFinancesRoute: typeof AppFinancesRoute
   AppFormationsRoute: typeof AppFormationsRoute
+  AppMesFinancesRoute: typeof AppMesFinancesRoute
   AppMessagesRoute: typeof AppMessagesRoute
   AppMonEspaceRoute: typeof AppMonEspaceRoute
   AppMonProfilRoute: typeof AppMonProfilRoute
@@ -339,6 +359,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppEvenementsRoute: AppEvenementsRoute,
   AppFinancesRoute: AppFinancesRoute,
   AppFormationsRoute: AppFormationsRoute,
+  AppMesFinancesRoute: AppMesFinancesRoute,
   AppMessagesRoute: AppMessagesRoute,
   AppMonEspaceRoute: AppMonEspaceRoute,
   AppMonProfilRoute: AppMonProfilRoute,
