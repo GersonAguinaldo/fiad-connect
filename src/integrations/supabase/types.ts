@@ -14,6 +14,30 @@ export type Database = {
   }
   public: {
     Tables: {
+      app_settings: {
+        Row: {
+          ambassador_fee_amount: number
+          ambassador_fee_currency: string
+          id: boolean
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          ambassador_fee_amount?: number
+          ambassador_fee_currency?: string
+          id?: boolean
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          ambassador_fee_amount?: number
+          ambassador_fee_currency?: string
+          id?: boolean
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: []
+      }
       event_registrations: {
         Row: {
           created_at: string

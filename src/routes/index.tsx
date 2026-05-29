@@ -1,6 +1,6 @@
-import { createFileRoute, Link, redirect } from "@tanstack/react-router";
-import { Eye, ArrowRight, Sparkles, Users, GraduationCap, Globe2 } from "lucide-react";
 import { FiadLogo } from "@/components/fiad-logo";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { ArrowRight, Eye, Globe2, GraduationCap, Users } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   component: LandingPage,
@@ -12,7 +12,10 @@ function LandingPage() {
       <header className="px-6 lg:px-12 py-5 flex items-center justify-between">
         <FiadLogo to="/" />
         <div className="flex items-center gap-2">
-          <Link to="/login" className="px-4 py-2 text-sm font-medium text-foreground hover:text-primary">
+          <Link
+            to="/login"
+            className="px-4 py-2 text-sm font-medium text-foreground hover:text-primary"
+          >
             Se connecter
           </Link>
           <Link
@@ -26,10 +29,10 @@ function LandingPage() {
 
       <section className="px-6 lg:px-12 pt-12 lg:pt-20 pb-24 max-w-7xl mx-auto grid lg:grid-cols-12 gap-12 items-center">
         <div className="lg:col-span-7">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-card border border-border text-xs font-semibold text-primary">
+          {/* <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-card border border-border text-xs font-semibold text-primary">
             <Sparkles className="h-3.5 w-3.5" />
             Plateforme officielle La PaDI
-          </div>
+          </div> */}
           <h1 className="mt-6 text-5xl lg:text-6xl font-display font-extrabold tracking-tight text-foreground leading-[1.05]">
             La maison numérique des
             <span className="block text-primary">Ambassadeurs du Développement.</span>
@@ -56,11 +59,26 @@ function LandingPage() {
 
         <div className="lg:col-span-5 grid gap-4">
           {[
-            { icon: Users, title: "Gestion des membres", desc: "Adhésions, statuts, catégories et avantages — tout au même endroit." },
-            { icon: GraduationCap, title: "Cours & formations", desc: "Sessions hebdomadaires, replays, suivi des progrès et certificats." },
-            { icon: Globe2, title: "Réseaux de proximité", desc: "Groupes locaux, messagerie interne et accès direct au Président Mondial." },
+            {
+              icon: Users,
+              title: "Gestion des membres",
+              desc: "Adhésions, statuts, catégories et avantages — tout au même endroit.",
+            },
+            {
+              icon: GraduationCap,
+              title: "Cours & formations",
+              desc: "Sessions hebdomadaires, replays, suivi des progrès et certificats.",
+            },
+            {
+              icon: Globe2,
+              title: "Réseaux de proximité",
+              desc: "Groupes locaux, messagerie interne et accès direct au Président Mondial.",
+            },
           ].map((f) => (
-            <div key={f.title} className="bg-card rounded-2xl border border-border p-5 flex items-start gap-4 shadow-[var(--shadow-card)]">
+            <div
+              key={f.title}
+              className="bg-card rounded-2xl border border-border p-5 flex items-start gap-4 shadow-[var(--shadow-card)]"
+            >
               <div className="h-11 w-11 rounded-xl bg-primary-soft text-primary flex items-center justify-center shrink-0">
                 <f.icon className="h-5 w-5" />
               </div>

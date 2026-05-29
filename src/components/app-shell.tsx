@@ -1,5 +1,5 @@
 import { Link, Outlet, useNavigate, useRouterState } from "@tanstack/react-router";
-import { Bell, HelpCircle, Search, Settings, Star, Plus, ShieldCheck, UserRound } from "lucide-react";
+import { Search, ShieldCheck, UserRound } from "lucide-react";
 import { FiadLogo } from "./fiad-logo";
 import { useAuth } from "@/hooks/use-auth";
 
@@ -10,6 +10,7 @@ const ADMIN_NAV = [
   { to: "/evenements", label: "Événements" },
   { to: "/calendrier", label: "Calendrier" },
   { to: "/finances", label: "Finances" },
+  { to: "/parametres", label: "Parametres" },
   { to: "/messages", label: "Messages" },
   { to: "/rapports", label: "Rapports" },
 ] as const;
@@ -57,11 +58,6 @@ export function AppShell() {
             />
           </div>
           <div className="flex items-center gap-1.5 text-muted-foreground">
-            <IconBtn><Star className="h-4 w-4" /></IconBtn>
-            <IconBtn className="text-primary"><Plus className="h-4 w-4" /></IconBtn>
-            <IconBtn><HelpCircle className="h-4 w-4" /></IconBtn>
-            <IconBtn><Settings className="h-4 w-4" /></IconBtn>
-            <IconBtn><Bell className="h-4 w-4" /></IconBtn>
             <button
               onClick={handleLogout}
               title="Se déconnecter"

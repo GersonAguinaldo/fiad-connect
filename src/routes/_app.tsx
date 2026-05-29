@@ -4,7 +4,7 @@ import { AppShell } from "@/components/app-shell";
 import { useAuth } from "@/hooks/use-auth";
 
 // Routes accessible only to admins
-const ADMIN_ONLY_PREFIXES = ["/dashboard", "/membres", "/finances", "/rapports"];
+const ADMIN_ONLY_PREFIXES = ["/dashboard", "/membres", "/finances", "/parametres", "/rapports"];
 
 export const Route = createFileRoute("/_app")({
   component: GuardedShell,
