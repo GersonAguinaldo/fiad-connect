@@ -18,6 +18,7 @@ export type Database = {
         Row: {
           ambassador_fee_amount: number
           ambassador_fee_currency: string
+          created_at: string
           id: boolean
           updated_at: string
           updated_by: string | null
@@ -25,6 +26,7 @@ export type Database = {
         Insert: {
           ambassador_fee_amount?: number
           ambassador_fee_currency?: string
+          created_at?: string
           id?: boolean
           updated_at?: string
           updated_by?: string | null
@@ -32,6 +34,7 @@ export type Database = {
         Update: {
           ambassador_fee_amount?: number
           ambassador_fee_currency?: string
+          created_at?: string
           id?: boolean
           updated_at?: string
           updated_by?: string | null
