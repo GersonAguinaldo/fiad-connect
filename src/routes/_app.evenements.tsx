@@ -11,6 +11,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { Card, PageHeader, PrimaryBtn } from "@/components/page-stub";
 import { AdminModal, Field, inputCls } from "@/components/admin-modal";
 import { PaymentFlow } from "@/components/payment-flow";
+import { CsvImport } from "@/components/csv-import";
 
 export const Route = createFileRoute("/_app/evenements")({
   head: () => ({ meta: [{ title: "Événements — La PaDI" }] }),
@@ -100,6 +101,7 @@ function EventsPage() {
   const [regList, setRegList] = useState<Array<{ id: string; user_id: string; payment_status: string; created_at: string; name: string }>>([]);
   const [resFor, setResFor] = useState<Ev | null>(null);
   const [resources, setResources] = useState<Resource[]>([]);
+  const [importOpen, setImportOpen] = useState(false);
 
   // Filters
   const [q, setQ] = useState("");
