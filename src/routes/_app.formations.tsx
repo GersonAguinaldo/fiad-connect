@@ -1,11 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { GraduationCap, Users2, Clock, Inbox, Pencil, Trash2, ExternalLink, Award, Search, X } from "lucide-react";
+import { GraduationCap, Users2, Clock, Inbox, Pencil, Trash2, ExternalLink, Award, Search, X, Upload } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
 import { Card, PageHeader, PrimaryBtn } from "@/components/page-stub";
 import { AdminModal, Field, inputCls } from "@/components/admin-modal";
+import { CsvImport } from "@/components/csv-import";
 
 export const Route = createFileRoute("/_app/formations")({
   head: () => ({ meta: [{ title: "Formations — La PaDI" }] }),
@@ -42,6 +43,7 @@ function FormationsPage() {
   const [fType, setFType] = useState("");
   const [fStatus, setFStatus] = useState("");
   const [fInstructor, setFInstructor] = useState("");
+  const [importOpen, setImportOpen] = useState(false);
 
   const refresh = useCallback(async () => {
     setLoading(true);
@@ -142,7 +144,12 @@ function FormationsPage() {
         eyebrow="Formations"
         title="Cours hebdomadaires & formations continues"
         subtitle="Catalogue, inscriptions, ressources et progression."
-        action={isAdmin ? <PrimaryBtn onClick={startCreate}>+ Nouvelle formation</PrimaryBtn> : undefined}
+        action={isAdmin ? (
+          <div className="flex items-center gap-2">
+            <button onClick={() => setImportOpen(true)} className="h-10 px-4 rounded-full border border-border text-sm font-medium hover:bg-secondary inline-flex items-center gap-1.5"><Upload className="h-4 w-4" /> Importer</button>
+            <PrimaryBtn onClick={startCreate}>+ Nouvelle formation</PrimaryBtn>
+          </div>
+        ) : undefined}
       />
       {loading ? (
         <Card><p className="text-sm text-muted-foreground">Chargement…</p></Card>
@@ -275,6 +282,48 @@ function FormationsPage() {
           </div>
         )}
       </AdminModal>
+
+      {isAdmin && (
+        <CsvImport
+          open={importOpen}
+          onClose={() => setImportOpen(false)}
+          onDone={refresh}
+          title="Formations"
+          columns={[
+            { key: "title", label: "Titre", required: true },
+            { key: "instructor", label: "Formateur" },
+            { key: "type", label: "Type", hint: TYPES.join(" | ") },
+            { key: "status", label: "Statut", hint: STATUSES.join(" | ") },
+            { key: "description", label: "Description" },
+            { key: "schedule", label: "Calendrier" },
+            { key: "starts_on", label: "Date de début", hint: "AAAA-MM-JJ" },
+            { key: "resource_url", label: "Lien ressources" },
+          ]}
+          sample={{
+            title: "Leadership & vision", instructor: "Mme Sow", type: "Hebdomadaire",
+            status: "Inscriptions ouvertes", description: "Module fondamental",
+            schedule: "Lundi 19h00 GMT", starts_on: "2026-09-07", resource_url: "https://…",
+          }}
+          transform={async (row) => {
+            if (!row.title) return { ok: false as const, error: "Titre requis" };
+            return { ok: true as const, payload: {
+              title: row.title,
+              instructor: row.instructor || null,
+              type: (TYPES as readonly string[]).includes(row.type) ? row.type : "Hebdomadaire",
+              status: (STATUSES as readonly string[]).includes(row.status) ? row.status : "Inscriptions ouvertes",
+              description: row.description || null,
+              schedule: row.schedule || null,
+              starts_on: row.starts_on || null,
+              resource_url: row.resource_url || null,
+            } };
+          }}
+          onCommit={async (payloads) => {
+            const { error, count } = await supabase.from("formations").insert(payloads as never, { count: "exact" });
+            if (error) throw new Error(error.message);
+            return { inserted: count ?? payloads.length, skipped: 0, errors: [] };
+          }}
+        />
+      )}
     </div>
   );
 }

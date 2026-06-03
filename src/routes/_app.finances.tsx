@@ -1,11 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
-import { Wallet, Inbox, Search, Eye, CheckCircle2, XCircle, Clock } from "lucide-react";
+import { Wallet, Inbox, Search, Eye, CheckCircle2, XCircle, Clock, Upload } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, PageHeader, PrimaryBtn } from "@/components/page-stub";
 import { AdminModal, Field, inputCls } from "@/components/admin-modal";
 import { useAuth } from "@/hooks/use-auth";
+import { CsvImport } from "@/components/csv-import";
 
 export const Route = createFileRoute("/_app/finances")({
   head: () => ({ meta: [{ title: "Finances — La PaDI" }] }),
@@ -27,6 +28,7 @@ function FinancesPage() {
   const [maxAmt, setMaxAmt] = useState<string>("");
   const [detail, setDetail] = useState<Tx | null>(null);
   const [loading, setLoading] = useState(true);
+  const [importOpen, setImportOpen] = useState(false);
 
   async function refresh() {
     setLoading(true);
@@ -74,7 +76,15 @@ function FinancesPage() {
 
   return (
     <div className="max-w-[1400px] mx-auto">
-      <PageHeader icon={<Wallet className="h-6 w-6" />} eyebrow="Finances" title="Paiements & transactions" subtitle="Historique complet des paiements simulés." />
+      <PageHeader
+        icon={<Wallet className="h-6 w-6" />}
+        eyebrow="Finances"
+        title="Paiements & transactions"
+        subtitle="Historique complet des paiements simulés."
+        action={isAdmin ? (
+          <button onClick={() => setImportOpen(true)} className="h-10 px-4 rounded-full border border-border text-sm font-medium hover:bg-secondary inline-flex items-center gap-1.5"><Upload className="h-4 w-4" /> Importer</button>
+        ) : undefined}
+      />
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
         <StatCard icon={<CheckCircle2 className="h-4 w-4" />} label="Encaissé (filtré)" value={`${new Intl.NumberFormat("fr-FR").format(totals.reussi)} XOF`} tone="success" />
@@ -156,6 +166,50 @@ function FinancesPage() {
           </div>
         )}
       </AdminModal>
+
+      {isAdmin && (
+        <CsvImport
+          open={importOpen}
+          onClose={() => setImportOpen(false)}
+          onDone={refresh}
+          title="Transactions"
+          columns={[
+            { key: "user_email", label: "Email du membre", required: true, hint: "doit exister parmi les membres" },
+            { key: "reason", label: "Motif", required: true },
+            { key: "amount", label: "Montant", required: true },
+            { key: "currency", label: "Devise", hint: "XOF | EUR | USD | XAF" },
+            { key: "method", label: "Méthode", hint: "Mobile Money, Carte, Espèces…" },
+            { key: "status", label: "Statut", hint: "Réussi | En attente | Échoué | Remboursé" },
+            { key: "occurred_at", label: "Date", hint: "AAAA-MM-JJ ou ISO" },
+          ]}
+          sample={{
+            user_email: "membre@example.com", reason: "Cotisation 2025", amount: "25000",
+            currency: "XOF", method: "Mobile Money", status: "Réussi", occurred_at: "2025-01-15",
+          }}
+          transform={async (row) => {
+            if (!row.user_email) return { ok: false as const, error: "Email requis" };
+            if (!row.reason) return { ok: false as const, error: "Motif requis" };
+            if (!row.amount || isNaN(Number(row.amount))) return { ok: false as const, error: "Montant invalide" };
+            const { data: prof } = await supabase.from("profiles").select("id").eq("email", row.user_email).maybeSingle();
+            if (!prof) return { ok: false as const, error: `Membre introuvable: ${row.user_email}` };
+            const d = row.occurred_at ? new Date(row.occurred_at.replace(" ", "T")) : new Date();
+            return { ok: true as const, payload: {
+              user_id: prof.id,
+              reason: row.reason,
+              amount: Number(row.amount),
+              currency: row.currency || "XOF",
+              method: row.method || null,
+              status: row.status || "Réussi",
+              occurred_at: isNaN(d.getTime()) ? new Date().toISOString() : d.toISOString(),
+            } };
+          }}
+          onCommit={async (payloads) => {
+            const { error, count } = await supabase.from("transactions").insert(payloads as never, { count: "exact" });
+            if (error) throw new Error(error.message);
+            return { inserted: count ?? payloads.length, skipped: 0, errors: [] };
+          }}
+        />
+      )}
     </div>
   );
 }
