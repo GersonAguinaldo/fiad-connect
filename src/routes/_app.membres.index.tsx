@@ -189,6 +189,59 @@ function MembersPage() {
           </div>
         )}
       </div>
+
+      {isAdmin && (
+        <CsvImport
+          open={importOpen}
+          onClose={() => setImportOpen(false)}
+          onDone={load}
+          title="Membres"
+          columns={[
+            { key: "first_name", label: "Prénom", required: true },
+            { key: "last_name", label: "Nom" },
+            { key: "email", label: "Email" },
+            { key: "phone", label: "Téléphone" },
+            { key: "category", label: "Catégorie", hint: CATEGORIES.join(" | ") },
+            { key: "membership_type", label: "Type d'adhésion", hint: TYPES.join(" | ") },
+            { key: "status", label: "Statut", hint: STATUSES.join(" | ") },
+            { key: "city", label: "Ville" },
+            { key: "country", label: "Pays" },
+            { key: "address", label: "Adresse" },
+            { key: "birth_date", label: "Date de naissance", hint: "AAAA-MM-JJ" },
+            { key: "birth_place", label: "Lieu de naissance" },
+            { key: "sex", label: "Sexe", hint: "M | F" },
+          ]}
+          sample={{
+            first_name: "Aïssa", last_name: "Diop", email: "aissa@example.com", phone: "+221770000000",
+            category: "Sympathisant", membership_type: "Classique", status: "Actif",
+            city: "Dakar", country: "Sénégal", address: "", birth_date: "1990-05-12", birth_place: "Dakar", sex: "F",
+          }}
+          transform={async (row) => {
+            if (!row.first_name && !row.last_name) return { ok: false as const, error: "Prénom ou nom requis" };
+            const cat = (CATEGORIES as readonly string[]).includes(row.category) ? row.category : "Sympathisant";
+            const type = (TYPES as readonly string[]).includes(row.membership_type) ? row.membership_type : "Classique";
+            const status = (STATUSES as readonly string[]).includes(row.status) ? row.status : "Actif";
+            return { ok: true as const, payload: {
+              id: crypto.randomUUID(),
+              first_name: row.first_name || null,
+              last_name: row.last_name || null,
+              email: row.email || null,
+              phone: row.phone || null,
+              category: cat, membership_type: type, status,
+              city: row.city || null, country: row.country || null,
+              address: row.address || null,
+              birth_date: row.birth_date || null,
+              birth_place: row.birth_place || null,
+              sex: row.sex || null,
+            } };
+          }}
+          onCommit={async (payloads) => {
+            const { error, count } = await supabase.from("profiles").insert(payloads as never, { count: "exact" });
+            if (error) throw new Error(error.message);
+            return { inserted: count ?? payloads.length, skipped: 0, errors: [] };
+          }}
+        />
+      )}
     </div>
   );
 }
