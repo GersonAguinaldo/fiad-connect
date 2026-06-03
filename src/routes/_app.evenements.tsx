@@ -472,6 +472,63 @@ function EventsPage() {
           />
         )}
       </AdminModal>
+
+      {isAdmin && (
+        <CsvImport
+          open={importOpen}
+          onClose={() => setImportOpen(false)}
+          onDone={refresh}
+          title="Événements"
+          columns={[
+            { key: "title", label: "Titre", required: true },
+            { key: "event_date", label: "Date & heure", required: true, hint: "AAAA-MM-JJ HH:MM ou ISO" },
+            { key: "location", label: "Lieu" },
+            { key: "type", label: "Type", hint: TYPES.join(" | ") },
+            { key: "description", label: "Description" },
+            { key: "price", label: "Prix", hint: "nombre" },
+            { key: "currency", label: "Devise", hint: "XOF | EUR | USD | XAF" },
+            { key: "capacity", label: "Capacité" },
+            { key: "status", label: "Statut", hint: "Actif | Annulé" },
+            { key: "target_categories", label: "Catégories ciblées", hint: "séparées par ;" },
+            { key: "target_membership_types", label: "Types ciblés", hint: "séparés par ;" },
+            { key: "target_cities", label: "Villes ciblées", hint: "séparées par ;" },
+            { key: "target_countries", label: "Pays ciblés", hint: "séparés par ;" },
+          ]}
+          sample={{
+            title: "Sommet annuel 2026", event_date: "2026-09-15 09:00", location: "Dakar, Sénégal",
+            type: "Sommet", description: "Rencontre annuelle des membres",
+            price: "0", currency: "XOF", capacity: "500", status: "Actif",
+            target_categories: "", target_membership_types: "", target_cities: "", target_countries: "",
+          }}
+          transform={async (row) => {
+            if (!row.title) return { ok: false as const, error: "Titre requis" };
+            if (!row.event_date) return { ok: false as const, error: "Date requise" };
+            const d = new Date(row.event_date.replace(" ", "T"));
+            if (isNaN(d.getTime())) return { ok: false as const, error: "Date invalide" };
+            const split = (v: string) => v ? v.split(/[;|]/).map((s) => s.trim()).filter(Boolean) : [];
+            return { ok: true as const, payload: {
+              title: row.title,
+              event_date: d.toISOString(),
+              location: row.location || null,
+              type: row.type || null,
+              description: row.description || null,
+              price: Number(row.price) || 0,
+              currency: row.currency || "XOF",
+              capacity: row.capacity ? Number(row.capacity) : null,
+              status: row.status || "Actif",
+              target_categories: split(row.target_categories),
+              target_membership_types: split(row.target_membership_types),
+              target_cities: split(row.target_cities),
+              target_countries: split(row.target_countries),
+            } };
+          }}
+          onCommit={async (payloads) => {
+            const { error, count } = await supabase.from("events").insert(payloads as never, { count: "exact" });
+            if (error) throw new Error(error.message);
+            return { inserted: count ?? payloads.length, skipped: 0, errors: [] };
+          }}
+        />
+      )}
     </div>
   );
 }
