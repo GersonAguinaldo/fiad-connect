@@ -269,7 +269,12 @@ function EventsPage() {
         eyebrow="Événements"
         title="Sommets, cliniques & activités"
         subtitle="Inscriptions, paiement en ligne et suivi des participations."
-        action={isAdmin ? <PrimaryBtn onClick={startCreate}>+ Nouvel événement</PrimaryBtn> : undefined}
+        action={isAdmin ? (
+          <div className="flex items-center gap-2">
+            <button onClick={() => setImportOpen(true)} className="h-10 px-4 rounded-full border border-border text-sm font-medium hover:bg-secondary inline-flex items-center gap-1.5"><Upload className="h-4 w-4" /> Importer</button>
+            <PrimaryBtn onClick={startCreate}>+ Nouvel événement</PrimaryBtn>
+          </div>
+        ) : undefined}
       />
 
       <Card className="mb-4">
