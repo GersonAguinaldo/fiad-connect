@@ -40,6 +40,7 @@ function MembersPage() {
   const [fType, setFType] = useState<string>("");
   const [fCity, setFCity] = useState<string>("");
   const [fCountry, setFCountry] = useState<string>("");
+  const [importOpen, setImportOpen] = useState(false);
 
   function load() {
     supabase
@@ -111,7 +112,10 @@ function MembersPage() {
             <ToolBtn onClick={load}><RefreshCw className="h-4 w-4" /></ToolBtn>
             <ToolBtn onClick={exportCsv}><Download className="h-4 w-4" /></ToolBtn>
             {isAdmin && (
-              <Link to="/register" className="h-9 px-3 rounded-lg bg-primary text-primary-foreground text-sm font-semibold inline-flex items-center gap-1.5"><Plus className="h-4 w-4" /> Nouveau</Link>
+              <>
+                <button onClick={() => setImportOpen(true)} className="h-9 px-3 rounded-lg border border-border bg-card text-sm font-semibold inline-flex items-center gap-1.5 hover:bg-secondary"><Upload className="h-4 w-4" /> Importer</button>
+                <Link to="/register" className="h-9 px-3 rounded-lg bg-primary text-primary-foreground text-sm font-semibold inline-flex items-center gap-1.5"><Plus className="h-4 w-4" /> Nouveau</Link>
+              </>
             )}
           </div>
         </div>
