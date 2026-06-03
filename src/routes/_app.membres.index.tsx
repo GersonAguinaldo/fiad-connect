@@ -1,10 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Search, Download, Plus, Pin, RefreshCw, ChevronDown, Inbox, Pencil, Trash2 } from "lucide-react";
+import { Search, Download, Plus, Pin, RefreshCw, ChevronDown, Inbox, Pencil, Trash2, Upload } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { Avatar } from "@/components/avatar";
 import { useAuth } from "@/hooks/use-auth";
+import { CsvImport } from "@/components/csv-import";
 
 export const Route = createFileRoute("/_app/membres/")({
   head: () => ({ meta: [{ title: "Membres — La PaDI" }] }),
