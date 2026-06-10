@@ -132,17 +132,17 @@ function DashboardPage() {
   const fmtMoney = (n: number) => new Intl.NumberFormat("fr-FR").format(Math.round(n)) + " FCFA";
 
   return (
-    <div className="max-w-[1400px] mx-auto space-y-6">
-      <div className="flex items-end justify-between flex-wrap gap-4">
+    <div className="max-w-[1400px] mx-auto space-y-4 sm:space-y-6">
+      <div className="flex items-end justify-between flex-wrap gap-3 sm:gap-4">
         <div>
-          <div className="text-sm text-muted-foreground">Tableau de bord</div>
-          <h1 className="text-3xl font-display font-extrabold mt-1">Bonjour, {firstName}</h1>
-          <p className="text-sm text-muted-foreground mt-1">Voici l'activité de l'association.</p>
+          <div className="text-xs sm:text-sm text-muted-foreground">Tableau de bord</div>
+          <h1 className="text-2xl sm:text-3xl font-display font-extrabold mt-1">Bonjour, {firstName}</h1>
+          <p className="text-xs sm:text-sm text-muted-foreground mt-1">Voici l'activité de l'association.</p>
         </div>
       </div>
 
-      <div className="rounded-2xl bg-gradient-to-r from-primary to-[oklch(0.45_0.22_265)] text-primary-foreground p-6 shadow-[var(--shadow-elevated)]">
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
+      <div className="rounded-2xl bg-gradient-to-r from-primary to-[oklch(0.45_0.22_265)] text-primary-foreground p-4 sm:p-6 shadow-[var(--shadow-elevated)]">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 sm:gap-6">
           <Kpi label="Membres" value={String(memberCount)} />
           <Kpi label="En attente" value={String(pendingCount)} />
           <Kpi label="Inscriptions (7j)" value={String(weekJoins)} />
@@ -151,7 +151,7 @@ function DashboardPage() {
         </div>
       </div>
 
-      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         <StatCard
           icon={Users}
           label="Membres"
@@ -178,8 +178,8 @@ function DashboardPage() {
         />
       </div>
 
-      <div className="grid lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 bg-card rounded-2xl border border-border p-6 shadow-[var(--shadow-card)]">
+      <div className="grid lg:grid-cols-3 gap-4 sm:gap-6">
+        <div className="lg:col-span-2 bg-card rounded-2xl border border-border p-4 sm:p-6 shadow-[var(--shadow-card)]">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-display font-bold">Activité récente</h2>
             <Link
@@ -217,7 +217,7 @@ function DashboardPage() {
           )}
         </div>
 
-        <div className="bg-card rounded-2xl border border-border p-6 shadow-[var(--shadow-card)]">
+        <div className="bg-card rounded-2xl border border-border p-4 sm:p-6 shadow-[var(--shadow-card)]">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-display font-bold">Prochains événements</h2>
             <Link to="/evenements" className="text-sm text-primary hover:underline">
@@ -253,7 +253,7 @@ function DashboardPage() {
         </div>
       </div>
 
-      <div className="bg-card rounded-2xl border border-border p-6 shadow-[var(--shadow-card)]">
+      <div className="bg-card rounded-2xl border border-border p-4 sm:p-6 shadow-[var(--shadow-card)]">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-display font-bold">Nouveaux membres</h2>
           <Link to="/membres" className="text-sm text-primary hover:underline">
@@ -316,17 +316,17 @@ function StatCard({
   tone: string;
 }) {
   return (
-    <div className="bg-card rounded-2xl border border-border p-5 shadow-[var(--shadow-card)]">
+    <div className="bg-card rounded-2xl border border-border p-4 sm:p-5 shadow-[var(--shadow-card)]">
       <div className="flex items-center justify-between">
         <div
-          className="h-10 w-10 rounded-xl flex items-center justify-center"
+          className="h-9 w-9 sm:h-10 sm:w-10 rounded-xl flex items-center justify-center"
           style={{ backgroundColor: `color-mix(in oklab, ${tone} 15%, white)`, color: tone }}
         >
-          <Icon className="h-5 w-5" />
+          <Icon className="h-4 w-4 sm:h-5 sm:w-5" />
         </div>
       </div>
-      <div className="mt-4 text-2xl font-display font-extrabold">{value}</div>
-      <div className="text-sm text-muted-foreground">{label}</div>
+      <div className="mt-3 sm:mt-4 text-lg sm:text-2xl font-display font-extrabold break-words leading-tight">{value}</div>
+      <div className="text-xs sm:text-sm text-muted-foreground">{label}</div>
     </div>
   );
 }

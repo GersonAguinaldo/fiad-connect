@@ -120,7 +120,27 @@ function FinancesPage() {
         ) : filtered.length === 0 ? (
           <div className="py-10 flex flex-col items-center justify-center text-center text-muted-foreground"><div className="h-12 w-12 rounded-2xl bg-secondary flex items-center justify-center mb-3"><Inbox className="h-5 w-5" /></div><p className="text-sm">Aucune transaction enregistrée.</p></div>
         ) : (
-          <table className="w-full text-sm">
+          <>
+          {/* Mobile cards */}
+          <ul className="md:hidden divide-y divide-border -mx-4 sm:-mx-6">
+            {filtered.map((t) => (
+              <li key={t.id} className="px-4 sm:px-6 py-3">
+                <button onClick={() => setDetail(t)} className="w-full text-left flex items-start gap-3">
+                  <div className="flex-1 min-w-0">
+                    <div className="font-semibold text-sm truncate">{t.member_name}</div>
+                    <div className="text-xs text-muted-foreground truncate">{t.reason}</div>
+                    <div className="text-[11px] text-muted-foreground mt-0.5">{new Date(t.occurred_at).toLocaleDateString("fr-FR")}{t.method ? ` · ${t.method}` : ""}</div>
+                  </div>
+                  <div className="text-right shrink-0">
+                    <div className="font-semibold tabular-nums text-sm">{new Intl.NumberFormat("fr-FR").format(Number(t.amount))} {t.currency}</div>
+                    <div className="mt-1">{statusBadge(t.status)}</div>
+                  </div>
+                </button>
+              </li>
+            ))}
+          </ul>
+          {/* Desktop table */}
+          <table className="hidden md:table w-full text-sm">
             <thead className="text-xs uppercase text-muted-foreground"><tr className="text-left">{["Membre","Motif","Montant","Mode","Date","Statut",""].map(h => <th key={h} className="py-2">{h}</th>)}</tr></thead>
             <tbody>{filtered.map(t => (
               <tr key={t.id} className="border-t border-border">
@@ -134,6 +154,7 @@ function FinancesPage() {
               </tr>
             ))}</tbody>
           </table>
+          </>
         )}
       </Card>
 
