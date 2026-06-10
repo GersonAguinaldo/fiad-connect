@@ -83,18 +83,18 @@ function MembersPage() {
   }
 
   return (
-    <div className="max-w-[1400px] mx-auto">
-      <div className="flex items-center justify-between flex-wrap gap-4">
-        <div className="flex items-center gap-4">
-          <div className="h-14 w-14 rounded-2xl bg-primary-soft text-primary flex items-center justify-center">
+      <div className="max-w-[1400px] mx-auto">
+      <div className="flex items-start sm:items-center justify-between flex-wrap gap-3 sm:gap-4">
+        <div className="flex items-center gap-3 sm:gap-4 min-w-0">
+          <div className="h-11 w-11 sm:h-14 sm:w-14 rounded-2xl bg-primary-soft text-primary flex items-center justify-center shrink-0">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-6 w-6">
               <path d="M3 21V8l9-5 9 5v13M9 21v-7h6v7" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </div>
-          <div>
-            <div className="text-sm text-muted-foreground">Membres</div>
+          <div className="min-w-0">
+            <div className="text-xs sm:text-sm text-muted-foreground">Membres</div>
             <div className="flex items-center gap-2">
-              <h1 className="text-2xl font-display font-extrabold">Tous les membres</h1>
+              <h1 className="text-xl sm:text-2xl font-display font-extrabold truncate">Tous les membres</h1>
               <button className="h-7 w-7 rounded-full bg-primary-soft text-primary flex items-center justify-center hover:bg-primary/10"><Pin className="h-3.5 w-3.5" /></button>
             </div>
             <div className="text-xs text-muted-foreground mt-1">{rows.length} membre{rows.length > 1 ? "s" : ""} inscrit{rows.length > 1 ? "s" : ""}</div>
@@ -103,7 +103,7 @@ function MembersPage() {
       </div>
 
       <div className="mt-5 space-y-3">
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Rechercher un membre…" className="w-full h-9 pl-10 pr-4 rounded-lg bg-card border border-border focus:border-ring focus:outline-none text-sm" />
@@ -113,8 +113,8 @@ function MembersPage() {
             <ToolBtn onClick={exportCsv}><Download className="h-4 w-4" /></ToolBtn>
             {isAdmin && (
               <>
-                <button onClick={() => setImportOpen(true)} className="h-9 px-3 rounded-lg border border-border bg-card text-sm font-semibold inline-flex items-center gap-1.5 hover:bg-secondary"><Upload className="h-4 w-4" /> Importer</button>
-                <Link to="/register" className="h-9 px-3 rounded-lg bg-primary text-primary-foreground text-sm font-semibold inline-flex items-center gap-1.5"><Plus className="h-4 w-4" /> Nouveau</Link>
+                <button onClick={() => setImportOpen(true)} className="h-9 px-3 rounded-lg border border-border bg-card text-sm font-semibold inline-flex items-center gap-1.5 hover:bg-secondary"><Upload className="h-4 w-4" /> <span className="hidden sm:inline">Importer</span></button>
+                <Link to="/register" className="h-9 px-3 rounded-lg bg-primary text-primary-foreground text-sm font-semibold inline-flex items-center gap-1.5"><Plus className="h-4 w-4" /> <span className="hidden sm:inline">Nouveau</span></Link>
               </>
             )}
           </div>
@@ -144,7 +144,36 @@ function MembersPage() {
             <p className="text-sm">{rows.length === 0 ? "Aucun membre inscrit pour l'instant." : "Aucun résultat."}</p>
           </div>
         ) : (
-          <div className="overflow-x-auto">
+          <>
+          {/* Mobile cards */}
+          <ul className="md:hidden divide-y divide-border">
+            {filtered.map((m) => {
+              const name = [m.first_name, m.last_name].filter(Boolean).join(" ") || m.email || "Membre";
+              return (
+                <li key={m.id} className="p-3">
+                  <Link to="/membres/$memberId" params={{ memberId: m.id }} className="flex items-start gap-3">
+                    <Avatar name={name} />
+                    <div className="min-w-0 flex-1">
+                      <div className="font-semibold text-primary truncate">{name}</div>
+                      <div className="text-xs text-muted-foreground truncate">{m.email ?? "—"}</div>
+                      <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
+                        <span className="inline-flex px-2 py-0.5 rounded-full text-[10px] font-medium bg-primary-soft text-primary">{m.category}</span>
+                        <StatusPill value={m.status} />
+                      </div>
+                      <div className="mt-1 text-[11px] text-muted-foreground truncate">
+                        {[m.city, m.country].filter(Boolean).join(", ") || "—"} · {m.membership_type}
+                      </div>
+                    </div>
+                    {isAdmin && (
+                      <button onClick={(e) => { e.preventDefault(); remove(m.id); }} className="h-8 w-8 rounded-lg hover:bg-destructive/10 hover:text-destructive inline-flex items-center justify-center text-muted-foreground shrink-0"><Trash2 className="h-4 w-4" /></button>
+                    )}
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+          {/* Desktop table */}
+          <div className="hidden md:block overflow-x-auto">
             <table className="w-full text-sm">
               <thead className="bg-secondary/60 text-foreground">
                 <tr className="text-left">
@@ -187,6 +216,7 @@ function MembersPage() {
               </tbody>
             </table>
           </div>
+          </>
         )}
       </div>
 
