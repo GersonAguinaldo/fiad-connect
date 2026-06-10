@@ -316,17 +316,17 @@ function StatCard({
   tone: string;
 }) {
   return (
-    <div className="bg-card rounded-2xl border border-border p-5 shadow-[var(--shadow-card)]">
+    <div className="bg-card rounded-2xl border border-border p-4 sm:p-5 shadow-[var(--shadow-card)]">
       <div className="flex items-center justify-between">
         <div
-          className="h-10 w-10 rounded-xl flex items-center justify-center"
+          className="h-9 w-9 sm:h-10 sm:w-10 rounded-xl flex items-center justify-center"
           style={{ backgroundColor: `color-mix(in oklab, ${tone} 15%, white)`, color: tone }}
         >
-          <Icon className="h-5 w-5" />
+          <Icon className="h-4 w-4 sm:h-5 sm:w-5" />
         </div>
       </div>
-      <div className="mt-4 text-2xl font-display font-extrabold">{value}</div>
-      <div className="text-sm text-muted-foreground">{label}</div>
+      <div className="mt-3 sm:mt-4 text-lg sm:text-2xl font-display font-extrabold break-words leading-tight">{value}</div>
+      <div className="text-xs sm:text-sm text-muted-foreground">{label}</div>
     </div>
   );
 }
