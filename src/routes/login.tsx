@@ -3,6 +3,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { FiadLogo } from "@/components/fiad-logo";
 import { supabase } from "@/integrations/supabase/client";
+import authBg from "@/assets/auth-bg.jpg";
 
 export const Route = createFileRoute("/login")({
   head: () => ({
@@ -44,8 +45,11 @@ function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen grid place-items-center bg-primary-soft px-6">
-      <div className="w-full max-w-md bg-card rounded-3xl p-10 shadow-[var(--shadow-elevated)]">
+    <div
+      className="min-h-screen grid place-items-center px-6 bg-cover bg-center bg-no-repeat"
+      style={{ backgroundImage: `linear-gradient(rgba(15,23,42,0.45), rgba(15,23,42,0.45)), url(${authBg})` }}
+    >
+      <div className="w-full max-w-md bg-card/95 backdrop-blur rounded-3xl p-10 shadow-[var(--shadow-elevated)]">
         <FiadLogo to="/" />
         <h1 className="mt-8 text-2xl font-display font-extrabold">Bon retour parmi nous</h1>
         <p className="text-sm text-muted-foreground mt-1">Accédez à votre espace Ambassadeur.</p>
