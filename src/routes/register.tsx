@@ -1,5 +1,6 @@
 import { FiadLogo } from "@/components/fiad-logo";
 import { PaymentFlow } from "@/components/payment-flow";
+import authBg from "@/assets/auth-bg.jpg";
 import { supabase } from "@/integrations/supabase/client";
 import {
   AMBASSADOR_CATEGORY,
@@ -279,7 +280,10 @@ function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen bg-primary-soft px-5 py-6">
+    <div
+      className="min-h-screen px-5 py-6 bg-cover bg-center bg-no-repeat"
+      style={{ backgroundImage: `linear-gradient(rgba(15,23,42,0.55), rgba(15,23,42,0.55)), url(${authBg})` }}
+    >
       <div className="max-w-6xl mx-auto">
         <FiadLogo to="/" />
 
