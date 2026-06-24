@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { UserRound, Save } from "lucide-react";
+import { UserRound, Save, Camera, Loader2 } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, PageHeader, PrimaryBtn } from "@/components/page-stub";
@@ -37,6 +37,7 @@ function MyProfile() {
   const [p, setP] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     if (!user) return;
@@ -75,6 +76,24 @@ function MyProfile() {
 
   const name = [p.first_name, p.last_name].filter(Boolean).join(" ") || p.email || "Membre";
 
+  async function uploadAvatar(file: File) {
+    if (!user || !p) return;
+    if (!file.type.startsWith("image/")) { toast.error("Veuillez choisir une image."); return; }
+    if (file.size > 5 * 1024 * 1024) { toast.error("Image trop volumineuse (max 5 Mo)."); return; }
+    setUploading(true);
+    const ext = file.name.split(".").pop()?.toLowerCase() || "jpg";
+    const path = `${user.id}/avatar-${Date.now()}.${ext}`;
+    const { error: upErr } = await supabase.storage.from("avatars").upload(path, file, { upsert: true, contentType: file.type });
+    if (upErr) { setUploading(false); toast.error(upErr.message); return; }
+    const { data: signed } = await supabase.storage.from("avatars").createSignedUrl(path, 60 * 60 * 24 * 365);
+    const url = signed?.signedUrl ?? null;
+    const { error: updErr } = await supabase.from("profiles").update({ avatar_url: url } as never).eq("id", user.id);
+    setUploading(false);
+    if (updErr) { toast.error(updErr.message); return; }
+    setP({ ...p, avatar_url: url });
+    toast.success("Photo mise à jour");
+  }
+
   return (
     <div className="max-w-[1100px] mx-auto">
       <PageHeader
@@ -87,7 +106,14 @@ function MyProfile() {
       <div className="grid lg:grid-cols-3 gap-6">
         <Card>
           <div className="flex flex-col items-center text-center">
-            <div className="scale-150 mb-4"><Avatar name={name} /></div>
+            <div className="relative mb-4">
+              <Avatar name={name} url={p.avatar_url} size={96} />
+              <label className="absolute -bottom-1 -right-1 h-8 w-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center cursor-pointer hover:opacity-90 shadow">
+                {uploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Camera className="h-4 w-4" />}
+                <input type="file" accept="image/*" className="hidden" disabled={uploading}
+                  onChange={(e) => { const f = e.target.files?.[0]; if (f) uploadAvatar(f); }} />
+              </label>
+            </div>
             <div className="font-display font-bold text-lg">{name}</div>
             <div className="text-sm text-muted-foreground">{p.email}</div>
             <div className="mt-4 w-full space-y-2 text-sm">
