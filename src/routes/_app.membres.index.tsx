@@ -240,17 +240,20 @@ function MembersPage() {
             { key: "birth_date", label: "Date de naissance", hint: "AAAA-MM-JJ" },
             { key: "birth_place", label: "Lieu de naissance" },
             { key: "sex", label: "Sexe", hint: "M | F" },
+            { key: "joined_at", label: "Date d'inscription", hint: "AAAA-MM-JJ (laisser vide = aujourd'hui)" },
           ]}
           sample={{
             first_name: "Aïssa", last_name: "Diop", email: "aissa@example.com", phone: "+221770000000",
             category: "Sympathisant", membership_type: "Classique", status: "Actif",
             city: "Dakar", country: "Sénégal", address: "", birth_date: "1990-05-12", birth_place: "Dakar", sex: "F",
+            joined_at: "2024-01-15",
           }}
           transform={async (row) => {
             if (!row.first_name && !row.last_name) return { ok: false as const, error: "Prénom ou nom requis" };
             const cat = (CATEGORIES as readonly string[]).includes(row.category) ? row.category : "Sympathisant";
             const type = (TYPES as readonly string[]).includes(row.membership_type) ? row.membership_type : "Classique";
             const status = (STATUSES as readonly string[]).includes(row.status) ? row.status : "Actif";
+            const joinedAt = row.joined_at && !isNaN(Date.parse(row.joined_at)) ? new Date(row.joined_at).toISOString() : undefined;
             return { ok: true as const, payload: {
               id: crypto.randomUUID(),
               first_name: row.first_name || null,
@@ -263,6 +266,7 @@ function MembersPage() {
               birth_date: row.birth_date || null,
               birth_place: row.birth_place || null,
               sex: row.sex || null,
+              ...(joinedAt ? { created_at: joinedAt } : {}),
             } };
           }}
           onCommit={async (payloads) => {
