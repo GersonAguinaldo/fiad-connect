@@ -32,6 +32,7 @@ Pre-requis: Node 20+, MongoDB 6+ (local ou Atlas).
 | GET/POST/PATCH | /api/transactions    | admin  |
 | GET/PATCH | /api/settings             | mixte  |
 | POST    | /api/uploads                | auth   |
+| CRUD    | /api/event-resources        | mixte  |
 
 Tous renvoient un JWT a placer dans `Authorization: Bearer <token>`.
 
@@ -39,10 +40,22 @@ Tous renvoient un JWT a placer dans `Authorization: Bearer <token>`.
 
 - `User` (auth + roles `admin`/`membre`)
 - `Profile` (1-1 avec User)
-- `Event` + `EventRegistration`
+- `Event` + `EventRegistration` + `EventResource`
 - `Formation` + `FormationEnrollment`
 - `Transaction`
 - `AppSettings` (singleton, frais ambassadeur)
+
+## Migration des donnees existantes (Supabase -> Mongo)
+
+1. Renseigne `SUPABASE_URL` et `SUPABASE_SERVICE_ROLE_KEY` dans `backend/.env`
+   (recuperables dans l'ancien dashboard Supabase de Lovable Cloud).
+2. Lance : `npm run migrate:from-supabase`
+
+Le script copie users, profiles, roles, events + inscriptions, ressources,
+formations + inscriptions, transactions et settings. Les mots de passe ne
+sont pas exportables depuis `auth.users` ; les users importes ont un
+placeholder et doivent passer par "Mot de passe oublie" a leur premiere
+connexion.
 
 ## Securite incluse
 
