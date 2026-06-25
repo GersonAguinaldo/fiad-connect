@@ -26,6 +26,21 @@ router.patch("/me", requireAuth, async (req, res) => {
   res.json(profile);
 });
 
+router.patch("/:id", requireAuth, requireRole("admin"), async (req, res) => {
+  const update = req.body ?? {};
+  delete update.user;
+  const profile = await Profile.findByIdAndUpdate(req.params.id, { $set: update }, { new: true }).lean();
+  res.json(profile);
+});
+
+router.delete("/:id", requireAuth, requireRole("admin"), async (req, res) => {
+  const profile = await Profile.findById(req.params.id);
+  if (!profile) return res.status(404).json({ error: "Not found" });
+  await User.findByIdAndDelete(profile.user);
+  await profile.deleteOne();
+  res.json({ ok: true });
+});
+
 router.post("/import", requireAuth, requireRole("admin"), async (req, res) => {
   const rows = Array.isArray(req.body) ? req.body : [];
   const created = [];
