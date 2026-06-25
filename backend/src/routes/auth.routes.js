@@ -70,4 +70,37 @@ router.get("/me", requireAuth, async (req, res) => {
   res.json({ user: { id: req.user._id, email: req.user.email, roles: req.user.roles }, profile });
 });
 
+// Changement de mot de passe (utilisateur connecte)
+router.post("/change-password", requireAuth, async (req, res, next) => {
+  try {
+    const { currentPassword, newPassword } = z
+      .object({ currentPassword: z.string().min(1), newPassword: z.string().min(8).max(128) })
+      .parse(req.body);
+    const user = await User.findById(req.user._id);
+    if (!user) return res.status(404).json({ error: "Introuvable" });
+    const ok = await bcrypt.compare(currentPassword, user.passwordHash);
+    if (!ok) return res.status(401).json({ error: "Mot de passe actuel invalide" });
+    user.passwordHash = await bcrypt.hash(newPassword, 10);
+    await user.save();
+    res.json({ ok: true });
+  } catch (err) {
+    next(err);
+  }
+});
+
+// Reset admin : forcer un nouveau mot de passe pour un user (utilise pour les comptes importes)
+router.post("/admin/reset-password", requireAuth, async (req, res, next) => {
+  try {
+    if (!req.user.roles?.includes("admin")) return res.status(403).json({ error: "Forbidden" });
+    const { userId, newPassword } = z
+      .object({ userId: z.string().min(1), newPassword: z.string().min(8).max(128) })
+      .parse(req.body);
+    const hash = await bcrypt.hash(newPassword, 10);
+    await User.findByIdAndUpdate(userId, { $set: { passwordHash: hash } });
+    res.json({ ok: true });
+  } catch (err) {
+    next(err);
+  }
+});
+
 export default router;
