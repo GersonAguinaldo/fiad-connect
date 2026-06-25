@@ -15,6 +15,7 @@ import formationRoutes from "./routes/formation.routes.js";
 import transactionRoutes from "./routes/transaction.routes.js";
 import settingsRoutes from "./routes/settings.routes.js";
 import uploadRoutes from "./routes/upload.routes.js";
+import eventResourceRoutes from "./routes/event-resource.routes.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
@@ -36,6 +37,7 @@ app.use("/api/formations", formationRoutes);
 app.use("/api/transactions", transactionRoutes);
 app.use("/api/settings", settingsRoutes);
 app.use("/api/uploads", uploadRoutes);
+app.use("/api/event-resources", eventResourceRoutes);
 
 app.use((err, _req, res, _next) => {
   console.error(err);
