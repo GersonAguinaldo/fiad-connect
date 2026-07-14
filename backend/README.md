@@ -33,6 +33,13 @@ Pre-requis: Node 20+, MongoDB 6+ (local ou Atlas).
 | GET/PATCH | /api/settings             | mixte  |
 | POST    | /api/uploads                | auth   |
 | CRUD    | /api/event-resources        | mixte  |
+| CRUD    | /api/live-sessions          | mixte  |
+| POST    | /api/live-sessions/:id/register | auth |
+| POST    | /api/live-sessions/:id/join | auth   |
+| CRUD    | /api/formations/:id/modules | mixte  |
+| POST    | /api/formations/:id/modules/:moduleId/complete | auth |
+| GET     | /api/certificates/me        | auth   |
+| GET     | /api/certificates/verify/:code | public |
 
 Tous renvoient un JWT a placer dans `Authorization: Bearer <token>`.
 
@@ -42,6 +49,9 @@ Tous renvoient un JWT a placer dans `Authorization: Bearer <token>`.
 - `Profile` (1-1 avec User)
 - `Event` + `EventRegistration` + `EventResource`
 - `Formation` + `FormationEnrollment`
+- `FormationModule` + `FormationProgress`
+- `LiveSession` + `LiveSessionAttendee`
+- `Certificate` (PDF genere via pdfkit)
 - `Transaction`
 - `AppSettings` (singleton, frais ambassadeur)
 
