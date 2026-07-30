@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { GraduationCap, Users2, Clock, Inbox, Pencil, Trash2, ExternalLink, Award, Search, X, Upload } from "lucide-react";
 import { toast } from "sonner";
@@ -23,6 +23,8 @@ type Formation = {
   type: string;
   starts_on: string | null;
   resource_url: string | null;
+  prerequisites?: string | null;
+  duration_hours?: number | null;
   attendees?: number;
 };
 
@@ -78,7 +80,7 @@ function FormationsPage() {
     return true;
   }), [items, q, fType, fStatus, fInstructor]);
 
-  const startCreate = () => { setEditing({ id: "", title: "", instructor: "", schedule: "", status: "Inscriptions ouvertes", description: "", type: "Hebdomadaire", starts_on: null, resource_url: "" }); setOpen(true); };
+  const startCreate = () => { setEditing({ id: "", title: "", instructor: "", schedule: "", status: "Inscriptions ouvertes", description: "", type: "Hebdomadaire", starts_on: null, resource_url: "", prerequisites: "", duration_hours: null }); setOpen(true); };
   const startEdit = (f: Formation) => { setEditing({ ...f }); setOpen(true); };
 
   const remove = async (id: string) => {
@@ -98,6 +100,8 @@ function FormationsPage() {
       type: editing.type,
       starts_on: editing.starts_on || null,
       resource_url: editing.resource_url?.trim() || null,
+      prerequisites: editing.prerequisites?.trim() || null,
+      duration_hours: editing.duration_hours != null && editing.duration_hours !== ("" as never) ? Number(editing.duration_hours) : null,
     };
     if (!payload.title) { toast.error("Le titre est requis"); return; }
     if (editing.id) {

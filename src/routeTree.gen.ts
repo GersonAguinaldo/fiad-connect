@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as VerifierCertificatRouteImport } from './routes/verifier-certificat'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as AppRouteImport } from './routes/_app'
@@ -19,6 +20,7 @@ import { Route as AppMonProfilRouteImport } from './routes/_app.mon-profil'
 import { Route as AppMonEspaceRouteImport } from './routes/_app.mon-espace'
 import { Route as AppMessagesRouteImport } from './routes/_app.messages'
 import { Route as AppMesFinancesRouteImport } from './routes/_app.mes-finances'
+import { Route as AppMesCertificatsRouteImport } from './routes/_app.mes-certificats'
 import { Route as AppFormationsRouteImport } from './routes/_app.formations'
 import { Route as AppFinancesRouteImport } from './routes/_app.finances'
 import { Route as AppEvenementsRouteImport } from './routes/_app.evenements'
@@ -29,6 +31,11 @@ import { Route as AppMembresIndexRouteImport } from './routes/_app.membres.index
 import { Route as AppMembresMemberIdRouteImport } from './routes/_app.membres.$memberId'
 import { Route as AppFormationFormationIdRouteImport } from './routes/_app.formation.$formationId'
 
+const VerifierCertificatRoute = VerifierCertificatRouteImport.update({
+  id: '/verifier-certificat',
+  path: '/verifier-certificat',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
   path: '/register',
@@ -76,6 +83,11 @@ const AppMessagesRoute = AppMessagesRouteImport.update({
 const AppMesFinancesRoute = AppMesFinancesRouteImport.update({
   id: '/mes-finances',
   path: '/mes-finances',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppMesCertificatsRoute = AppMesCertificatsRouteImport.update({
+  id: '/mes-certificats',
+  path: '/mes-certificats',
   getParentRoute: () => AppRoute,
 } as any)
 const AppFormationsRoute = AppFormationsRouteImport.update({
@@ -128,12 +140,14 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/verifier-certificat': typeof VerifierCertificatRoute
   '/calendrier': typeof AppCalendrierRoute
   '/cours': typeof AppCoursRoute
   '/dashboard': typeof AppDashboardRoute
   '/evenements': typeof AppEvenementsRoute
   '/finances': typeof AppFinancesRoute
   '/formations': typeof AppFormationsRoute
+  '/mes-certificats': typeof AppMesCertificatsRoute
   '/mes-finances': typeof AppMesFinancesRoute
   '/messages': typeof AppMessagesRoute
   '/mon-espace': typeof AppMonEspaceRoute
@@ -148,12 +162,14 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/verifier-certificat': typeof VerifierCertificatRoute
   '/calendrier': typeof AppCalendrierRoute
   '/cours': typeof AppCoursRoute
   '/dashboard': typeof AppDashboardRoute
   '/evenements': typeof AppEvenementsRoute
   '/finances': typeof AppFinancesRoute
   '/formations': typeof AppFormationsRoute
+  '/mes-certificats': typeof AppMesCertificatsRoute
   '/mes-finances': typeof AppMesFinancesRoute
   '/messages': typeof AppMessagesRoute
   '/mon-espace': typeof AppMonEspaceRoute
@@ -170,12 +186,14 @@ export interface FileRoutesById {
   '/_app': typeof AppRouteWithChildren
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/verifier-certificat': typeof VerifierCertificatRoute
   '/_app/calendrier': typeof AppCalendrierRoute
   '/_app/cours': typeof AppCoursRoute
   '/_app/dashboard': typeof AppDashboardRoute
   '/_app/evenements': typeof AppEvenementsRoute
   '/_app/finances': typeof AppFinancesRoute
   '/_app/formations': typeof AppFormationsRoute
+  '/_app/mes-certificats': typeof AppMesCertificatsRoute
   '/_app/mes-finances': typeof AppMesFinancesRoute
   '/_app/messages': typeof AppMessagesRoute
   '/_app/mon-espace': typeof AppMonEspaceRoute
@@ -192,12 +210,14 @@ export interface FileRouteTypes {
     | '/'
     | '/login'
     | '/register'
+    | '/verifier-certificat'
     | '/calendrier'
     | '/cours'
     | '/dashboard'
     | '/evenements'
     | '/finances'
     | '/formations'
+    | '/mes-certificats'
     | '/mes-finances'
     | '/messages'
     | '/mon-espace'
@@ -212,12 +232,14 @@ export interface FileRouteTypes {
     | '/'
     | '/login'
     | '/register'
+    | '/verifier-certificat'
     | '/calendrier'
     | '/cours'
     | '/dashboard'
     | '/evenements'
     | '/finances'
     | '/formations'
+    | '/mes-certificats'
     | '/mes-finances'
     | '/messages'
     | '/mon-espace'
@@ -233,12 +255,14 @@ export interface FileRouteTypes {
     | '/_app'
     | '/login'
     | '/register'
+    | '/verifier-certificat'
     | '/_app/calendrier'
     | '/_app/cours'
     | '/_app/dashboard'
     | '/_app/evenements'
     | '/_app/finances'
     | '/_app/formations'
+    | '/_app/mes-certificats'
     | '/_app/mes-finances'
     | '/_app/messages'
     | '/_app/mon-espace'
@@ -255,10 +279,18 @@ export interface RootRouteChildren {
   AppRoute: typeof AppRouteWithChildren
   LoginRoute: typeof LoginRoute
   RegisterRoute: typeof RegisterRoute
+  VerifierCertificatRoute: typeof VerifierCertificatRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/verifier-certificat': {
+      id: '/verifier-certificat'
+      path: '/verifier-certificat'
+      fullPath: '/verifier-certificat'
+      preLoaderRoute: typeof VerifierCertificatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/register': {
       id: '/register'
       path: '/register'
@@ -327,6 +359,13 @@ declare module '@tanstack/react-router' {
       path: '/mes-finances'
       fullPath: '/mes-finances'
       preLoaderRoute: typeof AppMesFinancesRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/mes-certificats': {
+      id: '/_app/mes-certificats'
+      path: '/mes-certificats'
+      fullPath: '/mes-certificats'
+      preLoaderRoute: typeof AppMesCertificatsRouteImport
       parentRoute: typeof AppRoute
     }
     '/_app/formations': {
@@ -402,6 +441,7 @@ interface AppRouteChildren {
   AppEvenementsRoute: typeof AppEvenementsRoute
   AppFinancesRoute: typeof AppFinancesRoute
   AppFormationsRoute: typeof AppFormationsRoute
+  AppMesCertificatsRoute: typeof AppMesCertificatsRoute
   AppMesFinancesRoute: typeof AppMesFinancesRoute
   AppMessagesRoute: typeof AppMessagesRoute
   AppMonEspaceRoute: typeof AppMonEspaceRoute
@@ -420,6 +460,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppEvenementsRoute: AppEvenementsRoute,
   AppFinancesRoute: AppFinancesRoute,
   AppFormationsRoute: AppFormationsRoute,
+  AppMesCertificatsRoute: AppMesCertificatsRoute,
   AppMesFinancesRoute: AppMesFinancesRoute,
   AppMessagesRoute: AppMessagesRoute,
   AppMonEspaceRoute: AppMonEspaceRoute,
@@ -438,6 +479,7 @@ const rootRouteChildren: RootRouteChildren = {
   AppRoute: AppRouteWithChildren,
   LoginRoute: LoginRoute,
   RegisterRoute: RegisterRoute,
+  VerifierCertificatRoute: VerifierCertificatRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
