@@ -27,6 +27,7 @@ import { Route as AppCoursRouteImport } from './routes/_app.cours'
 import { Route as AppCalendrierRouteImport } from './routes/_app.calendrier'
 import { Route as AppMembresIndexRouteImport } from './routes/_app.membres.index'
 import { Route as AppMembresMemberIdRouteImport } from './routes/_app.membres.$memberId'
+import { Route as AppFormationFormationIdRouteImport } from './routes/_app.formation.$formationId'
 
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
@@ -117,6 +118,11 @@ const AppMembresMemberIdRoute = AppMembresMemberIdRouteImport.update({
   path: '/membres/$memberId',
   getParentRoute: () => AppRoute,
 } as any)
+const AppFormationFormationIdRoute = AppFormationFormationIdRouteImport.update({
+  id: '/formation/$formationId',
+  path: '/formation/$formationId',
+  getParentRoute: () => AppRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -134,6 +140,7 @@ export interface FileRoutesByFullPath {
   '/mon-profil': typeof AppMonProfilRoute
   '/parametres': typeof AppParametresRoute
   '/rapports': typeof AppRapportsRoute
+  '/formation/$formationId': typeof AppFormationFormationIdRoute
   '/membres/$memberId': typeof AppMembresMemberIdRoute
   '/membres/': typeof AppMembresIndexRoute
 }
@@ -153,6 +160,7 @@ export interface FileRoutesByTo {
   '/mon-profil': typeof AppMonProfilRoute
   '/parametres': typeof AppParametresRoute
   '/rapports': typeof AppRapportsRoute
+  '/formation/$formationId': typeof AppFormationFormationIdRoute
   '/membres/$memberId': typeof AppMembresMemberIdRoute
   '/membres': typeof AppMembresIndexRoute
 }
@@ -174,6 +182,7 @@ export interface FileRoutesById {
   '/_app/mon-profil': typeof AppMonProfilRoute
   '/_app/parametres': typeof AppParametresRoute
   '/_app/rapports': typeof AppRapportsRoute
+  '/_app/formation/$formationId': typeof AppFormationFormationIdRoute
   '/_app/membres/$memberId': typeof AppMembresMemberIdRoute
   '/_app/membres/': typeof AppMembresIndexRoute
 }
@@ -195,6 +204,7 @@ export interface FileRouteTypes {
     | '/mon-profil'
     | '/parametres'
     | '/rapports'
+    | '/formation/$formationId'
     | '/membres/$memberId'
     | '/membres/'
   fileRoutesByTo: FileRoutesByTo
@@ -214,6 +224,7 @@ export interface FileRouteTypes {
     | '/mon-profil'
     | '/parametres'
     | '/rapports'
+    | '/formation/$formationId'
     | '/membres/$memberId'
     | '/membres'
   id:
@@ -234,6 +245,7 @@ export interface FileRouteTypes {
     | '/_app/mon-profil'
     | '/_app/parametres'
     | '/_app/rapports'
+    | '/_app/formation/$formationId'
     | '/_app/membres/$memberId'
     | '/_app/membres/'
   fileRoutesById: FileRoutesById
@@ -373,6 +385,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppMembresMemberIdRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/formation/$formationId': {
+      id: '/_app/formation/$formationId'
+      path: '/formation/$formationId'
+      fullPath: '/formation/$formationId'
+      preLoaderRoute: typeof AppFormationFormationIdRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
@@ -389,6 +408,7 @@ interface AppRouteChildren {
   AppMonProfilRoute: typeof AppMonProfilRoute
   AppParametresRoute: typeof AppParametresRoute
   AppRapportsRoute: typeof AppRapportsRoute
+  AppFormationFormationIdRoute: typeof AppFormationFormationIdRoute
   AppMembresMemberIdRoute: typeof AppMembresMemberIdRoute
   AppMembresIndexRoute: typeof AppMembresIndexRoute
 }
@@ -406,6 +426,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppMonProfilRoute: AppMonProfilRoute,
   AppParametresRoute: AppParametresRoute,
   AppRapportsRoute: AppRapportsRoute,
+  AppFormationFormationIdRoute: AppFormationFormationIdRoute,
   AppMembresMemberIdRoute: AppMembresMemberIdRoute,
   AppMembresIndexRoute: AppMembresIndexRoute,
 }
