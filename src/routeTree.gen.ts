@@ -23,6 +23,7 @@ import { Route as AppFormationsRouteImport } from './routes/_app.formations'
 import { Route as AppFinancesRouteImport } from './routes/_app.finances'
 import { Route as AppEvenementsRouteImport } from './routes/_app.evenements'
 import { Route as AppDashboardRouteImport } from './routes/_app.dashboard'
+import { Route as AppCoursRouteImport } from './routes/_app.cours'
 import { Route as AppCalendrierRouteImport } from './routes/_app.calendrier'
 import { Route as AppMembresIndexRouteImport } from './routes/_app.membres.index'
 import { Route as AppMembresMemberIdRouteImport } from './routes/_app.membres.$memberId'
@@ -96,6 +97,11 @@ const AppDashboardRoute = AppDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AppRoute,
 } as any)
+const AppCoursRoute = AppCoursRouteImport.update({
+  id: '/cours',
+  path: '/cours',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppCalendrierRoute = AppCalendrierRouteImport.update({
   id: '/calendrier',
   path: '/calendrier',
@@ -117,6 +123,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/calendrier': typeof AppCalendrierRoute
+  '/cours': typeof AppCoursRoute
   '/dashboard': typeof AppDashboardRoute
   '/evenements': typeof AppEvenementsRoute
   '/finances': typeof AppFinancesRoute
@@ -135,6 +142,7 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/calendrier': typeof AppCalendrierRoute
+  '/cours': typeof AppCoursRoute
   '/dashboard': typeof AppDashboardRoute
   '/evenements': typeof AppEvenementsRoute
   '/finances': typeof AppFinancesRoute
@@ -155,6 +163,7 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/_app/calendrier': typeof AppCalendrierRoute
+  '/_app/cours': typeof AppCoursRoute
   '/_app/dashboard': typeof AppDashboardRoute
   '/_app/evenements': typeof AppEvenementsRoute
   '/_app/finances': typeof AppFinancesRoute
@@ -175,6 +184,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/register'
     | '/calendrier'
+    | '/cours'
     | '/dashboard'
     | '/evenements'
     | '/finances'
@@ -193,6 +203,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/register'
     | '/calendrier'
+    | '/cours'
     | '/dashboard'
     | '/evenements'
     | '/finances'
@@ -212,6 +223,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/register'
     | '/_app/calendrier'
+    | '/_app/cours'
     | '/_app/dashboard'
     | '/_app/evenements'
     | '/_app/finances'
@@ -333,6 +345,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppDashboardRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/cours': {
+      id: '/_app/cours'
+      path: '/cours'
+      fullPath: '/cours'
+      preLoaderRoute: typeof AppCoursRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/calendrier': {
       id: '/_app/calendrier'
       path: '/calendrier'
@@ -359,6 +378,7 @@ declare module '@tanstack/react-router' {
 
 interface AppRouteChildren {
   AppCalendrierRoute: typeof AppCalendrierRoute
+  AppCoursRoute: typeof AppCoursRoute
   AppDashboardRoute: typeof AppDashboardRoute
   AppEvenementsRoute: typeof AppEvenementsRoute
   AppFinancesRoute: typeof AppFinancesRoute
@@ -375,6 +395,7 @@ interface AppRouteChildren {
 
 const AppRouteChildren: AppRouteChildren = {
   AppCalendrierRoute: AppCalendrierRoute,
+  AppCoursRoute: AppCoursRoute,
   AppDashboardRoute: AppDashboardRoute,
   AppEvenementsRoute: AppEvenementsRoute,
   AppFinancesRoute: AppFinancesRoute,
