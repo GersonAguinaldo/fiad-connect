@@ -7,7 +7,9 @@ import { useAuth } from "@/hooks/use-auth";
 const ADMIN_NAV = [
   { to: "/dashboard", label: "Vue d'ensemble" },
   { to: "/membres", label: "Membres" },
+  { to: "/cours", label: "Cours en direct" },
   { to: "/formations", label: "Formations" },
+  { to: "/mes-certificats", label: "Certificats" },
   { to: "/evenements", label: "Événements" },
   { to: "/calendrier", label: "Calendrier" },
   { to: "/finances", label: "Finances" },
@@ -19,7 +21,9 @@ const ADMIN_NAV = [
 const MEMBER_NAV = [
   { to: "/mon-espace", label: "Mon espace" },
   { to: "/mon-profil", label: "Mon profil" },
+  { to: "/cours", label: "Cours en direct" },
   { to: "/formations", label: "Formations" },
+  { to: "/mes-certificats", label: "Mes certificats" },
   { to: "/evenements", label: "Événements" },
   { to: "/calendrier", label: "Calendrier" },
   { to: "/mes-finances", label: "Mes finances" },

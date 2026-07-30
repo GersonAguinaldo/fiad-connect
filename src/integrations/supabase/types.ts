@@ -41,6 +41,44 @@ export type Database = {
         }
         Relationships: []
       }
+      certificates: {
+        Row: {
+          code: string
+          formation_id: string
+          formation_title: string | null
+          holder_name: string | null
+          id: string
+          issued_at: string
+          user_id: string
+        }
+        Insert: {
+          code: string
+          formation_id: string
+          formation_title?: string | null
+          holder_name?: string | null
+          id?: string
+          issued_at?: string
+          user_id: string
+        }
+        Update: {
+          code?: string
+          formation_id?: string
+          formation_title?: string | null
+          holder_name?: string | null
+          id?: string
+          issued_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "certificates_formation_id_fkey"
+            columns: ["formation_id"]
+            isOneToOne: false
+            referencedRelation: "formations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       event_registrations: {
         Row: {
           created_at: string
@@ -212,12 +250,97 @@ export type Database = {
           },
         ]
       }
+      formation_module_progress: {
+        Row: {
+          completed: boolean
+          completed_at: string
+          formation_id: string
+          id: string
+          module_id: string
+          user_id: string
+        }
+        Insert: {
+          completed?: boolean
+          completed_at?: string
+          formation_id: string
+          id?: string
+          module_id: string
+          user_id: string
+        }
+        Update: {
+          completed?: boolean
+          completed_at?: string
+          formation_id?: string
+          id?: string
+          module_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "formation_module_progress_formation_id_fkey"
+            columns: ["formation_id"]
+            isOneToOne: false
+            referencedRelation: "formations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "formation_module_progress_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "formation_modules"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      formation_modules: {
+        Row: {
+          created_at: string
+          description: string | null
+          duration_minutes: number | null
+          formation_id: string
+          id: string
+          position: number
+          resource_url: string | null
+          title: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          duration_minutes?: number | null
+          formation_id: string
+          id?: string
+          position?: number
+          resource_url?: string | null
+          title: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          duration_minutes?: number | null
+          formation_id?: string
+          id?: string
+          position?: number
+          resource_url?: string | null
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "formation_modules_formation_id_fkey"
+            columns: ["formation_id"]
+            isOneToOne: false
+            referencedRelation: "formations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       formations: {
         Row: {
           created_at: string
           description: string | null
+          duration_hours: number | null
           id: string
           instructor: string | null
+          prerequisites: string | null
           resource_url: string | null
           schedule: string | null
           starts_on: string | null
@@ -229,8 +352,10 @@ export type Database = {
         Insert: {
           created_at?: string
           description?: string | null
+          duration_hours?: number | null
           id?: string
           instructor?: string | null
+          prerequisites?: string | null
           resource_url?: string | null
           schedule?: string | null
           starts_on?: string | null
@@ -242,14 +367,140 @@ export type Database = {
         Update: {
           created_at?: string
           description?: string | null
+          duration_hours?: number | null
           id?: string
           instructor?: string | null
+          prerequisites?: string | null
           resource_url?: string | null
           schedule?: string | null
           starts_on?: string | null
           status?: string
           title?: string
           type?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      live_session_registrations: {
+        Row: {
+          created_at: string
+          id: string
+          joined_at: string | null
+          reminder_opt_in: boolean
+          session_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          joined_at?: string | null
+          reminder_opt_in?: boolean
+          session_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          joined_at?: string | null
+          reminder_opt_in?: boolean
+          session_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "live_session_registrations_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "live_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      live_session_resources: {
+        Row: {
+          created_at: string
+          id: string
+          kind: string
+          mime_type: string | null
+          session_id: string
+          storage_path: string | null
+          title: string
+          url: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          kind?: string
+          mime_type?: string | null
+          session_id: string
+          storage_path?: string | null
+          title: string
+          url?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          kind?: string
+          mime_type?: string | null
+          session_id?: string
+          storage_path?: string | null
+          title?: string
+          url?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "live_session_resources_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "live_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      live_sessions: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          description: string | null
+          ends_at: string | null
+          host: string | null
+          id: string
+          meeting_url: string | null
+          notes_url: string | null
+          recording_url: string | null
+          starts_at: string
+          status: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          ends_at?: string | null
+          host?: string | null
+          id?: string
+          meeting_url?: string | null
+          notes_url?: string | null
+          recording_url?: string | null
+          starts_at: string
+          status?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          ends_at?: string | null
+          host?: string | null
+          id?: string
+          meeting_url?: string | null
+          notes_url?: string | null
+          recording_url?: string | null
+          starts_at?: string
+          status?: string
+          title?: string
           updated_at?: string
         }
         Relationships: []

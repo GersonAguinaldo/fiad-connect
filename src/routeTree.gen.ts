@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as VerifierCertificatRouteImport } from './routes/verifier-certificat'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as AppRouteImport } from './routes/_app'
@@ -19,14 +20,22 @@ import { Route as AppMonProfilRouteImport } from './routes/_app.mon-profil'
 import { Route as AppMonEspaceRouteImport } from './routes/_app.mon-espace'
 import { Route as AppMessagesRouteImport } from './routes/_app.messages'
 import { Route as AppMesFinancesRouteImport } from './routes/_app.mes-finances'
+import { Route as AppMesCertificatsRouteImport } from './routes/_app.mes-certificats'
 import { Route as AppFormationsRouteImport } from './routes/_app.formations'
 import { Route as AppFinancesRouteImport } from './routes/_app.finances'
 import { Route as AppEvenementsRouteImport } from './routes/_app.evenements'
 import { Route as AppDashboardRouteImport } from './routes/_app.dashboard'
+import { Route as AppCoursRouteImport } from './routes/_app.cours'
 import { Route as AppCalendrierRouteImport } from './routes/_app.calendrier'
 import { Route as AppMembresIndexRouteImport } from './routes/_app.membres.index'
 import { Route as AppMembresMemberIdRouteImport } from './routes/_app.membres.$memberId'
+import { Route as AppFormationFormationIdRouteImport } from './routes/_app.formation.$formationId'
 
+const VerifierCertificatRoute = VerifierCertificatRouteImport.update({
+  id: '/verifier-certificat',
+  path: '/verifier-certificat',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
   path: '/register',
@@ -76,6 +85,11 @@ const AppMesFinancesRoute = AppMesFinancesRouteImport.update({
   path: '/mes-finances',
   getParentRoute: () => AppRoute,
 } as any)
+const AppMesCertificatsRoute = AppMesCertificatsRouteImport.update({
+  id: '/mes-certificats',
+  path: '/mes-certificats',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppFormationsRoute = AppFormationsRouteImport.update({
   id: '/formations',
   path: '/formations',
@@ -96,6 +110,11 @@ const AppDashboardRoute = AppDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AppRoute,
 } as any)
+const AppCoursRoute = AppCoursRouteImport.update({
+  id: '/cours',
+  path: '/cours',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppCalendrierRoute = AppCalendrierRouteImport.update({
   id: '/calendrier',
   path: '/calendrier',
@@ -111,22 +130,31 @@ const AppMembresMemberIdRoute = AppMembresMemberIdRouteImport.update({
   path: '/membres/$memberId',
   getParentRoute: () => AppRoute,
 } as any)
+const AppFormationFormationIdRoute = AppFormationFormationIdRouteImport.update({
+  id: '/formation/$formationId',
+  path: '/formation/$formationId',
+  getParentRoute: () => AppRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/verifier-certificat': typeof VerifierCertificatRoute
   '/calendrier': typeof AppCalendrierRoute
+  '/cours': typeof AppCoursRoute
   '/dashboard': typeof AppDashboardRoute
   '/evenements': typeof AppEvenementsRoute
   '/finances': typeof AppFinancesRoute
   '/formations': typeof AppFormationsRoute
+  '/mes-certificats': typeof AppMesCertificatsRoute
   '/mes-finances': typeof AppMesFinancesRoute
   '/messages': typeof AppMessagesRoute
   '/mon-espace': typeof AppMonEspaceRoute
   '/mon-profil': typeof AppMonProfilRoute
   '/parametres': typeof AppParametresRoute
   '/rapports': typeof AppRapportsRoute
+  '/formation/$formationId': typeof AppFormationFormationIdRoute
   '/membres/$memberId': typeof AppMembresMemberIdRoute
   '/membres/': typeof AppMembresIndexRoute
 }
@@ -134,17 +162,21 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/verifier-certificat': typeof VerifierCertificatRoute
   '/calendrier': typeof AppCalendrierRoute
+  '/cours': typeof AppCoursRoute
   '/dashboard': typeof AppDashboardRoute
   '/evenements': typeof AppEvenementsRoute
   '/finances': typeof AppFinancesRoute
   '/formations': typeof AppFormationsRoute
+  '/mes-certificats': typeof AppMesCertificatsRoute
   '/mes-finances': typeof AppMesFinancesRoute
   '/messages': typeof AppMessagesRoute
   '/mon-espace': typeof AppMonEspaceRoute
   '/mon-profil': typeof AppMonProfilRoute
   '/parametres': typeof AppParametresRoute
   '/rapports': typeof AppRapportsRoute
+  '/formation/$formationId': typeof AppFormationFormationIdRoute
   '/membres/$memberId': typeof AppMembresMemberIdRoute
   '/membres': typeof AppMembresIndexRoute
 }
@@ -154,17 +186,21 @@ export interface FileRoutesById {
   '/_app': typeof AppRouteWithChildren
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/verifier-certificat': typeof VerifierCertificatRoute
   '/_app/calendrier': typeof AppCalendrierRoute
+  '/_app/cours': typeof AppCoursRoute
   '/_app/dashboard': typeof AppDashboardRoute
   '/_app/evenements': typeof AppEvenementsRoute
   '/_app/finances': typeof AppFinancesRoute
   '/_app/formations': typeof AppFormationsRoute
+  '/_app/mes-certificats': typeof AppMesCertificatsRoute
   '/_app/mes-finances': typeof AppMesFinancesRoute
   '/_app/messages': typeof AppMessagesRoute
   '/_app/mon-espace': typeof AppMonEspaceRoute
   '/_app/mon-profil': typeof AppMonProfilRoute
   '/_app/parametres': typeof AppParametresRoute
   '/_app/rapports': typeof AppRapportsRoute
+  '/_app/formation/$formationId': typeof AppFormationFormationIdRoute
   '/_app/membres/$memberId': typeof AppMembresMemberIdRoute
   '/_app/membres/': typeof AppMembresIndexRoute
 }
@@ -174,17 +210,21 @@ export interface FileRouteTypes {
     | '/'
     | '/login'
     | '/register'
+    | '/verifier-certificat'
     | '/calendrier'
+    | '/cours'
     | '/dashboard'
     | '/evenements'
     | '/finances'
     | '/formations'
+    | '/mes-certificats'
     | '/mes-finances'
     | '/messages'
     | '/mon-espace'
     | '/mon-profil'
     | '/parametres'
     | '/rapports'
+    | '/formation/$formationId'
     | '/membres/$memberId'
     | '/membres/'
   fileRoutesByTo: FileRoutesByTo
@@ -192,17 +232,21 @@ export interface FileRouteTypes {
     | '/'
     | '/login'
     | '/register'
+    | '/verifier-certificat'
     | '/calendrier'
+    | '/cours'
     | '/dashboard'
     | '/evenements'
     | '/finances'
     | '/formations'
+    | '/mes-certificats'
     | '/mes-finances'
     | '/messages'
     | '/mon-espace'
     | '/mon-profil'
     | '/parametres'
     | '/rapports'
+    | '/formation/$formationId'
     | '/membres/$memberId'
     | '/membres'
   id:
@@ -211,17 +255,21 @@ export interface FileRouteTypes {
     | '/_app'
     | '/login'
     | '/register'
+    | '/verifier-certificat'
     | '/_app/calendrier'
+    | '/_app/cours'
     | '/_app/dashboard'
     | '/_app/evenements'
     | '/_app/finances'
     | '/_app/formations'
+    | '/_app/mes-certificats'
     | '/_app/mes-finances'
     | '/_app/messages'
     | '/_app/mon-espace'
     | '/_app/mon-profil'
     | '/_app/parametres'
     | '/_app/rapports'
+    | '/_app/formation/$formationId'
     | '/_app/membres/$memberId'
     | '/_app/membres/'
   fileRoutesById: FileRoutesById
@@ -231,10 +279,18 @@ export interface RootRouteChildren {
   AppRoute: typeof AppRouteWithChildren
   LoginRoute: typeof LoginRoute
   RegisterRoute: typeof RegisterRoute
+  VerifierCertificatRoute: typeof VerifierCertificatRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/verifier-certificat': {
+      id: '/verifier-certificat'
+      path: '/verifier-certificat'
+      fullPath: '/verifier-certificat'
+      preLoaderRoute: typeof VerifierCertificatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/register': {
       id: '/register'
       path: '/register'
@@ -305,6 +361,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppMesFinancesRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/mes-certificats': {
+      id: '/_app/mes-certificats'
+      path: '/mes-certificats'
+      fullPath: '/mes-certificats'
+      preLoaderRoute: typeof AppMesCertificatsRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/formations': {
       id: '/_app/formations'
       path: '/formations'
@@ -333,6 +396,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppDashboardRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/cours': {
+      id: '/_app/cours'
+      path: '/cours'
+      fullPath: '/cours'
+      preLoaderRoute: typeof AppCoursRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/calendrier': {
       id: '/_app/calendrier'
       path: '/calendrier'
@@ -354,37 +424,50 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppMembresMemberIdRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/formation/$formationId': {
+      id: '/_app/formation/$formationId'
+      path: '/formation/$formationId'
+      fullPath: '/formation/$formationId'
+      preLoaderRoute: typeof AppFormationFormationIdRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
 interface AppRouteChildren {
   AppCalendrierRoute: typeof AppCalendrierRoute
+  AppCoursRoute: typeof AppCoursRoute
   AppDashboardRoute: typeof AppDashboardRoute
   AppEvenementsRoute: typeof AppEvenementsRoute
   AppFinancesRoute: typeof AppFinancesRoute
   AppFormationsRoute: typeof AppFormationsRoute
+  AppMesCertificatsRoute: typeof AppMesCertificatsRoute
   AppMesFinancesRoute: typeof AppMesFinancesRoute
   AppMessagesRoute: typeof AppMessagesRoute
   AppMonEspaceRoute: typeof AppMonEspaceRoute
   AppMonProfilRoute: typeof AppMonProfilRoute
   AppParametresRoute: typeof AppParametresRoute
   AppRapportsRoute: typeof AppRapportsRoute
+  AppFormationFormationIdRoute: typeof AppFormationFormationIdRoute
   AppMembresMemberIdRoute: typeof AppMembresMemberIdRoute
   AppMembresIndexRoute: typeof AppMembresIndexRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
   AppCalendrierRoute: AppCalendrierRoute,
+  AppCoursRoute: AppCoursRoute,
   AppDashboardRoute: AppDashboardRoute,
   AppEvenementsRoute: AppEvenementsRoute,
   AppFinancesRoute: AppFinancesRoute,
   AppFormationsRoute: AppFormationsRoute,
+  AppMesCertificatsRoute: AppMesCertificatsRoute,
   AppMesFinancesRoute: AppMesFinancesRoute,
   AppMessagesRoute: AppMessagesRoute,
   AppMonEspaceRoute: AppMonEspaceRoute,
   AppMonProfilRoute: AppMonProfilRoute,
   AppParametresRoute: AppParametresRoute,
   AppRapportsRoute: AppRapportsRoute,
+  AppFormationFormationIdRoute: AppFormationFormationIdRoute,
   AppMembresMemberIdRoute: AppMembresMemberIdRoute,
   AppMembresIndexRoute: AppMembresIndexRoute,
 }
@@ -396,6 +479,7 @@ const rootRouteChildren: RootRouteChildren = {
   AppRoute: AppRouteWithChildren,
   LoginRoute: LoginRoute,
   RegisterRoute: RegisterRoute,
+  VerifierCertificatRoute: VerifierCertificatRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

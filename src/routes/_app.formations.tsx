@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { GraduationCap, Users2, Clock, Inbox, Pencil, Trash2, ExternalLink, Award, Search, X, Upload } from "lucide-react";
 import { toast } from "sonner";
@@ -23,6 +23,8 @@ type Formation = {
   type: string;
   starts_on: string | null;
   resource_url: string | null;
+  prerequisites?: string | null;
+  duration_hours?: number | null;
   attendees?: number;
 };
 
@@ -78,7 +80,7 @@ function FormationsPage() {
     return true;
   }), [items, q, fType, fStatus, fInstructor]);
 
-  const startCreate = () => { setEditing({ id: "", title: "", instructor: "", schedule: "", status: "Inscriptions ouvertes", description: "", type: "Hebdomadaire", starts_on: null, resource_url: "" }); setOpen(true); };
+  const startCreate = () => { setEditing({ id: "", title: "", instructor: "", schedule: "", status: "Inscriptions ouvertes", description: "", type: "Hebdomadaire", starts_on: null, resource_url: "", prerequisites: "", duration_hours: null }); setOpen(true); };
   const startEdit = (f: Formation) => { setEditing({ ...f }); setOpen(true); };
 
   const remove = async (id: string) => {
@@ -98,6 +100,8 @@ function FormationsPage() {
       type: editing.type,
       starts_on: editing.starts_on || null,
       resource_url: editing.resource_url?.trim() || null,
+      prerequisites: editing.prerequisites?.trim() || null,
+      duration_hours: editing.duration_hours != null && editing.duration_hours !== ("" as never) ? Number(editing.duration_hours) : null,
     };
     if (!payload.title) { toast.error("Le titre est requis"); return; }
     if (editing.id) {
@@ -218,6 +222,9 @@ function FormationsPage() {
                     <ExternalLink className="h-4 w-4" /> Ressources & documents
                   </a>
                 )}
+                <Link to="/formation/$formationId" params={{ formationId: f.id }} className="mt-2 text-sm text-primary font-semibold inline-flex items-center gap-1.5 hover:underline">
+                  <Award className="h-4 w-4" /> Voir le parcours & les modules
+                </Link>
 
                 <div className="mt-auto pt-4">
                   {enr ? (
@@ -270,6 +277,10 @@ function FormationsPage() {
               </Field>
             </div>
             <Field label="Formateur"><input className={inputCls} value={editing.instructor ?? ""} onChange={(e) => setEditing({ ...editing, instructor: e.target.value })} maxLength={120} /></Field>
+            <div className="grid grid-cols-2 gap-3">
+              <Field label="Durée (heures)"><input type="number" className={inputCls} value={editing.duration_hours ?? ""} onChange={(e) => setEditing({ ...editing, duration_hours: e.target.value ? Number(e.target.value) : null })} /></Field>
+              <Field label="Prérequis"><input className={inputCls} value={editing.prerequisites ?? ""} onChange={(e) => setEditing({ ...editing, prerequisites: e.target.value })} maxLength={300} /></Field>
+            </div>
             <div className="grid grid-cols-2 gap-3">
               <Field label="Calendrier"><input className={inputCls} value={editing.schedule ?? ""} onChange={(e) => setEditing({ ...editing, schedule: e.target.value })} placeholder="Lundi 19h00 GMT" maxLength={120} /></Field>
               <Field label="Date de début"><input type="date" className={inputCls} value={editing.starts_on ?? ""} onChange={(e) => setEditing({ ...editing, starts_on: e.target.value || null })} /></Field>
