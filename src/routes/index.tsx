@@ -9,26 +9,27 @@ export const Route = createFileRoute("/")({
 
 function LandingPage() {
   return (
-    <div className="relative min-h-screen bg-gradient-to-br from-primary-soft via-background to-primary-soft">
+    <div className="relative min-h-screen">
       <div
         className="absolute inset-0 bg-cover bg-center"
         style={{ backgroundImage: `url(${bgAsset.url})` }}
         aria-hidden
       />
-      <div className="absolute inset-0" style={{ backgroundColor: "#140B0B21" }} aria-hidden />
+      <div className="absolute inset-0 bg-primary/75 mix-blend-multiply" aria-hidden />
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/60 via-primary/40 to-primary/80" aria-hidden />
       <div className="relative">
       <header className="px-6 lg:px-12 py-5 flex items-center justify-between">
         <FiadLogo to="/" />
         <div className="flex items-center gap-2">
           <Link
             to="/login"
-            className="px-4 py-2 text-sm font-medium text-foreground hover:text-primary"
+            className="px-4 py-2 text-sm font-medium text-white/90 hover:text-white"
           >
             Se connecter
           </Link>
           <Link
             to="/register"
-            className="px-4 py-2 text-sm font-semibold rounded-full bg-primary text-primary-foreground hover:bg-primary/90 transition shadow-[var(--shadow-card)]"
+            className="px-4 py-2 text-sm font-semibold rounded-full bg-white text-primary hover:bg-white/90 transition shadow-[var(--shadow-card)]"
           >
             Adhérer
           </Link>
@@ -37,28 +38,24 @@ function LandingPage() {
 
       <section className="px-6 lg:px-12 pt-12 lg:pt-20 pb-24 max-w-7xl mx-auto grid lg:grid-cols-12 gap-12 items-center">
         <div className="lg:col-span-7">
-          {/* <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-card border border-border text-xs font-semibold text-primary">
-            <Sparkles className="h-3.5 w-3.5" />
-            Plateforme officielle La PaDI
-          </div> */}
-          <h1 className="mt-6 text-5xl lg:text-6xl font-display font-extrabold tracking-tight text-foreground leading-[1.05]">
+          <h1 className="mt-6 text-5xl lg:text-6xl font-display font-extrabold tracking-tight text-white leading-[1.05]">
             La maison numérique des
-            <span className="block text-primary">Ambassadeurs du Développement.</span>
+            <span className="block text-white/95">Ambassadeurs du Développement.</span>
           </h1>
-          <p className="mt-6 text-lg text-muted-foreground max-w-xl">
+          <p className="mt-6 text-lg text-white/85 max-w-xl">
             Centralisez les adhésions, suivez les formations, animez les événements et gérez les
             cotisations de l'association — au sein d'une console pensée pour les leaders La PaDI.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <Link
               to="/register"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-primary-foreground font-semibold shadow-[var(--shadow-elevated)] hover:bg-primary/90 transition"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white text-primary font-semibold shadow-[var(--shadow-elevated)] hover:bg-white/90 transition"
             >
               Commencer mon adhésion <ArrowRight className="h-4 w-4" />
             </Link>
             <Link
               to="/dashboard"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-card text-foreground font-semibold border border-border hover:bg-secondary transition"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white/15 text-white font-semibold border border-white/30 hover:bg-white/25 transition backdrop-blur-sm"
             >
               <Eye className="h-4 w-4" /> Voir la console
             </Link>
