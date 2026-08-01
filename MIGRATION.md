@@ -15,6 +15,25 @@ Ce document trace le plan de bascule. Le backend cible est scaffolde dans `./bac
 - Stockage fichiers: dossier `backend/uploads` servi en statique (ou S3 plus tard).
 - Auth: JWT stocke dans `localStorage` (cle `lapadi_token`), envoye en `Authorization: Bearer ...`.
 
+## Commutateur de bascule (en place)
+
+Le frontend embarque desormais un commutateur :
+
+- `src/lib/api.ts` — wrapper `fetch` + JWT (`lapadi_token`), constante `LOCAL_BACKEND`.
+- `src/lib/auth-backend.ts` — couche d'auth unifiee (`signIn`, `signUp`, `signOut`, `getCurrentUser`, `onAuthChange`).
+
+Regle : **si `VITE_API_URL` est defini, l'app parle au backend Express ; sinon elle reste sur Lovable Cloud.**
+Copier `.env.local.example` en `.env.local` pour basculer en local.
+
+### Deja migre
+- `src/hooks/use-auth.tsx` (session, role, refresh, signOut)
+- `src/routes/login.tsx`
+- `src/routes/register.tsx` (creation de compte)
+
+### Reste a migrer (appels `supabase.from(...)` directs)
+Pages CRUD : membres, evenements, formations, cours, finances, mes-finances, mon-espace,
+mon-profil, parametres, rapports, calendrier, certificats, dashboard.
+
 ## Etapes de bascule (ordre conseille)
 
 1. **Lancer le backend en local** (`backend/README.md`) et seeder l'admin.
