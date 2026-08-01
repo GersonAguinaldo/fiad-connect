@@ -2,7 +2,8 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
 import { FiadLogo } from "@/components/fiad-logo";
-import { supabase } from "@/integrations/supabase/client";
+import { signIn, getCurrentUser } from "@/lib/auth-backend";
+import { useAuth } from "@/hooks/use-auth";
 import authBg from "@/assets/auth-bg.jpg";
 
 export const Route = createFileRoute("/login")({
@@ -17,6 +18,7 @@ export const Route = createFileRoute("/login")({
 
 function LoginPage() {
   const navigate = useNavigate();
+  const { refresh } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -24,24 +26,16 @@ function LoginPage() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setSubmitting(true);
-    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error) {
+    try {
+      await signIn(email, password);
+      const current = await getCurrentUser();
+      await refresh();
+      navigate({ to: current?.role === "admin" ? "/dashboard" : "/mon-espace" });
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Connexion impossible");
+    } finally {
       setSubmitting(false);
-      toast.error(error.message);
-      return;
     }
-    // Determine destination based on role
-    const uid = data.user?.id;
-    let dest: "/dashboard" | "/mon-espace" = "/mon-espace";
-    if (uid) {
-      const { data: roles } = await supabase
-        .from("user_roles")
-        .select("role")
-        .eq("user_id", uid);
-      if (roles?.some((r) => r.role === "admin")) dest = "/dashboard";
-    }
-    setSubmitting(false);
-    navigate({ to: dest });
   }
 
   return (
