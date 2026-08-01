@@ -1,6 +1,7 @@
 import { FiadLogo } from "@/components/fiad-logo";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Eye, Globe2, GraduationCap, Users } from "lucide-react";
+import bgAsset from "@/assets/lapadi-background.png.asset.json";
 
 export const Route = createFileRoute("/")({
   component: LandingPage,
@@ -8,7 +9,14 @@ export const Route = createFileRoute("/")({
 
 function LandingPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary-soft via-background to-primary-soft">
+    <div className="relative min-h-screen bg-gradient-to-br from-primary-soft via-background to-primary-soft">
+      <div
+        className="absolute inset-0 bg-cover bg-center"
+        style={{ backgroundImage: `url(${bgAsset.url})` }}
+        aria-hidden
+      />
+      <div className="absolute inset-0" style={{ backgroundColor: "#140B0B21" }} aria-hidden />
+      <div className="relative">
       <header className="px-6 lg:px-12 py-5 flex items-center justify-between">
         <FiadLogo to="/" />
         <div className="flex items-center gap-2">
@@ -90,6 +98,7 @@ function LandingPage() {
           ))}
         </div>
       </section>
+      </div>
     </div>
   );
 }
