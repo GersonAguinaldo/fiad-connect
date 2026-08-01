@@ -2,6 +2,7 @@ import { FiadLogo } from "@/components/fiad-logo";
 import { PaymentFlow } from "@/components/payment-flow";
 import authBg from "@/assets/auth-bg.jpg";
 import { supabase } from "@/integrations/supabase/client";
+import { signUp } from "@/lib/auth-backend";
 import {
   AMBASSADOR_CATEGORY,
   DEFAULT_AMBASSADOR_FEE_AMOUNT,
