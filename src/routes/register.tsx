@@ -2,6 +2,7 @@ import { FiadLogo } from "@/components/fiad-logo";
 import { PaymentFlow } from "@/components/payment-flow";
 import authBg from "@/assets/auth-bg.jpg";
 import { supabase } from "@/integrations/supabase/client";
+import { signUp } from "@/lib/auth-backend";
 import {
   AMBASSADOR_CATEGORY,
   DEFAULT_AMBASSADOR_FEE_AMOUNT,
@@ -213,34 +214,31 @@ function RegisterPage() {
     if (!validateCurrentStep(3)) return;
 
     setSubmitting(true);
-    const { data, error } = await supabase.auth.signUp({
-      email: form.email.trim(),
-      password: form.password,
-      options: {
-        emailRedirectTo: `${window.location.origin}/mon-espace`,
-        data: {
-          first_name: form.firstName.trim(),
-          last_name: form.lastName.trim(),
-          phone: fullPhone,
-          sex: form.sex,
-          birth_date: form.birthDate,
-          birth_place: form.birthPlace.trim(),
-          country: form.country.trim(),
-          city: form.city.trim(),
-          address: form.address.trim(),
-          membership_type: "Classique",
-        },
-      },
-    });
-    setSubmitting(false);
-
-    if (error) {
-      toast.error(error.message);
+    let userId: string | null = null;
+    let hasSession = false;
+    try {
+      const result = await signUp({
+        email: form.email.trim(),
+        password: form.password,
+        firstName: form.firstName.trim(),
+        lastName: form.lastName.trim(),
+        phone: fullPhone,
+        sex: form.sex,
+        birthDate: form.birthDate,
+        birthPlace: form.birthPlace.trim(),
+        country: form.country.trim(),
+        city: form.city.trim(),
+        address: form.address.trim(),
+        redirectTo: `${window.location.origin}/mon-espace`,
+      });
+      userId = result.user?.id ?? null;
+      hasSession = result.hasSession;
+    } catch (err) {
+      setSubmitting(false);
+      toast.error(err instanceof Error ? err.message : "Inscription impossible");
       return;
     }
-
-    const userId = data.user?.id ?? null;
-    const hasSession = !!data.session;
+    setSubmitting(false);
 
     if (form.wantsAmbassador && userId && hasSession) {
       setCreatedUserId(userId);
