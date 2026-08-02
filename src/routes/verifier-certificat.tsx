@@ -32,12 +32,27 @@ function VerifyPage() {
   async function check(c: string) {
     if (!c.trim()) return;
     setBusy(true);
-    const { data } = await supabase
-      .from("certificates")
-      .select("code,holder_name,formation_title,issued_at")
-      .eq("code", c.trim().toUpperCase())
-      .maybeSingle();
-    setResult((data as Cert) ?? "none");
+    // Vérification publique : appel anonyme (sans session) d'une fonction
+    // qui ne renvoie qu'un certificat correspondant exactement au code.
+    let cert: Cert | null = null;
+    try {
+      const res = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/rest/v1/rpc/verify_certificate`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            apikey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
+          },
+          body: JSON.stringify({ _code: c.trim().toUpperCase() }),
+        },
+      );
+      const rows = res.ok ? ((await res.json()) as Cert[]) : [];
+      cert = Array.isArray(rows) && rows.length > 0 ? rows[0] : null;
+    } catch {
+      cert = null;
+    }
+    setResult(cert ?? "none");
     setBusy(false);
   }
 
