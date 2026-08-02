@@ -3,6 +3,7 @@ import { Search, ShieldCheck, UserRound, Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { FiadLogo } from "./fiad-logo";
 import { useAuth } from "@/hooks/use-auth";
+import { BackendStatusBadge, BackendOfflineBanner } from "./backend-status";
 
 const ADMIN_NAV = [
   { to: "/dashboard", label: "Vue d'ensemble" },
@@ -73,6 +74,7 @@ export function AppShell() {
           </div>
           <div className="flex-1 md:hidden" />
           <div className="flex items-center gap-1.5 text-muted-foreground shrink-0">
+            <BackendStatusBadge />
             <button
               onClick={handleLogout}
               title="Se déconnecter"
@@ -154,6 +156,7 @@ export function AppShell() {
           </div>
         )}
       </header>
+      <BackendOfflineBanner />
 
       <main className="px-3 sm:px-6 py-4 sm:py-6">
         <Outlet />
