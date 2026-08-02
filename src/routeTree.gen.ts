@@ -9,36 +9,35 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as VerifierCertificatRouteImport } from './routes/verifier-certificat'
-import { Route as RegisterRouteImport } from './routes/register'
-import { Route as LoginRouteImport } from './routes/login'
-import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as AppRapportsRouteImport } from './routes/_app.rapports'
-import { Route as AppParametresRouteImport } from './routes/_app.parametres'
-import { Route as AppMonProfilRouteImport } from './routes/_app.mon-profil'
-import { Route as AppMonEspaceRouteImport } from './routes/_app.mon-espace'
-import { Route as AppMessagesRouteImport } from './routes/_app.messages'
-import { Route as AppMesFinancesRouteImport } from './routes/_app.mes-finances'
-import { Route as AppMesCertificatsRouteImport } from './routes/_app.mes-certificats'
-import { Route as AppFormationsRouteImport } from './routes/_app.formations'
-import { Route as AppFinancesRouteImport } from './routes/_app.finances'
-import { Route as AppEvenementsRouteImport } from './routes/_app.evenements'
-import { Route as AppDashboardRouteImport } from './routes/_app.dashboard'
-import { Route as AppCoursRouteImport } from './routes/_app.cours'
+import { Route as AppRouteImport } from './routes/_app'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as RegisterRouteImport } from './routes/register'
+import { Route as VerifierCertificatRouteImport } from './routes/verifier-certificat'
 import { Route as AppCalendrierRouteImport } from './routes/_app.calendrier'
+import { Route as AppCoursRouteImport } from './routes/_app.cours'
+import { Route as AppDashboardRouteImport } from './routes/_app.dashboard'
+import { Route as AppEvenementsRouteImport } from './routes/_app.evenements'
+import { Route as AppFinancesRouteImport } from './routes/_app.finances'
+import { Route as AppFormationsRouteImport } from './routes/_app.formations'
+import { Route as AppMesCertificatsRouteImport } from './routes/_app.mes-certificats'
+import { Route as AppMesFinancesRouteImport } from './routes/_app.mes-finances'
+import { Route as AppMessagesRouteImport } from './routes/_app.messages'
+import { Route as AppMonEspaceRouteImport } from './routes/_app.mon-espace'
+import { Route as AppMonProfilRouteImport } from './routes/_app.mon-profil'
+import { Route as AppParametresRouteImport } from './routes/_app.parametres'
+import { Route as AppRapportsRouteImport } from './routes/_app.rapports'
+import { Route as AppFormationFormationIdRouteImport } from './routes/_app.formation.$formationId'
 import { Route as AppMembresIndexRouteImport } from './routes/_app.membres.index'
 import { Route as AppMembresMemberIdRouteImport } from './routes/_app.membres.$memberId'
-import { Route as AppFormationFormationIdRouteImport } from './routes/_app.formation.$formationId'
 
-const VerifierCertificatRoute = VerifierCertificatRouteImport.update({
-  id: '/verifier-certificat',
-  path: '/verifier-certificat',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const RegisterRoute = RegisterRouteImport.update({
-  id: '/register',
-  path: '/register',
+const AppRoute = AppRouteImport.update({
+  id: '/_app',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -46,68 +45,19 @@ const LoginRoute = LoginRouteImport.update({
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AppRoute = AppRouteImport.update({
-  id: '/_app',
+const RegisterRoute = RegisterRouteImport.update({
+  id: '/register',
+  path: '/register',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const VerifierCertificatRoute = VerifierCertificatRouteImport.update({
+  id: '/verifier-certificat',
+  path: '/verifier-certificat',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AppRapportsRoute = AppRapportsRouteImport.update({
-  id: '/rapports',
-  path: '/rapports',
-  getParentRoute: () => AppRoute,
-} as any)
-const AppParametresRoute = AppParametresRouteImport.update({
-  id: '/parametres',
-  path: '/parametres',
-  getParentRoute: () => AppRoute,
-} as any)
-const AppMonProfilRoute = AppMonProfilRouteImport.update({
-  id: '/mon-profil',
-  path: '/mon-profil',
-  getParentRoute: () => AppRoute,
-} as any)
-const AppMonEspaceRoute = AppMonEspaceRouteImport.update({
-  id: '/mon-espace',
-  path: '/mon-espace',
-  getParentRoute: () => AppRoute,
-} as any)
-const AppMessagesRoute = AppMessagesRouteImport.update({
-  id: '/messages',
-  path: '/messages',
-  getParentRoute: () => AppRoute,
-} as any)
-const AppMesFinancesRoute = AppMesFinancesRouteImport.update({
-  id: '/mes-finances',
-  path: '/mes-finances',
-  getParentRoute: () => AppRoute,
-} as any)
-const AppMesCertificatsRoute = AppMesCertificatsRouteImport.update({
-  id: '/mes-certificats',
-  path: '/mes-certificats',
-  getParentRoute: () => AppRoute,
-} as any)
-const AppFormationsRoute = AppFormationsRouteImport.update({
-  id: '/formations',
-  path: '/formations',
-  getParentRoute: () => AppRoute,
-} as any)
-const AppFinancesRoute = AppFinancesRouteImport.update({
-  id: '/finances',
-  path: '/finances',
-  getParentRoute: () => AppRoute,
-} as any)
-const AppEvenementsRoute = AppEvenementsRouteImport.update({
-  id: '/evenements',
-  path: '/evenements',
-  getParentRoute: () => AppRoute,
-} as any)
-const AppDashboardRoute = AppDashboardRouteImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
+const AppCalendrierRoute = AppCalendrierRouteImport.update({
+  id: '/calendrier',
+  path: '/calendrier',
   getParentRoute: () => AppRoute,
 } as any)
 const AppCoursRoute = AppCoursRouteImport.update({
@@ -115,9 +65,64 @@ const AppCoursRoute = AppCoursRouteImport.update({
   path: '/cours',
   getParentRoute: () => AppRoute,
 } as any)
-const AppCalendrierRoute = AppCalendrierRouteImport.update({
-  id: '/calendrier',
-  path: '/calendrier',
+const AppDashboardRoute = AppDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppEvenementsRoute = AppEvenementsRouteImport.update({
+  id: '/evenements',
+  path: '/evenements',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppFinancesRoute = AppFinancesRouteImport.update({
+  id: '/finances',
+  path: '/finances',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppFormationsRoute = AppFormationsRouteImport.update({
+  id: '/formations',
+  path: '/formations',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppMesCertificatsRoute = AppMesCertificatsRouteImport.update({
+  id: '/mes-certificats',
+  path: '/mes-certificats',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppMesFinancesRoute = AppMesFinancesRouteImport.update({
+  id: '/mes-finances',
+  path: '/mes-finances',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppMessagesRoute = AppMessagesRouteImport.update({
+  id: '/messages',
+  path: '/messages',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppMonEspaceRoute = AppMonEspaceRouteImport.update({
+  id: '/mon-espace',
+  path: '/mon-espace',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppMonProfilRoute = AppMonProfilRouteImport.update({
+  id: '/mon-profil',
+  path: '/mon-profil',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppParametresRoute = AppParametresRouteImport.update({
+  id: '/parametres',
+  path: '/parametres',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppRapportsRoute = AppRapportsRouteImport.update({
+  id: '/rapports',
+  path: '/rapports',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppFormationFormationIdRoute = AppFormationFormationIdRouteImport.update({
+  id: '/formation/$formationId',
+  path: '/formation/$formationId',
   getParentRoute: () => AppRoute,
 } as any)
 const AppMembresIndexRoute = AppMembresIndexRouteImport.update({
@@ -128,11 +133,6 @@ const AppMembresIndexRoute = AppMembresIndexRouteImport.update({
 const AppMembresMemberIdRoute = AppMembresMemberIdRouteImport.update({
   id: '/membres/$memberId',
   path: '/membres/$memberId',
-  getParentRoute: () => AppRoute,
-} as any)
-const AppFormationFormationIdRoute = AppFormationFormationIdRouteImport.update({
-  id: '/formation/$formationId',
-  path: '/formation/$formationId',
   getParentRoute: () => AppRoute,
 } as any)
 
@@ -284,25 +284,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/verifier-certificat': {
-      id: '/verifier-certificat'
-      path: '/verifier-certificat'
-      fullPath: '/verifier-certificat'
-      preLoaderRoute: typeof VerifierCertificatRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/register': {
-      id: '/register'
-      path: '/register'
-      fullPath: '/register'
-      preLoaderRoute: typeof RegisterRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/login': {
-      id: '/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof LoginRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_app': {
@@ -312,88 +298,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_app/rapports': {
-      id: '/_app/rapports'
-      path: '/rapports'
-      fullPath: '/rapports'
-      preLoaderRoute: typeof AppRapportsRouteImport
-      parentRoute: typeof AppRoute
+    '/register': {
+      id: '/register'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof RegisterRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/_app/parametres': {
-      id: '/_app/parametres'
-      path: '/parametres'
-      fullPath: '/parametres'
-      preLoaderRoute: typeof AppParametresRouteImport
-      parentRoute: typeof AppRoute
+    '/verifier-certificat': {
+      id: '/verifier-certificat'
+      path: '/verifier-certificat'
+      fullPath: '/verifier-certificat'
+      preLoaderRoute: typeof VerifierCertificatRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/_app/mon-profil': {
-      id: '/_app/mon-profil'
-      path: '/mon-profil'
-      fullPath: '/mon-profil'
-      preLoaderRoute: typeof AppMonProfilRouteImport
-      parentRoute: typeof AppRoute
-    }
-    '/_app/mon-espace': {
-      id: '/_app/mon-espace'
-      path: '/mon-espace'
-      fullPath: '/mon-espace'
-      preLoaderRoute: typeof AppMonEspaceRouteImport
-      parentRoute: typeof AppRoute
-    }
-    '/_app/messages': {
-      id: '/_app/messages'
-      path: '/messages'
-      fullPath: '/messages'
-      preLoaderRoute: typeof AppMessagesRouteImport
-      parentRoute: typeof AppRoute
-    }
-    '/_app/mes-finances': {
-      id: '/_app/mes-finances'
-      path: '/mes-finances'
-      fullPath: '/mes-finances'
-      preLoaderRoute: typeof AppMesFinancesRouteImport
-      parentRoute: typeof AppRoute
-    }
-    '/_app/mes-certificats': {
-      id: '/_app/mes-certificats'
-      path: '/mes-certificats'
-      fullPath: '/mes-certificats'
-      preLoaderRoute: typeof AppMesCertificatsRouteImport
-      parentRoute: typeof AppRoute
-    }
-    '/_app/formations': {
-      id: '/_app/formations'
-      path: '/formations'
-      fullPath: '/formations'
-      preLoaderRoute: typeof AppFormationsRouteImport
-      parentRoute: typeof AppRoute
-    }
-    '/_app/finances': {
-      id: '/_app/finances'
-      path: '/finances'
-      fullPath: '/finances'
-      preLoaderRoute: typeof AppFinancesRouteImport
-      parentRoute: typeof AppRoute
-    }
-    '/_app/evenements': {
-      id: '/_app/evenements'
-      path: '/evenements'
-      fullPath: '/evenements'
-      preLoaderRoute: typeof AppEvenementsRouteImport
-      parentRoute: typeof AppRoute
-    }
-    '/_app/dashboard': {
-      id: '/_app/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof AppDashboardRouteImport
+    '/_app/calendrier': {
+      id: '/_app/calendrier'
+      path: '/calendrier'
+      fullPath: '/calendrier'
+      preLoaderRoute: typeof AppCalendrierRouteImport
       parentRoute: typeof AppRoute
     }
     '/_app/cours': {
@@ -403,11 +333,88 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppCoursRouteImport
       parentRoute: typeof AppRoute
     }
-    '/_app/calendrier': {
-      id: '/_app/calendrier'
-      path: '/calendrier'
-      fullPath: '/calendrier'
-      preLoaderRoute: typeof AppCalendrierRouteImport
+    '/_app/dashboard': {
+      id: '/_app/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AppDashboardRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/evenements': {
+      id: '/_app/evenements'
+      path: '/evenements'
+      fullPath: '/evenements'
+      preLoaderRoute: typeof AppEvenementsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/finances': {
+      id: '/_app/finances'
+      path: '/finances'
+      fullPath: '/finances'
+      preLoaderRoute: typeof AppFinancesRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/formations': {
+      id: '/_app/formations'
+      path: '/formations'
+      fullPath: '/formations'
+      preLoaderRoute: typeof AppFormationsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/mes-certificats': {
+      id: '/_app/mes-certificats'
+      path: '/mes-certificats'
+      fullPath: '/mes-certificats'
+      preLoaderRoute: typeof AppMesCertificatsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/mes-finances': {
+      id: '/_app/mes-finances'
+      path: '/mes-finances'
+      fullPath: '/mes-finances'
+      preLoaderRoute: typeof AppMesFinancesRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/messages': {
+      id: '/_app/messages'
+      path: '/messages'
+      fullPath: '/messages'
+      preLoaderRoute: typeof AppMessagesRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/mon-espace': {
+      id: '/_app/mon-espace'
+      path: '/mon-espace'
+      fullPath: '/mon-espace'
+      preLoaderRoute: typeof AppMonEspaceRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/mon-profil': {
+      id: '/_app/mon-profil'
+      path: '/mon-profil'
+      fullPath: '/mon-profil'
+      preLoaderRoute: typeof AppMonProfilRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/parametres': {
+      id: '/_app/parametres'
+      path: '/parametres'
+      fullPath: '/parametres'
+      preLoaderRoute: typeof AppParametresRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/rapports': {
+      id: '/_app/rapports'
+      path: '/rapports'
+      fullPath: '/rapports'
+      preLoaderRoute: typeof AppRapportsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/formation/$formationId': {
+      id: '/_app/formation/$formationId'
+      path: '/formation/$formationId'
+      fullPath: '/formation/$formationId'
+      preLoaderRoute: typeof AppFormationFormationIdRouteImport
       parentRoute: typeof AppRoute
     }
     '/_app/membres/': {
@@ -422,13 +429,6 @@ declare module '@tanstack/react-router' {
       path: '/membres/$memberId'
       fullPath: '/membres/$memberId'
       preLoaderRoute: typeof AppMembresMemberIdRouteImport
-      parentRoute: typeof AppRoute
-    }
-    '/_app/formation/$formationId': {
-      id: '/_app/formation/$formationId'
-      path: '/formation/$formationId'
-      fullPath: '/formation/$formationId'
-      preLoaderRoute: typeof AppFormationFormationIdRouteImport
       parentRoute: typeof AppRoute
     }
   }
