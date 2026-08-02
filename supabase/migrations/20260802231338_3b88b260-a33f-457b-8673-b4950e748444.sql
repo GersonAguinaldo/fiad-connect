@@ -1,0 +1,1 @@
+DROP POLICY IF EXISTS "Event resources readable by authenticated" ON storage.objects;
