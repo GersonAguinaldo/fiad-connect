@@ -1,7 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { ShieldCheck, ShieldX, Search } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
 
 type Search = { code?: string };
 
