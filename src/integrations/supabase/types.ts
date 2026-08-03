@@ -18,24 +18,39 @@ export type Database = {
         Row: {
           ambassador_fee_amount: number
           ambassador_fee_currency: string
+          auto_status_enabled: boolean
           created_at: string
+          dues_period_months: number
+          grace_period_days: number
           id: boolean
+          last_status_run_at: string | null
+          reminder_days_before: number
           updated_at: string
           updated_by: string | null
         }
         Insert: {
           ambassador_fee_amount?: number
           ambassador_fee_currency?: string
+          auto_status_enabled?: boolean
           created_at?: string
+          dues_period_months?: number
+          grace_period_days?: number
           id?: boolean
+          last_status_run_at?: string | null
+          reminder_days_before?: number
           updated_at?: string
           updated_by?: string | null
         }
         Update: {
           ambassador_fee_amount?: number
           ambassador_fee_currency?: string
+          auto_status_enabled?: boolean
           created_at?: string
+          dues_period_months?: number
+          grace_period_days?: number
           id?: boolean
+          last_status_run_at?: string | null
+          reminder_days_before?: number
           updated_at?: string
           updated_by?: string | null
         }
@@ -505,6 +520,72 @@ export type Database = {
         }
         Relationships: []
       }
+      member_status_history: {
+        Row: {
+          automatic: boolean
+          changed_by: string | null
+          created_at: string
+          id: string
+          new_status: string
+          old_status: string | null
+          profile_id: string
+          reason: string | null
+        }
+        Insert: {
+          automatic?: boolean
+          changed_by?: string | null
+          created_at?: string
+          id?: string
+          new_status: string
+          old_status?: string | null
+          profile_id: string
+          reason?: string | null
+        }
+        Update: {
+          automatic?: boolean
+          changed_by?: string | null
+          created_at?: string
+          id?: string
+          new_status?: string
+          old_status?: string | null
+          profile_id?: string
+          reason?: string | null
+        }
+        Relationships: []
+      }
+      notifications: {
+        Row: {
+          body: string | null
+          created_at: string
+          id: string
+          kind: string
+          link: string | null
+          read_at: string | null
+          title: string
+          user_id: string
+        }
+        Insert: {
+          body?: string | null
+          created_at?: string
+          id?: string
+          kind?: string
+          link?: string | null
+          read_at?: string | null
+          title: string
+          user_id: string
+        }
+        Update: {
+          body?: string | null
+          created_at?: string
+          id?: string
+          kind?: string
+          link?: string | null
+          read_at?: string | null
+          title?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           address: string | null
@@ -523,6 +604,7 @@ export type Database = {
           phone: string | null
           sex: string | null
           status: string
+          status_reason: string | null
           updated_at: string
         }
         Insert: {
@@ -542,6 +624,7 @@ export type Database = {
           phone?: string | null
           sex?: string | null
           status?: string
+          status_reason?: string | null
           updated_at?: string
         }
         Update: {
@@ -561,6 +644,7 @@ export type Database = {
           phone?: string | null
           sex?: string | null
           status?: string
+          status_reason?: string | null
           updated_at?: string
         }
         Relationships: []
