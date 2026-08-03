@@ -2,6 +2,8 @@ import { Router } from "express";
 import { Profile } from "../models/Profile.js";
 import { User } from "../models/User.js";
 import { requireAuth, requireRole } from "../middleware/auth.js";
+import { MemberStatusHistory } from "../models/MemberStatusHistory.js";
+import { changeMemberStatus, applyMembershipStatusRules } from "../utils/membership-status.js";
 
 const router = Router();
 
@@ -29,8 +31,30 @@ router.patch("/me", requireAuth, async (req, res) => {
 router.patch("/:id", requireAuth, requireRole("admin"), async (req, res) => {
   const update = req.body ?? {};
   delete update.user;
+  delete update.status;
   const profile = await Profile.findByIdAndUpdate(req.params.id, { $set: update }, { new: true }).lean();
   res.json(profile);
+});
+
+router.get("/:id/status-history", requireAuth, async (req, res) => {
+  const profile = await Profile.findById(req.params.id).lean();
+  if (!profile) return res.status(404).json({ error: "Not found" });
+  const isOwner = profile.user?.toString() === req.user._id.toString();
+  if (!isOwner && !req.user.roles?.includes("admin")) return res.status(403).json({ error: "Forbidden" });
+  res.json(await MemberStatusHistory.find({ profile: profile._id }).sort({ createdAt: -1 }).lean());
+});
+
+router.patch("/:id/status", requireAuth, requireRole("admin"), async (req, res) => {
+  const { status, reason } = req.body ?? {};
+  if (!status || !reason) return res.status(400).json({ error: "Statut et motif obligatoires" });
+  const profile = await Profile.findById(req.params.id);
+  if (!profile) return res.status(404).json({ error: "Not found" });
+  await changeMemberStatus(profile, status, { reason, changedBy: req.user._id });
+  res.json(profile);
+});
+
+router.post("/status-rules/run", requireAuth, requireRole("admin"), async (_req, res) => {
+  res.json(await applyMembershipStatusRules());
 });
 
 router.delete("/:id", requireAuth, requireRole("admin"), async (req, res) => {
