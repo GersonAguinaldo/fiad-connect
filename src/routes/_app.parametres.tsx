@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Settings, Save, Wallet } from "lucide-react";
+import { Settings, Save, Wallet, Timer } from "lucide-react";
 import { toast } from "sonner";
 import { Card, PageHeader, PrimaryBtn } from "@/components/page-stub";
 import { Field, inputCls } from "@/components/admin-modal";
@@ -20,19 +20,31 @@ function SettingsPage() {
   const { user } = useAuth();
   const [amount, setAmount] = useState(String(DEFAULT_AMBASSADOR_FEE_AMOUNT));
   const [currency, setCurrency] = useState(DEFAULT_AMBASSADOR_FEE_CURRENCY);
+  const [period, setPeriod] = useState("12");
+  const [grace, setGrace] = useState("30");
+  const [reminder, setReminder] = useState("15");
+  const [autoStatus, setAutoStatus] = useState(true);
+  const [lastRun, setLastRun] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     supabase
       .from("app_settings")
-      .select("ambassador_fee_amount, ambassador_fee_currency")
+      .select(
+        "ambassador_fee_amount, ambassador_fee_currency, dues_period_months, grace_period_days, reminder_days_before, auto_status_enabled, last_status_run_at",
+      )
       .eq("id", true)
       .maybeSingle()
       .then(({ data }) => {
         if (data) {
           setAmount(String(Number(data.ambassador_fee_amount)));
           setCurrency(data.ambassador_fee_currency);
+          setPeriod(String(data.dues_period_months ?? 12));
+          setGrace(String(data.grace_period_days ?? 30));
+          setReminder(String(data.reminder_days_before ?? 15));
+          setAutoStatus(data.auto_status_enabled ?? true);
+          setLastRun(data.last_status_run_at ?? null);
         }
         setLoading(false);
       });
@@ -57,6 +69,10 @@ function SettingsPage() {
       id: true,
       ambassador_fee_amount: parsed,
       ambassador_fee_currency: currency.trim().toUpperCase(),
+      dues_period_months: Math.max(1, Number(period) || 12),
+      grace_period_days: Math.max(0, Number(grace) || 0),
+      reminder_days_before: Math.max(0, Number(reminder) || 0),
+      auto_status_enabled: autoStatus,
       updated_by: user?.id ?? null,
     } as never);
     setSaving(false);
@@ -110,6 +126,45 @@ function SettingsPage() {
             <div className="rounded-2xl bg-secondary/60 p-4 text-sm text-muted-foreground">
               Ce montant est reutilise dans le formulaire d'inscription et dans l'espace membre
               pour permettre aux personnes de regler leur cotisation plus tard.
+            </div>
+
+            <div className="pt-2 border-t border-border">
+              <div className="flex items-center gap-2 mb-1">
+                <Timer className="h-4 w-4 text-primary" />
+                <h2 className="font-display font-bold text-foreground">Automatisation des statuts</h2>
+              </div>
+              <p className="text-sm text-muted-foreground mb-4">
+                Chaque nuit, les ambassadeurs dont la cotisation reste impayee au-dela du delai de
+                grace passent automatiquement en « Inactif ». Une relance leur est envoyee avant
+                l'echeance.
+              </p>
+
+              <label className="flex items-center gap-3 text-sm mb-4">
+                <input
+                  type="checkbox"
+                  checked={autoStatus}
+                  onChange={(e) => setAutoStatus(e.target.checked)}
+                  className="h-4 w-4 accent-[var(--color-primary,#046bd2)]"
+                />
+                Activer la bascule automatique des statuts
+              </label>
+
+              <div className="grid sm:grid-cols-3 gap-4">
+                <Field label="Periodicite (mois)">
+                  <input type="number" min="1" className={inputCls} value={period} onChange={(e) => setPeriod(e.target.value)} />
+                </Field>
+                <Field label="Delai de grace (jours)">
+                  <input type="number" min="0" className={inputCls} value={grace} onChange={(e) => setGrace(e.target.value)} />
+                </Field>
+                <Field label="Relance avant echeance (jours)">
+                  <input type="number" min="0" className={inputCls} value={reminder} onChange={(e) => setReminder(e.target.value)} />
+                </Field>
+              </div>
+
+              <p className="mt-3 text-xs text-muted-foreground">
+                Dernier passage automatique :{" "}
+                {lastRun ? new Date(lastRun).toLocaleString("fr-FR") : "jamais execute"}
+              </p>
             </div>
 
             <div className="flex justify-end">
