@@ -3,6 +3,9 @@ import { Profile } from "../models/Profile.js";
 import { Transaction } from "../models/Transaction.js";
 import { Notification } from "../models/Notification.js";
 import { MemberStatusHistory } from "../models/MemberStatusHistory.js";
+import { User } from "../models/User.js";
+import { sendEmail } from "../emails/mailer.js";
+import { templates } from "../emails/templates.js";
 
 const AMBASSADOR = "Ambassadeur du Développement";
 
@@ -31,6 +34,14 @@ export async function changeMemberStatus(profile, newStatus, { reason, changedBy
     body: `Votre statut de membre est passé de « ${oldStatus ?? "—"} » à « ${newStatus} ».${reason ? ` Motif : ${reason}` : ""}`,
     link: "/mon-profil",
   });
+  const user = await User.findById(profile.user).lean();
+  if (user?.email) {
+    void sendEmail({
+      to: user.email,
+      ...templates.statusChange({ oldStatus, newStatus, reason }),
+      meta: { profileId: profile._id },
+    });
+  }
   return profile;
 }
 
@@ -84,6 +95,18 @@ export async function applyMembershipStatusRules() {
           body: `Votre cotisation d'ambassadeur arrive à échéance le ${dueAt.toLocaleDateString("fr-FR")}. Renouvelez-la pour conserver un statut actif.`,
           link: "/mes-finances",
         });
+        const user = await User.findById(profile.user).lean();
+        if (user?.email) {
+          void sendEmail({
+            to: user.email,
+            ...templates.duesReminder({
+              dueAt,
+              amount: settings.ambassadorFeeAmount,
+              currency: settings.ambassadorFeeCurrency,
+            }),
+            meta: { profileId: profile._id },
+          });
+        }
         reminded += 1;
       }
     }

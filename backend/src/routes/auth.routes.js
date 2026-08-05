@@ -4,6 +4,8 @@ import { z } from "zod";
 import { User } from "../models/User.js";
 import { Profile } from "../models/Profile.js";
 import { signToken, requireAuth } from "../middleware/auth.js";
+import { sendEmail } from "../emails/mailer.js";
+import { templates } from "../emails/templates.js";
 
 const router = Router();
 
@@ -43,6 +45,15 @@ router.post("/register", async (req, res, next) => {
       address: data.address,
     });
     const token = signToken(user);
+    void sendEmail({
+      to: user.email,
+      ...templates.welcome({
+        firstName: data.firstName,
+        email: user.email,
+        createdAt: user.createdAt,
+      }),
+      meta: { userId: user._id },
+    });
     res.status(201).json({ token, user: { id: user._id, email: user.email, roles: user.roles } });
   } catch (err) {
     next(err);

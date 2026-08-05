@@ -77,3 +77,23 @@ connexion.
 ## Prochaines etapes (cote frontend)
 
 Voir `MIGRATION.md` a la racine du projet.
+## Emails transactionnels (auto-heberges)
+
+Aucun service tiers Lovable : les emails partent de ton propre SMTP via `nodemailer`.
+
+1. Renseigne dans `backend/.env` : `SMTP_HOST`, `SMTP_PORT`, `SMTP_SECURE`, `SMTP_USER`,
+   `SMTP_PASS`, `EMAIL_FROM`, `EMAIL_REPLY_TO`, `APP_URL`.
+2. `npm install` (ajoute `nodemailer`).
+3. Verifie : `GET /api/emails/status` (admin) puis `POST /api/emails/test { "to": "..." }`.
+
+Sans SMTP configure, l'application fonctionne normalement : les envois sont journalises
+en statut `skipped` (aucune erreur bloquante).
+
+| Evenement | Gabarit | Declencheur |
+|-----------|---------|-------------|
+| Inscription | Bienvenue | `POST /api/auth/register` |
+| Paiement regle | Recu | creation/passage a `paid` d'une transaction |
+| Changement de statut | Statut | `changeMemberStatus()` (manuel ou automatique) |
+| Cotisation proche echeance | Relance | job quotidien `applyMembershipStatusRules()` |
+
+Journal des envois : `GET /api/emails/logs` (admin) — collection `EmailLog`.

@@ -2,6 +2,28 @@ import { Router } from "express";
 import { Transaction } from "../models/Transaction.js";
 import { User } from "../models/User.js";
 import { requireAuth, requireRole } from "../middleware/auth.js";
+import { sendEmail } from "../emails/mailer.js";
+import { templates } from "../emails/templates.js";
+
+const PAID = ["paid", "Réussi", "Payé"];
+
+/** Envoie le recu de paiement si la transaction est reglee. */
+async function maybeSendReceipt(tx) {
+  if (!tx || !PAID.includes(tx.status)) return;
+  const user = await User.findById(tx.user).lean();
+  if (!user?.email) return;
+  void sendEmail({
+    to: user.email,
+    ...templates.receipt({
+      reason: tx.reason,
+      amount: tx.amount,
+      currency: tx.currency,
+      reference: tx.providerRef ?? tx._id?.toString(),
+      occurredAt: tx.createdAt,
+    }),
+    meta: { transactionId: tx._id },
+  });
+}
 
 const router = Router();
 
@@ -16,11 +38,15 @@ router.get("/me", requireAuth, async (req, res) => {
 router.post("/", requireAuth, async (req, res) => {
   const userId = req.user.roles.includes("admin") && req.body.user ? req.body.user : req.user._id;
   const tx = await Transaction.create({ ...req.body, user: userId });
+  await maybeSendReceipt(tx);
   res.status(201).json(tx);
 });
 
 router.patch("/:id", requireAuth, requireRole("admin"), async (req, res) => {
-  res.json(await Transaction.findByIdAndUpdate(req.params.id, { $set: req.body }, { new: true }));
+  const before = await Transaction.findById(req.params.id).lean();
+  const tx = await Transaction.findByIdAndUpdate(req.params.id, { $set: req.body }, { new: true });
+  if (tx && !PAID.includes(before?.status)) await maybeSendReceipt(tx);
+  res.json(tx);
 });
 
 router.post("/import", requireAuth, requireRole("admin"), async (req, res) => {
