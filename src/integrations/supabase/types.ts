@@ -56,6 +56,98 @@ export type Database = {
         }
         Relationships: []
       }
+      benefit_usage: {
+        Row: {
+          benefit_id: string
+          feedback: string | null
+          id: string
+          note: string | null
+          rating: number | null
+          used_at: string
+          user_id: string
+        }
+        Insert: {
+          benefit_id: string
+          feedback?: string | null
+          id?: string
+          note?: string | null
+          rating?: number | null
+          used_at?: string
+          user_id: string
+        }
+        Update: {
+          benefit_id?: string
+          feedback?: string | null
+          id?: string
+          note?: string | null
+          rating?: number | null
+          used_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "benefit_usage_benefit_id_fkey"
+            columns: ["benefit_id"]
+            isOneToOne: false
+            referencedRelation: "benefits"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      benefits: {
+        Row: {
+          access_conditions: string | null
+          category: string
+          created_at: string
+          description: string | null
+          id: string
+          link_url: string | null
+          position: number
+          status: string
+          target_categories: string[]
+          target_cities: string[]
+          target_countries: string[]
+          target_membership_types: string[]
+          target_statuses: string[]
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          access_conditions?: string | null
+          category?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          link_url?: string | null
+          position?: number
+          status?: string
+          target_categories?: string[]
+          target_cities?: string[]
+          target_countries?: string[]
+          target_membership_types?: string[]
+          target_statuses?: string[]
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          access_conditions?: string | null
+          category?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          link_url?: string | null
+          position?: number
+          status?: string
+          target_categories?: string[]
+          target_cities?: string[]
+          target_countries?: string[]
+          target_membership_types?: string[]
+          target_statuses?: string[]
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       certificates: {
         Row: {
           code: string

@@ -14,6 +14,7 @@ import { Route as AppRouteImport } from './routes/_app'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as VerifierCertificatRouteImport } from './routes/verifier-certificat'
+import { Route as AppAvantagesRouteImport } from './routes/_app.avantages'
 import { Route as AppCalendrierRouteImport } from './routes/_app.calendrier'
 import { Route as AppCoursRouteImport } from './routes/_app.cours'
 import { Route as AppDashboardRouteImport } from './routes/_app.dashboard'
@@ -54,6 +55,11 @@ const VerifierCertificatRoute = VerifierCertificatRouteImport.update({
   id: '/verifier-certificat',
   path: '/verifier-certificat',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AppAvantagesRoute = AppAvantagesRouteImport.update({
+  id: '/avantages',
+  path: '/avantages',
+  getParentRoute: () => AppRoute,
 } as any)
 const AppCalendrierRoute = AppCalendrierRouteImport.update({
   id: '/calendrier',
@@ -141,6 +147,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/verifier-certificat': typeof VerifierCertificatRoute
+  '/avantages': typeof AppAvantagesRoute
   '/calendrier': typeof AppCalendrierRoute
   '/cours': typeof AppCoursRoute
   '/dashboard': typeof AppDashboardRoute
@@ -163,6 +170,7 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/verifier-certificat': typeof VerifierCertificatRoute
+  '/avantages': typeof AppAvantagesRoute
   '/calendrier': typeof AppCalendrierRoute
   '/cours': typeof AppCoursRoute
   '/dashboard': typeof AppDashboardRoute
@@ -187,6 +195,7 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/verifier-certificat': typeof VerifierCertificatRoute
+  '/_app/avantages': typeof AppAvantagesRoute
   '/_app/calendrier': typeof AppCalendrierRoute
   '/_app/cours': typeof AppCoursRoute
   '/_app/dashboard': typeof AppDashboardRoute
@@ -211,6 +220,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/register'
     | '/verifier-certificat'
+    | '/avantages'
     | '/calendrier'
     | '/cours'
     | '/dashboard'
@@ -233,6 +243,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/register'
     | '/verifier-certificat'
+    | '/avantages'
     | '/calendrier'
     | '/cours'
     | '/dashboard'
@@ -256,6 +267,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/register'
     | '/verifier-certificat'
+    | '/_app/avantages'
     | '/_app/calendrier'
     | '/_app/cours'
     | '/_app/dashboard'
@@ -318,6 +330,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/verifier-certificat'
       preLoaderRoute: typeof VerifierCertificatRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_app/avantages': {
+      id: '/_app/avantages'
+      path: '/avantages'
+      fullPath: '/avantages'
+      preLoaderRoute: typeof AppAvantagesRouteImport
+      parentRoute: typeof AppRoute
     }
     '/_app/calendrier': {
       id: '/_app/calendrier'
@@ -435,6 +454,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface AppRouteChildren {
+  AppAvantagesRoute: typeof AppAvantagesRoute
   AppCalendrierRoute: typeof AppCalendrierRoute
   AppCoursRoute: typeof AppCoursRoute
   AppDashboardRoute: typeof AppDashboardRoute
@@ -454,6 +474,7 @@ interface AppRouteChildren {
 }
 
 const AppRouteChildren: AppRouteChildren = {
+  AppAvantagesRoute: AppAvantagesRoute,
   AppCalendrierRoute: AppCalendrierRoute,
   AppCoursRoute: AppCoursRoute,
   AppDashboardRoute: AppDashboardRoute,
