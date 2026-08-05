@@ -15,6 +15,7 @@ const ADMIN_NAV = [
   { to: "/evenements", label: "Événements" },
   { to: "/calendrier", label: "Calendrier" },
   { to: "/finances", label: "Finances" },
+  { to: "/avantages", label: "Avantages" },
   { to: "/parametres", label: "Parametres" },
   { to: "/messages", label: "Messages" },
   { to: "/rapports", label: "Rapports" },
@@ -29,6 +30,7 @@ const MEMBER_NAV = [
   { to: "/evenements", label: "Événements" },
   { to: "/calendrier", label: "Calendrier" },
   { to: "/mes-finances", label: "Mes finances" },
+  { to: "/avantages", label: "Mes avantages" },
   { to: "/messages", label: "Messages" },
 ] as const;
 
