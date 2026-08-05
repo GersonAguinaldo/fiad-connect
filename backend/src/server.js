@@ -20,6 +20,7 @@ import liveSessionRoutes from "./routes/live-session.routes.js";
 import certificateRoutes from "./routes/certificate.routes.js";
 import notificationRoutes from "./routes/notification.routes.js";
 import emailRoutes from "./routes/email.routes.js";
+import benefitRoutes from "./routes/benefit.routes.js";
 import { scheduleMembershipStatusRules } from "./utils/membership-status.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -47,6 +48,7 @@ app.use("/api/live-sessions", liveSessionRoutes);
 app.use("/api/certificates", certificateRoutes);
 app.use("/api/notifications", notificationRoutes);
 app.use("/api/emails", emailRoutes);
+app.use("/api/benefits", benefitRoutes);
 
 app.use((err, _req, res, _next) => {
   console.error(err);
