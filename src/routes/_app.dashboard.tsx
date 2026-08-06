@@ -291,15 +291,6 @@ function DashboardPage() {
   );
 }
 
-function Kpi({ label, value }: { label: string; value: string }) {
-  return (
-    <div>
-      <div className="text-xs uppercase tracking-wider opacity-80">{label}</div>
-      <div className="text-2xl font-display font-extrabold mt-1">{value}</div>
-    </div>
-  );
-}
-
 function StatCard({
   icon: Icon,
   label,
