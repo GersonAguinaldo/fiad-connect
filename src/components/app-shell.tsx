@@ -19,6 +19,7 @@ const ADMIN_NAV = [
   { to: "/finances", label: "Finances" },
   { to: "/avantages", label: "Avantages" },
   { to: "/parametres", label: "Parametres" },
+  { to: "/administrateurs", label: "Administrateurs" },
   { to: "/messages", label: "Messages" },
   { to: "/rapports", label: "Rapports" },
 ] as const;
@@ -38,9 +39,9 @@ const MEMBER_NAV = [
 
 export function AppShell() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
-  const { role } = useAuth();
+  const { role, can } = useAuth();
   const isAdmin = role === "admin";
-  const NAV = isAdmin ? ADMIN_NAV : MEMBER_NAV;
+  const NAV = isAdmin ? ADMIN_NAV.filter((item) => can(item.to)) : MEMBER_NAV;
   const [menuOpen, setMenuOpen] = useState(false);
   useEffect(() => { setMenuOpen(false); }, [pathname]);
 

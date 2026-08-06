@@ -14,6 +14,36 @@ export type Database = {
   }
   public: {
     Tables: {
+      admin_permissions: {
+        Row: {
+          cities: string[]
+          countries: string[]
+          created_at: string
+          is_super_admin: boolean
+          modules: string[]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          cities?: string[]
+          countries?: string[]
+          created_at?: string
+          is_super_admin?: boolean
+          modules?: string[]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          cities?: string[]
+          countries?: string[]
+          created_at?: string
+          is_super_admin?: boolean
+          modules?: string[]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       app_settings: {
         Row: {
           ambassador_fee_amount: number

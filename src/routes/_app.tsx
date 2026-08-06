@@ -11,7 +11,7 @@ export const Route = createFileRoute("/_app")({
 });
 
 function GuardedShell() {
-  const { user, role, loading } = useAuth();
+  const { user, role, loading, can } = useAuth();
   const navigate = useNavigate();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
 
@@ -21,11 +21,14 @@ function GuardedShell() {
       navigate({ to: "/login" });
       return;
     }
-    if (role && role !== "admin") {
-      const blocked = ADMIN_ONLY_PREFIXES.some((p) => pathname.startsWith(p));
-      if (blocked) navigate({ to: "/mon-espace" });
+    if (role === "admin") {
+      if (!can(pathname)) navigate({ to: "/mon-espace" });
+      return;
     }
-  }, [user, role, loading, pathname, navigate]);
+    if (!role) return;
+    const blocked = ADMIN_ONLY_PREFIXES.some((p) => pathname.startsWith(p));
+    if (blocked) navigate({ to: "/mon-espace" });
+  }, [user, role, loading, pathname, navigate, can]);
 
   if (loading || !user) {
     return (
