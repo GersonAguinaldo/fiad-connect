@@ -25,10 +25,9 @@ function GuardedShell() {
       if (!can(pathname)) navigate({ to: "/mon-espace" });
       return;
     }
-    if (role && role !== "admin") {
-      const blocked = ADMIN_ONLY_PREFIXES.some((p) => pathname.startsWith(p));
-      if (blocked) navigate({ to: "/mon-espace" });
-    }
+    if (!role) return;
+    const blocked = ADMIN_ONLY_PREFIXES.some((p) => pathname.startsWith(p));
+    if (blocked) navigate({ to: "/mon-espace" });
   }, [user, role, loading, pathname, navigate, can]);
 
   if (loading || !user) {
