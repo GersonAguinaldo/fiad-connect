@@ -6,6 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Avatar } from "@/components/avatar";
 import { useAuth } from "@/hooks/use-auth";
 import { CsvImport } from "@/components/csv-import";
+import { inGeoScope } from "@/lib/permissions";
 
 export const Route = createFileRoute("/_app/membres/")({
   head: () => ({ meta: [{ title: "Membres — La PaDI" }] }),
@@ -31,7 +32,7 @@ const TYPES = ["Classique", "Liberté Financière"] as const;
 const STATUSES = ["Actif", "Inactif", "Suspendu", "Radié", "En attente"] as const;
 
 function MembersPage() {
-  const { role } = useAuth();
+  const { role, permissions } = useAuth();
   const isAdmin = role === "admin";
   const [rows, setRows] = useState<Row[]>([]);
   const [q, setQ] = useState("");
@@ -51,7 +52,9 @@ function MembersPage() {
   }
   useEffect(() => { load(); }, []);
 
-  const filtered = rows.filter((r) => {
+  const scoped = rows.filter((r) => (isAdmin ? inGeoScope(permissions, r) : true));
+
+  const filtered = scoped.filter((r) => {
     if (fCat && r.category !== fCat) return false;
     if (fStatus && r.status !== fStatus) return false;
     if (fType && r.membership_type !== fType) return false;
@@ -97,7 +100,7 @@ function MembersPage() {
               <h1 className="text-xl sm:text-2xl font-display font-extrabold truncate">Tous les membres</h1>
               <button className="h-7 w-7 rounded-full bg-primary-soft text-primary flex items-center justify-center hover:bg-primary/10"><Pin className="h-3.5 w-3.5" /></button>
             </div>
-            <div className="text-xs text-muted-foreground mt-1">{rows.length} membre{rows.length > 1 ? "s" : ""} inscrit{rows.length > 1 ? "s" : ""}</div>
+            <div className="text-xs text-muted-foreground mt-1">{scoped.length} membre{scoped.length > 1 ? "s" : ""} inscrit{scoped.length > 1 ? "s" : ""}</div>
           </div>
         </div>
       </div>
@@ -141,7 +144,7 @@ function MembersPage() {
         {filtered.length === 0 ? (
           <div className="py-16 flex flex-col items-center justify-center text-center text-muted-foreground">
             <div className="h-12 w-12 rounded-2xl bg-secondary flex items-center justify-center mb-3"><Inbox className="h-5 w-5" /></div>
-            <p className="text-sm">{rows.length === 0 ? "Aucun membre inscrit pour l'instant." : "Aucun résultat."}</p>
+            <p className="text-sm">{scoped.length === 0 ? "Aucun membre inscrit pour l'instant." : "Aucun résultat."}</p>
           </div>
         ) : (
           <>
