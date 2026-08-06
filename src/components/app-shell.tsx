@@ -1,10 +1,12 @@
-import { Link, Outlet, useNavigate, useRouterState } from "@tanstack/react-router";
-import { Search, ShieldCheck, UserRound, Menu, X } from "lucide-react";
+import { Link, Outlet, useRouterState } from "@tanstack/react-router";
+import { ShieldCheck, UserRound, Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { FiadLogo } from "./fiad-logo";
 import { useAuth } from "@/hooks/use-auth";
 import { BackendStatusBadge, BackendOfflineBanner } from "./backend-status";
 import { NotificationsBell } from "./notifications-bell";
+import { GlobalSearch } from "./global-search";
+import { UserMenu } from "./user-menu";
 
 const ADMIN_NAV = [
   { to: "/dashboard", label: "Vue d'ensemble" },
@@ -36,23 +38,11 @@ const MEMBER_NAV = [
 
 export function AppShell() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
-  const { user, role, signOut } = useAuth();
-  const navigate = useNavigate();
+  const { role } = useAuth();
   const isAdmin = role === "admin";
   const NAV = isAdmin ? ADMIN_NAV : MEMBER_NAV;
   const [menuOpen, setMenuOpen] = useState(false);
   useEffect(() => { setMenuOpen(false); }, [pathname]);
-
-  const meta = (user?.user_metadata ?? {}) as { first_name?: string; last_name?: string };
-  const initials =
-    `${(meta.first_name?.[0] ?? "").toUpperCase()}${(meta.last_name?.[0] ?? "").toUpperCase()}` ||
-    user?.email?.[0]?.toUpperCase() ||
-    "FM";
-
-  async function handleLogout() {
-    await signOut();
-    navigate({ to: "/login" });
-  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -68,24 +58,13 @@ export function AppShell() {
           </button>
           <div className="shrink-0"><FiadLogo /></div>
           <div className="hidden md:block flex-1 max-w-2xl mx-auto relative">
-            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <input
-              type="search"
-              placeholder="Rechercher un membre, un cours, un événement…"
-              className="w-full h-10 pl-10 pr-4 rounded-full bg-secondary border border-transparent focus:bg-card focus:border-ring focus:outline-none text-sm transition"
-            />
+            <GlobalSearch />
           </div>
           <div className="flex-1 md:hidden" />
           <div className="flex items-center gap-1.5 text-muted-foreground shrink-0">
             <BackendStatusBadge />
             <NotificationsBell />
-            <button
-              onClick={handleLogout}
-              title="Se déconnecter"
-              className="h-9 w-9 rounded-full bg-gradient-to-br from-[oklch(0.7_0.15_280)] to-primary flex items-center justify-center text-primary-foreground text-sm font-semibold hover:opacity-90"
-            >
-              {initials}
-            </button>
+            <UserMenu />
           </div>
         </div>
         {/* App tabs (desktop) */}
@@ -133,12 +112,7 @@ export function AppShell() {
               </span>
             </div>
             <div className="px-2 py-2 relative">
-              <Search className="absolute left-5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <input
-                type="search"
-                placeholder="Rechercher…"
-                className="w-full h-10 pl-10 pr-3 rounded-lg bg-secondary border border-transparent focus:bg-card focus:border-ring focus:outline-none text-sm"
-              />
+              <GlobalSearch compact />
             </div>
             <nav className="px-2 pb-2 grid grid-cols-2 gap-1.5">
               {NAV.map((item) => {

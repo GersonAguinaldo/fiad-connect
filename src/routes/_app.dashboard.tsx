@@ -141,22 +141,18 @@ function DashboardPage() {
         </div>
       </div>
 
-      <div className="rounded-2xl bg-gradient-to-r from-primary to-[oklch(0.45_0.22_265)] text-primary-foreground p-4 sm:p-6 shadow-[var(--shadow-elevated)]">
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 sm:gap-6">
-          <Kpi label="Membres" value={String(memberCount)} />
-          <Kpi label="En attente" value={String(pendingCount)} />
-          <Kpi label="Inscriptions (7j)" value={String(weekJoins)} />
-          <Kpi label="Paiements (mois)" value={fmtMoney(monthSum)} />
-          <Kpi label="Événements à venir" value={String(upcomingCount)} />
-        </div>
-      </div>
-
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4">
         <StatCard
           icon={Users}
           label="Membres"
           value={String(memberCount)}
           tone="oklch(0.55 0.22 255)"
+        />
+        <StatCard
+          icon={Users}
+          label="En attente"
+          value={String(pendingCount)}
+          tone="oklch(0.75 0.15 45)"
         />
         <StatCard
           icon={GraduationCap}
@@ -291,15 +287,6 @@ function DashboardPage() {
           </div>
         )}
       </div>
-    </div>
-  );
-}
-
-function Kpi({ label, value }: { label: string; value: string }) {
-  return (
-    <div>
-      <div className="text-xs uppercase tracking-wider opacity-80">{label}</div>
-      <div className="text-2xl font-display font-extrabold mt-1">{value}</div>
     </div>
   );
 }
