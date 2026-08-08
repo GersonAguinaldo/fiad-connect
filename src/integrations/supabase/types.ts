@@ -216,6 +216,92 @@ export type Database = {
           },
         ]
       }
+      conversation_participants: {
+        Row: {
+          conversation_id: string
+          created_at: string
+          id: string
+          last_read_at: string | null
+          role: string
+          subscribed: boolean
+          user_id: string
+        }
+        Insert: {
+          conversation_id: string
+          created_at?: string
+          id?: string
+          last_read_at?: string | null
+          role?: string
+          subscribed?: boolean
+          user_id: string
+        }
+        Update: {
+          conversation_id?: string
+          created_at?: string
+          id?: string
+          last_read_at?: string | null
+          role?: string
+          subscribed?: boolean
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "conversation_participants_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "conversations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      conversations: {
+        Row: {
+          city: string | null
+          country: string | null
+          created_at: string
+          created_by: string | null
+          description: string | null
+          id: string
+          kind: string
+          last_message_at: string
+          status: string
+          subject: string | null
+          title: string
+          updated_at: string
+          urgency: string
+        }
+        Insert: {
+          city?: string | null
+          country?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          kind: string
+          last_message_at?: string
+          status?: string
+          subject?: string | null
+          title: string
+          updated_at?: string
+          urgency?: string
+        }
+        Update: {
+          city?: string | null
+          country?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          kind?: string
+          last_message_at?: string
+          status?: string
+          subject?: string | null
+          title?: string
+          updated_at?: string
+          urgency?: string
+        }
+        Relationships: []
+      }
       event_registrations: {
         Row: {
           created_at: string
@@ -675,6 +761,50 @@ export type Database = {
         }
         Relationships: []
       }
+      messages: {
+        Row: {
+          attachment_name: string | null
+          attachment_type: string | null
+          attachment_url: string | null
+          body: string
+          conversation_id: string
+          created_at: string
+          id: string
+          on_behalf_of_presidency: boolean
+          sender_id: string
+        }
+        Insert: {
+          attachment_name?: string | null
+          attachment_type?: string | null
+          attachment_url?: string | null
+          body: string
+          conversation_id: string
+          created_at?: string
+          id?: string
+          on_behalf_of_presidency?: boolean
+          sender_id: string
+        }
+        Update: {
+          attachment_name?: string | null
+          attachment_type?: string | null
+          attachment_url?: string | null
+          body?: string
+          conversation_id?: string
+          created_at?: string
+          id?: string
+          on_behalf_of_presidency?: boolean
+          sender_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "messages_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "conversations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       notifications: {
         Row: {
           body: string | null
@@ -704,6 +834,57 @@ export type Database = {
           link?: string | null
           read_at?: string | null
           title?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      presidency_history: {
+        Row: {
+          assigned_by: string | null
+          created_at: string
+          ended_at: string | null
+          id: string
+          note: string | null
+          revoked_by: string | null
+          started_at: string
+          user_id: string
+        }
+        Insert: {
+          assigned_by?: string | null
+          created_at?: string
+          ended_at?: string | null
+          id?: string
+          note?: string | null
+          revoked_by?: string | null
+          started_at?: string
+          user_id: string
+        }
+        Update: {
+          assigned_by?: string | null
+          created_at?: string
+          ended_at?: string | null
+          id?: string
+          note?: string | null
+          revoked_by?: string | null
+          started_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      presidency_team: {
+        Row: {
+          added_by: string | null
+          created_at: string
+          user_id: string
+        }
+        Insert: {
+          added_by?: string | null
+          created_at?: string
+          user_id: string
+        }
+        Update: {
+          added_by?: string | null
+          created_at?: string
           user_id?: string
         }
         Relationships: []
@@ -833,6 +1014,16 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      directory_members: {
+        Args: { _ids?: string[]; _q?: string }
+        Returns: {
+          avatar_url: string
+          city: string
+          country: string
+          full_name: string
+          id: string
+        }[]
+      }
       verify_certificate: {
         Args: { _code: string }
         Returns: {
