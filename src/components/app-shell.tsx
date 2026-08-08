@@ -20,6 +20,7 @@ const ADMIN_NAV = [
   { to: "/avantages", label: "Avantages" },
   { to: "/parametres", label: "Parametres" },
   { to: "/administrateurs", label: "Administrateurs" },
+  { to: "/presidence", label: "Présidence" },
   { to: "/messages", label: "Messages" },
   { to: "/rapports", label: "Rapports" },
 ] as const;
