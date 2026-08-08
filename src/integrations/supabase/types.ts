@@ -1014,6 +1014,16 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      directory_members: {
+        Args: { _ids?: string[]; _q?: string }
+        Returns: {
+          avatar_url: string
+          city: string
+          country: string
+          full_name: string
+          id: string
+        }[]
+      }
       verify_certificate: {
         Args: { _code: string }
         Returns: {
