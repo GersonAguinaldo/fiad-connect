@@ -637,7 +637,7 @@ function Composer({
                 <input value={title} onChange={(e) => setTitle(e.target.value)} className={inputCls} placeholder={tab === "forums" ? "Santé & bien-être" : "Groupe local Libreville"} />
               </Field>
               <Field label="Description">
-                <textarea value={body} onChange={(e) => setBody(e.target.value)} rows={3} className={inputCls + " resize-none"} />
+                <textarea value={body} onChange={(e) => setBody(e.target.value)} rows={3} className={textareaCls} />
               </Field>
               {tab === "proximite" && (
                 <div className="grid sm:grid-cols-2 gap-3">
@@ -659,7 +659,7 @@ function Composer({
 
           {!needsModeration && (
             <Field label="Message">
-              <textarea value={body} onChange={(e) => setBody(e.target.value)} rows={4} className={inputCls + " resize-none"} placeholder="Décrivez clairement votre besoin…" />
+              <textarea value={body} onChange={(e) => setBody(e.target.value)} rows={4} className={textareaCls} placeholder="Décrivez clairement votre besoin…" />
             </Field>
           )}
         </div>
@@ -681,6 +681,7 @@ function Composer({
   );
 }
 
+const textareaCls = "w-full px-3 py-2 rounded-lg bg-card border border-border text-sm resize-none focus:border-ring focus:outline-none";
 const inputCls = "w-full h-10 px-3 rounded-lg bg-card border border-border text-sm focus:border-ring focus:outline-none";
 
 function Field({ label, children }: { label: string; children: React.ReactNode }) {

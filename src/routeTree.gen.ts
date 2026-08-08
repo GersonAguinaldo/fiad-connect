@@ -24,6 +24,7 @@ import { Route as AppFinancesRouteImport } from './routes/_app.finances'
 import { Route as AppFormationsRouteImport } from './routes/_app.formations'
 import { Route as AppMesCertificatsRouteImport } from './routes/_app.mes-certificats'
 import { Route as AppMesFinancesRouteImport } from './routes/_app.mes-finances'
+import { Route as AppMessagesRouteImport } from './routes/_app.messages'
 import { Route as AppMonEspaceRouteImport } from './routes/_app.mon-espace'
 import { Route as AppMonProfilRouteImport } from './routes/_app.mon-profil'
 import { Route as AppParametresRouteImport } from './routes/_app.parametres'
@@ -107,6 +108,11 @@ const AppMesFinancesRoute = AppMesFinancesRouteImport.update({
   path: '/mes-finances',
   getParentRoute: () => AppRoute,
 } as any)
+const AppMessagesRoute = AppMessagesRouteImport.update({
+  id: '/messages',
+  path: '/messages',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppMonEspaceRoute = AppMonEspaceRouteImport.update({
   id: '/mon-espace',
   path: '/mon-espace',
@@ -163,6 +169,7 @@ export interface FileRoutesByFullPath {
   '/formations': typeof AppFormationsRoute
   '/mes-certificats': typeof AppMesCertificatsRoute
   '/mes-finances': typeof AppMesFinancesRoute
+  '/messages': typeof AppMessagesRoute
   '/mon-espace': typeof AppMonEspaceRoute
   '/mon-profil': typeof AppMonProfilRoute
   '/parametres': typeof AppParametresRoute
@@ -187,6 +194,7 @@ export interface FileRoutesByTo {
   '/formations': typeof AppFormationsRoute
   '/mes-certificats': typeof AppMesCertificatsRoute
   '/mes-finances': typeof AppMesFinancesRoute
+  '/messages': typeof AppMessagesRoute
   '/mon-espace': typeof AppMonEspaceRoute
   '/mon-profil': typeof AppMonProfilRoute
   '/parametres': typeof AppParametresRoute
@@ -213,6 +221,7 @@ export interface FileRoutesById {
   '/_app/formations': typeof AppFormationsRoute
   '/_app/mes-certificats': typeof AppMesCertificatsRoute
   '/_app/mes-finances': typeof AppMesFinancesRoute
+  '/_app/messages': typeof AppMessagesRoute
   '/_app/mon-espace': typeof AppMonEspaceRoute
   '/_app/mon-profil': typeof AppMonProfilRoute
   '/_app/parametres': typeof AppParametresRoute
@@ -239,6 +248,7 @@ export interface FileRouteTypes {
     | '/formations'
     | '/mes-certificats'
     | '/mes-finances'
+    | '/messages'
     | '/mon-espace'
     | '/mon-profil'
     | '/parametres'
@@ -263,6 +273,7 @@ export interface FileRouteTypes {
     | '/formations'
     | '/mes-certificats'
     | '/mes-finances'
+    | '/messages'
     | '/mon-espace'
     | '/mon-profil'
     | '/parametres'
@@ -288,6 +299,7 @@ export interface FileRouteTypes {
     | '/_app/formations'
     | '/_app/mes-certificats'
     | '/_app/mes-finances'
+    | '/_app/messages'
     | '/_app/mon-espace'
     | '/_app/mon-profil'
     | '/_app/parametres'
@@ -413,6 +425,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppMesFinancesRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/messages': {
+      id: '/_app/messages'
+      path: '/messages'
+      fullPath: '/messages'
+      preLoaderRoute: typeof AppMessagesRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/mon-espace': {
       id: '/_app/mon-espace'
       path: '/mon-espace'
@@ -483,6 +502,7 @@ interface AppRouteChildren {
   AppFormationsRoute: typeof AppFormationsRoute
   AppMesCertificatsRoute: typeof AppMesCertificatsRoute
   AppMesFinancesRoute: typeof AppMesFinancesRoute
+  AppMessagesRoute: typeof AppMessagesRoute
   AppMonEspaceRoute: typeof AppMonEspaceRoute
   AppMonProfilRoute: typeof AppMonProfilRoute
   AppParametresRoute: typeof AppParametresRoute
@@ -504,6 +524,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppFormationsRoute: AppFormationsRoute,
   AppMesCertificatsRoute: AppMesCertificatsRoute,
   AppMesFinancesRoute: AppMesFinancesRoute,
+  AppMessagesRoute: AppMessagesRoute,
   AppMonEspaceRoute: AppMonEspaceRoute,
   AppMonProfilRoute: AppMonProfilRoute,
   AppParametresRoute: AppParametresRoute,
