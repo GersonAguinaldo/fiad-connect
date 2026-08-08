@@ -25,12 +25,13 @@ export const ADMIN_MODULES: AdminModule[] = [
   { key: "finances", label: "Finances", paths: ["/finances", "/mes-finances"] },
   { key: "avantages", label: "Avantages", paths: ["/avantages"] },
   { key: "messages", label: "Messages", paths: ["/messages"] },
+  { key: "presidence", label: "Présidence Mondiale", paths: ["/presidence"] },
   { key: "rapports", label: "Rapports", paths: ["/rapports"] },
   { key: "parametres", label: "Paramètres", paths: ["/parametres"] },
 ];
 
 /** Routes réservées aux super administrateurs. */
-export const SUPER_ADMIN_PATHS = ["/administrateurs"];
+export const SUPER_ADMIN_PATHS = ["/administrateurs", "/presidence"];
 
 export function moduleForPath(pathname: string): AdminModule | undefined {
   return ADMIN_MODULES.find((m) => m.paths.some((p) => pathname.startsWith(p)));
