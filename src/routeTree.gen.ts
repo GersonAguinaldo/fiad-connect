@@ -28,6 +28,7 @@ import { Route as AppMessagesRouteImport } from './routes/_app.messages'
 import { Route as AppMonEspaceRouteImport } from './routes/_app.mon-espace'
 import { Route as AppMonProfilRouteImport } from './routes/_app.mon-profil'
 import { Route as AppParametresRouteImport } from './routes/_app.parametres'
+import { Route as AppPresidenceRouteImport } from './routes/_app.presidence'
 import { Route as AppRapportsRouteImport } from './routes/_app.rapports'
 import { Route as AppFormationFormationIdRouteImport } from './routes/_app.formation.$formationId'
 import { Route as AppMembresIndexRouteImport } from './routes/_app.membres.index'
@@ -127,6 +128,11 @@ const AppParametresRoute = AppParametresRouteImport.update({
   path: '/parametres',
   getParentRoute: () => AppRoute,
 } as any)
+const AppPresidenceRoute = AppPresidenceRouteImport.update({
+  id: '/presidence',
+  path: '/presidence',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppRapportsRoute = AppRapportsRouteImport.update({
   id: '/rapports',
   path: '/rapports',
@@ -167,6 +173,7 @@ export interface FileRoutesByFullPath {
   '/mon-espace': typeof AppMonEspaceRoute
   '/mon-profil': typeof AppMonProfilRoute
   '/parametres': typeof AppParametresRoute
+  '/presidence': typeof AppPresidenceRoute
   '/rapports': typeof AppRapportsRoute
   '/formation/$formationId': typeof AppFormationFormationIdRoute
   '/membres/$memberId': typeof AppMembresMemberIdRoute
@@ -191,6 +198,7 @@ export interface FileRoutesByTo {
   '/mon-espace': typeof AppMonEspaceRoute
   '/mon-profil': typeof AppMonProfilRoute
   '/parametres': typeof AppParametresRoute
+  '/presidence': typeof AppPresidenceRoute
   '/rapports': typeof AppRapportsRoute
   '/formation/$formationId': typeof AppFormationFormationIdRoute
   '/membres/$memberId': typeof AppMembresMemberIdRoute
@@ -217,6 +225,7 @@ export interface FileRoutesById {
   '/_app/mon-espace': typeof AppMonEspaceRoute
   '/_app/mon-profil': typeof AppMonProfilRoute
   '/_app/parametres': typeof AppParametresRoute
+  '/_app/presidence': typeof AppPresidenceRoute
   '/_app/rapports': typeof AppRapportsRoute
   '/_app/formation/$formationId': typeof AppFormationFormationIdRoute
   '/_app/membres/$memberId': typeof AppMembresMemberIdRoute
@@ -243,6 +252,7 @@ export interface FileRouteTypes {
     | '/mon-espace'
     | '/mon-profil'
     | '/parametres'
+    | '/presidence'
     | '/rapports'
     | '/formation/$formationId'
     | '/membres/$memberId'
@@ -267,6 +277,7 @@ export interface FileRouteTypes {
     | '/mon-espace'
     | '/mon-profil'
     | '/parametres'
+    | '/presidence'
     | '/rapports'
     | '/formation/$formationId'
     | '/membres/$memberId'
@@ -292,6 +303,7 @@ export interface FileRouteTypes {
     | '/_app/mon-espace'
     | '/_app/mon-profil'
     | '/_app/parametres'
+    | '/_app/presidence'
     | '/_app/rapports'
     | '/_app/formation/$formationId'
     | '/_app/membres/$memberId'
@@ -441,6 +453,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppParametresRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/presidence': {
+      id: '/_app/presidence'
+      path: '/presidence'
+      fullPath: '/presidence'
+      preLoaderRoute: typeof AppPresidenceRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/rapports': {
       id: '/_app/rapports'
       path: '/rapports'
@@ -487,6 +506,7 @@ interface AppRouteChildren {
   AppMonEspaceRoute: typeof AppMonEspaceRoute
   AppMonProfilRoute: typeof AppMonProfilRoute
   AppParametresRoute: typeof AppParametresRoute
+  AppPresidenceRoute: typeof AppPresidenceRoute
   AppRapportsRoute: typeof AppRapportsRoute
   AppFormationFormationIdRoute: typeof AppFormationFormationIdRoute
   AppMembresMemberIdRoute: typeof AppMembresMemberIdRoute
@@ -508,6 +528,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppMonEspaceRoute: AppMonEspaceRoute,
   AppMonProfilRoute: AppMonProfilRoute,
   AppParametresRoute: AppParametresRoute,
+  AppPresidenceRoute: AppPresidenceRoute,
   AppRapportsRoute: AppRapportsRoute,
   AppFormationFormationIdRoute: AppFormationFormationIdRoute,
   AppMembresMemberIdRoute: AppMembresMemberIdRoute,
@@ -526,13 +547,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
